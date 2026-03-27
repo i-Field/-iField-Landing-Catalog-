@@ -3,427 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iField | Центральный каталог лендингов</title>
+    <title>iField - Каталог лендингов</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            min-height: 100vh;
-            padding: 2rem;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
         }
-
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
         h1 {
-            color: white;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            color: #333;
+            text-align: center;
         }
-
-        .sub {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.1rem;
-        }
-
-        .controls {
-            background: white;
-            border-radius: 60px;
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .search-box input:focus {
-            border-color: #667eea;
-        }
-
-        .stats {
-            background: #667eea;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .refresh-btn {
-            background: #f5f5f5;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .refresh-btn:hover {
-            background: #e0e0e0;
-            transform: scale(0.98);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-
         .card {
             background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 1.2rem;
-            color: white;
-        }
-
-        .card-header h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
-            word-break: break-word;
-        }
-
-        .project-name {
-            font-size: 0.75rem;
-            opacity: 0.9;
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            margin-top: 0.3rem;
-        }
-
-        .card-body {
-            padding: 1.2rem;
-        }
-
-        .url {
-            background: #f8f9fa;
-            padding: 0.6rem;
             border-radius: 12px;
-            font-size: 0.7rem;
-            font-family: monospace;
-            word-break: break-all;
-            margin-bottom: 1rem;
-            color: #666;
-            border: 1px solid #eee;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
-        .card-actions {
-            display: flex;
-            gap: 0.8rem;
-        }
-
-        .btn {
-            padding: 0.6rem 1rem;
-            border-radius: 40px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            transition: all 0.2s;
-            border: none;
-            cursor: pointer;
-            flex: 1;
-            justify-content: center;
-        }
-
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #5a67d8;
-        }
-
-        .btn-secondary {
-            background: #f0f0f0;
+        .card h3 {
+            margin: 0 0 10px 0;
             color: #667eea;
         }
-
-        .btn-secondary:hover {
-            background: #e4e4e4;
+        .card a {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 10px;
         }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            background: white;
-            border-radius: 20px;
+        .card a:hover {
+            background: #5a67d8;
+        }
+        .url {
             color: #666;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 2rem;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 1rem; }
-            .grid { grid-template-columns: 1fr; }
-            .controls { flex-direction: column; align-items: stretch; }
+            font-size: 12px;
+            word-break: break-all;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <h1>📚 iField | Центральный каталог</h1>
-        <div class="sub">Все ваши лендинги и проекты в одном месте</div>
+    <h1>📚 iField - Каталог лендингов</h1>
+    
+    <div class="card">
+        <h3>🏠 Главный каталог</h3>
+        <div class="url">https://i-field.github.io/-iField-Landing-Catalog-/</div>
+        <a href="https://i-field.github.io/-iField-Landing-Catalog-/" target="_blank">Открыть →</a>
     </div>
-
-    <div class="controls">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 Поиск лендинга...">
-        </div>
-        <div class="stats" id="statsCounter">Загрузка...</div>
-        <button class="refresh-btn" id="refreshBtn">🔄 Обновить</button>
+    
+    <div class="card">
+        <h3>💬 Chat iField</h3>
+        <div class="url">https://i-field.github.io/Chat-iField/</div>
+        <a href="https://i-field.github.io/Chat-iField/" target="_blank">Открыть →</a>
     </div>
-
-    <div id="landingsGrid">
-        <div class="empty-state">⏳ Загрузка каталога...</div>
+    
+    <div class="card">
+        <h3>⚡ Generator Landing iField Pro</h3>
+        <div class="url">https://i-field.github.io/Generator-Landing-ifield-Pro/</div>
+        <a href="https://i-field.github.io/Generator-Landing-ifield-Pro/" target="_blank">Открыть →</a>
     </div>
-
-    <footer>
-        💡 Все ваши проекты собраны в одном месте<br>
-        Данные сохраняются в браузере
-    </footer>
+    
+    <div class="card">
+        <h3>🔐 Cipher P2P iField</h3>
+        <div class="url">https://i-field.github.io/cipher-p2p-iField/</div>
+        <a href="https://i-field.github.io/cipher-p2p-iField/" target="_blank">Открыть →</a>
+    </div>
+    
+    <div class="card">
+        <h3>🎨 iField Generator Landing</h3>
+        <div class="url">https://i-field.github.io/iField-Generator-Landing/</div>
+        <a href="https://i-field.github.io/iField-Generator-Landing/" target="_blank">Открыть →</a>
+    </div>
+    
+    <div class="card">
+        <h3>🤖 iField Chat</h3>
+        <div class="url">https://i-field.github.io/iField-chat/</div>
+        <a href="https://i-field.github.io/iField-chat/" target="_blank">Открыть →</a>
+    </div>
+    
 </div>
-
-<script>
-    // ========== ВСЕ ВАШИ ЛЕНДИНГИ ==========
-    // Добавьте сюда все свои проекты и лендинги
-    const LANDINGS = [
-        {
-            name: "🏠 Главный лендинг",
-            project: "iField Landing Catalog",
-            url: "https://i-field.github.io/-iField-Landing-Catalog-/"
-        },
-        {
-            name: "💬 Chat iField",
-            project: "Chat",
-            url: "https://i-field.github.io/Chat-iField/"
-        },
-        {
-            name: "⚡ Generator Landing Pro",
-            project: "Generator",
-            url: "https://i-field.github.io/Generator-Landing-ifield-Pro/"
-        },
-        {
-            name: "🔐 Cipher P2P iField",
-            project: "Cipher",
-            url: "https://i-field.github.io/cipher-p2p-iField/"
-        },
-        {
-            name: "🎨 iField Generator",
-            project: "Generator",
-            url: "https://i-field.github.io/iField-Generator-Landing/"
-        },
-        {
-            name: "🤖 iField Chat",
-            project: "Chat",
-            url: "https://i-field.github.io/iField-chat/"
-        },
-        {
-            name: "📄 README",
-            project: "Документация",
-            url: "https://i-field.github.io/-iField-Landing-Catalog-/README.md"
-        }
-    ];
-
-    // Дополнительные лендинги из папки Files (если есть)
-    const FILES_LANDINGS = [
-        { name: "8 main", file: "8%20main.html" },
-        { name: "Q Go to file", file: "Q%20Go%20to%20file.html" },
-        { name: "Generator Landing", file: "Generator%20Landing%20ifield%20Pro.html" },
-        { name: "iField Generator", file: "iField%20Generator%20Landing.html" },
-        { name: "iField Chat", file: "iField%20chat.html" },
-        { name: "Cipher P2P", file: "cipher%20p2p%20iField.html" }
-    ];
-
-    const STORAGE_KEY = 'ifield_catalog';
-    let allLandings = [];
-
-    const gridContainer = document.getElementById('landingsGrid');
-    const searchInput = document.getElementById('searchInput');
-    const statsSpan = document.getElementById('statsCounter');
-    const refreshBtn = document.getElementById('refreshBtn');
-
-    // Собрать все лендинги
-    function collectAllLandings() {
-        const landings = [...LANDINGS];
-        
-        // Добавляем лендинги из папки Files
-        for (const file of FILES_LANDINGS) {
-            landings.push({
-                name: file.name,
-                project: "📁 Папка Files",
-                url: `https://i-field.github.io/-iField-Landing-Catalog-/Files/${file.file}`
-            });
-        }
-        
-        return landings;
-    }
-
-    // Сохранить в localStorage
-    function saveLandings(landings) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(landings));
-    }
-
-    // Загрузить из localStorage
-    function loadLandings() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            try {
-                return JSON.parse(saved);
-            } catch(e) {
-                return null;
-            }
-        }
-        return null;
-    }
-
-    // Рендер
-    function renderLandings() {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        let filtered = allLandings;
-        
-        if (searchTerm) {
-            filtered = allLandings.filter(land => 
-                land.name.toLowerCase().includes(searchTerm) || 
-                land.project.toLowerCase().includes(searchTerm) ||
-                land.url.toLowerCase().includes(searchTerm)
-            );
-        }
-        
-        statsSpan.textContent = `${filtered.length} / ${allLandings.length}`;
-        
-        if (filtered.length === 0) {
-            gridContainer.innerHTML = `
-                <div class="empty-state">
-                    🔍 Ничего не найдено<br>
-                    <small>Попробуйте другой запрос</small>
-                </div>
-            `;
-            return;
-        }
-        
-        let html = '<div class="grid">';
-        for (const land of filtered) {
-            html += `
-                <div class="card">
-                    <div class="card-header">
-                        <h3>${escapeHtml(land.name)}</h3>
-                        <div class="project-name">📁 ${escapeHtml(land.project)}</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="url">🔗 ${escapeHtml(land.url)}</div>
-                        <div class="card-actions">
-                            <a href="${escapeHtml(land.url)}" class="btn btn-primary" target="_blank">
-                                🚀 Открыть
-                            </a>
-                            <button class="btn btn-secondary" onclick="copyUrl('${escapeHtml(land.url)}', this)">
-                                📋 Копировать
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        html += '</div>';
-        gridContainer.innerHTML = html;
-    }
-
-    function copyUrl(url, btn) {
-        navigator.clipboard.writeText(url).then(() => {
-            const original = btn.innerHTML;
-            btn.innerHTML = '✅ Готово!';
-            setTimeout(() => {
-                btn.innerHTML = original;
-            }, 1500);
-        });
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-
-    function refreshCatalog() {
-        allLandings = collectAllLandings();
-        saveLandings(allLandings);
-        renderLandings();
-    }
-
-    function init() {
-        const saved = loadLandings();
-        if (saved && saved.length > 0) {
-            allLandings = saved;
-            renderLandings();
-        } else {
-            refreshCatalog();
-        }
-        
-        searchInput.addEventListener('input', renderLandings);
-        refreshBtn.addEventListener('click', refreshCatalog);
-    }
-
-    window.copyUrl = copyUrl;
-    init();
-</script>
 </body>
 </html>
