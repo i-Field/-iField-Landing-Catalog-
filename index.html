@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iField | Каталог лендингов</title>
     <style>
         * {
@@ -12,328 +12,249 @@
         }
 
         body {
-            background: linear-gradient(145deg, #f6f9fc 0%, #eef2f5 100%);
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            padding: 2rem 1.5rem;
-            color: #0a1c2f;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            padding: 2rem;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
+        /* Header */
         .header {
             text-align: center;
             margin-bottom: 3rem;
         }
 
-        .badge {
+        .logo {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
             display: inline-block;
-            background: rgba(0, 102, 204, 0.12);
-            backdrop-filter: blur(4px);
-            padding: 0.3rem 1rem;
+            padding: 0.5rem 1.5rem;
             border-radius: 60px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #0066cc;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
             margin-bottom: 1rem;
-            border: 1px solid rgba(0,102,204,0.2);
         }
 
         h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #0b2b44, #1e5a9c);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 0.75rem;
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .sub {
-            font-size: 1.2rem;
-            color: #2c4c6e;
-            max-width: 680px;
-            margin: 0 auto;
-            opacity: 0.85;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
         }
 
-        .source-info {
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            background: #ffffffcc;
-            backdrop-filter: blur(8px);
+        .source {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
             display: inline-block;
-            padding: 0.3rem 1.2rem;
+            padding: 0.4rem 1rem;
             border-radius: 40px;
-            color: #1f6392;
+            font-size: 0.8rem;
             font-family: monospace;
-            border: 1px solid #ffffff;
+            color: white;
+            margin-top: 1rem;
         }
 
+        /* Toolbar */
         .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2.5rem;
             background: white;
-            padding: 0.8rem 1.8rem;
-            border-radius: 80px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            border-radius: 60px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .search-box {
-            flex: 2;
-            min-width: 220px;
+            flex: 1;
+            min-width: 200px;
             display: flex;
             align-items: center;
-            background: #f2f5f9;
-            border-radius: 60px;
-            padding: 0.4rem 1rem;
-            border: 1px solid #e2e8f0;
-        }
-
-        .search-box:focus-within {
-            border-color: #2b7ec1;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(43,126,193,0.2);
+            background: #f5f5f5;
+            border-radius: 40px;
+            padding: 0.5rem 1rem;
         }
 
         .search-box input {
             border: none;
-            background: transparent;
-            padding: 0.6rem 0.5rem;
-            font-size: 0.95rem;
+            background: none;
             width: 100%;
             outline: none;
-            font-weight: 500;
+            font-size: 1rem;
+            padding: 0.3rem;
         }
 
         .stats {
-            background: #eef3fc;
-            padding: 0.4rem 1.2rem;
+            background: #667eea;
+            color: white;
+            padding: 0.4rem 1rem;
             border-radius: 40px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #1e5a9c;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
 
-        .refresh-btn, .add-btn {
-            background: white;
-            border: 1px solid #cbdde9;
+        .add-btn, .refresh-btn {
+            background: #f5f5f5;
+            border: none;
             padding: 0.5rem 1.2rem;
             border-radius: 40px;
-            font-weight: 500;
-            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #1f5e8e;
+            transition: all 0.2s;
+            font-size: 0.85rem;
         }
 
         .add-btn {
-            background: #0066cc;
+            background: #667eea;
             color: white;
-            border-color: #0066cc;
         }
 
         .add-btn:hover {
-            background: #0052a3;
-            transform: scale(0.97);
+            background: #5a67d8;
+            transform: scale(0.98);
         }
 
         .refresh-btn:hover {
-            background: #eaf3fc;
-            border-color: #2b7ec1;
+            background: #e0e0e0;
         }
 
+        /* Cards Grid */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.8rem;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
         }
 
         .card {
             background: white;
-            border-radius: 28px;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 12px 28px -8px rgba(0, 32, 64, 0.12);
-            transition: all 0.25s ease;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 32px -12px rgba(0, 68, 128, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
-        .preview {
-            background: #f0f4f9;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            border-bottom: 1px solid #eef2f8;
-            cursor: pointer;
-        }
-
-        .preview iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            pointer-events: none;
-            background: white;
-        }
-
-        .preview-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.03);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s;
-            backdrop-filter: blur(2px);
-        }
-
-        .preview:hover .preview-overlay {
-            opacity: 1;
-        }
-
-        .preview-overlay span {
-            background: rgba(0,0,0,0.7);
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.2rem;
             color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 60px;
-            font-size: 0.75rem;
         }
 
-        .card-content {
-            padding: 1.2rem 1.3rem 1.3rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-title {
-            font-weight: 700;
+        .card-header h3 {
             font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
+            margin-bottom: 0.3rem;
+            word-break: break-word;
         }
 
-        .filename {
-            background: #eef2fa;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
+        .card-header .filename {
             font-size: 0.7rem;
-            font-weight: 500;
             font-family: monospace;
-            color: #0066b3;
+            opacity: 0.9;
             word-break: break-all;
         }
 
-        .url-link {
-            font-size: 0.7rem;
-            color: #3d7ca3;
-            text-decoration: none;
-            font-family: monospace;
-            margin-top: 6px;
-            word-break: break-all;
-            background: #f8fafd;
-            padding: 0.25rem 0.5rem;
+        .card-body {
+            padding: 1.2rem;
+        }
+
+        .url {
+            background: #f5f5f5;
+            padding: 0.5rem;
             border-radius: 12px;
-            display: inline-block;
+            font-size: 0.7rem;
+            font-family: monospace;
+            word-break: break-all;
+            margin-bottom: 1rem;
+            color: #666;
         }
 
         .card-actions {
-            margin-top: 1rem;
             display: flex;
-            gap: 12px;
-            align-items: center;
+            gap: 0.8rem;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1rem;
             border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 600;
             text-decoration: none;
-            transition: 0.15s;
+            font-size: 0.85rem;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            cursor: pointer;
+            gap: 0.5rem;
+            transition: all 0.2s;
             border: none;
-            background: none;
-            font-family: inherit;
+            cursor: pointer;
         }
 
         .btn-primary {
-            background: #0066cc;
+            background: #667eea;
             color: white;
+            flex: 1;
+            justify-content: center;
         }
 
         .btn-primary:hover {
-            background: #0052a3;
-            transform: scale(0.96);
+            background: #5a67d8;
         }
 
         .btn-outline {
-            border: 1px solid #cbdde9;
-            background: white;
-            color: #1f6392;
+            background: #f5f5f5;
+            color: #667eea;
+            border: 1px solid #e0e0e0;
         }
 
         .btn-outline:hover {
-            background: #e9f2f9;
-            border-color: #6da5d0;
+            background: #e0e0e0;
         }
 
         .btn-danger {
-            border: 1px solid #ffccc7;
-            background: white;
-            color: #d4380d;
+            background: #ff4757;
+            color: white;
         }
 
         .btn-danger:hover {
-            background: #fff1f0;
+            background: #ee5a6f;
+        }
+
+        .badge-custom {
+            background: rgba(255,255,255,0.3);
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-left: 0.5rem;
         }
 
         .empty-state {
             text-align: center;
-            padding: 4rem 2rem;
-            background: white;
-            border-radius: 48px;
-            margin-top: 2rem;
-            color: #5e7e9e;
-        }
-
-        .loading {
-            text-align: center;
             padding: 3rem;
-            font-size: 1.2rem;
-            color: #2b6a9e;
+            background: white;
+            border-radius: 24px;
+            color: #666;
         }
 
-        /* Модалка добавления */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -342,7 +263,7 @@
             right: 0;
             bottom: 0;
             background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -355,104 +276,108 @@
         .modal-content {
             background: white;
             border-radius: 32px;
-            max-width: 500px;
+            max-width: 450px;
             width: 90%;
-            padding: 1.8rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            padding: 2rem;
         }
 
         .modal-content h3 {
             font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .modal-content p {
+            color: #666;
             margin-bottom: 1rem;
+            font-size: 0.9rem;
         }
 
         .modal-content input {
             width: 100%;
             padding: 0.8rem 1rem;
-            border: 1px solid #cbdde9;
+            border: 2px solid #e0e0e0;
             border-radius: 60px;
-            font-size: 0.9rem;
-            margin: 0.5rem 0 1rem;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         .modal-content input:focus {
-            border-color: #0066cc;
+            border-color: #667eea;
         }
 
         .modal-actions {
             display: flex;
             gap: 1rem;
             justify-content: flex-end;
-            margin-top: 1rem;
         }
 
         footer {
-            margin-top: 3rem;
             text-align: center;
-            font-size: 0.75rem;
-            color: #5d7f9e;
-            border-top: 1px solid #dce5ed;
-            padding-top: 2rem;
+            margin-top: 3rem;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             body { padding: 1rem; }
             h1 { font-size: 2rem; }
-            .toolbar { border-radius: 32px; }
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <div class="badge">⚡ iField Ecosystem</div>
+        <div class="logo">⚡ iField Ecosystem</div>
         <h1>Каталог лендингов</h1>
-        <div class="sub">Прямой доступ к HTML-лендингам из репозитория</div>
-        <div class="source-info">
-            📁 Источник: https://i-field.github.io/-iField-Landing-Catalog-/Files/
+        <div class="sub">Все посадочные страницы в одном месте</div>
+        <div class="source">
+            📁 /-iField-Landing-Catalog-/Files/
         </div>
     </div>
 
     <div class="toolbar">
         <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="Поиск по названию лендинга..." autocomplete="off">
+            🔍
+            <input type="text" id="searchInput" placeholder="Поиск лендинга...">
         </div>
-        <div class="stats" id="statsCounter">загрузка...</div>
-        <button class="add-btn" id="addBtn">➕ Добавить лендинг</button>
+        <div class="stats" id="statsCounter">0 лендингов</div>
+        <button class="add-btn" id="addBtn">➕ Добавить</button>
         <button class="refresh-btn" id="refreshBtn">🔄 Обновить</button>
     </div>
 
     <div id="landingsGrid" class="grid">
-        <div class="loading">⏳ Загрузка списка лендингов...</div>
+        <div class="empty-state">📦 Загрузка списка лендингов...</div>
     </div>
+
     <footer>
-        💡 Лендинги хранятся в localStorage. Чтобы добавить новый — нажмите «Добавить лендинг» и укажите имя файла.<br>
-        Файлы должны быть доступны по адресу: https://i-field.github.io/-iField-Landing-Catalog-/Files/[имя_файла].html
+        💡 Нажмите «Добавить», чтобы указать HTML-файл из папки /Files/<br>
+        Все добавленные лендинги сохраняются в вашем браузере
     </footer>
 </div>
 
-<!-- Модалка добавления лендинга -->
+<!-- Modal -->
 <div id="addModal" class="modal">
     <div class="modal-content">
         <h3>➕ Добавить лендинг</h3>
-        <p style="font-size: 0.85rem; color: #666;">Введите имя HTML-файла (без .html или с ним)</p>
-        <input type="text" id="landingNameInput" placeholder="например: main или generator.html" autocomplete="off">
+        <p>Введите имя HTML-файла из папки <strong>/Files/</strong></p>
+        <input type="text" id="landingName" placeholder="например: index.html или main.html" autocomplete="off">
         <div class="modal-actions">
-            <button class="btn btn-outline" id="cancelModalBtn">Отмена</button>
-            <button class="btn btn-primary" id="confirmAddBtn">Добавить</button>
+            <button class="btn btn-outline" id="cancelBtn">Отмена</button>
+            <button class="btn btn-primary" id="confirmBtn">Добавить</button>
         </div>
     </div>
 </div>
 
 <script>
-    // КОНФИГУРАЦИЯ
+    // Конфигурация
     const BASE_URL = 'https://i-field.github.io/-iField-Landing-Catalog-/Files';
-    const STORAGE_KEY = 'ifield_landings_custom';
+    const STORAGE_KEY = 'ifield_landings_list';
     
-    // БАЗОВЫЙ СПИСОК (проверенные лендинги из вашего репозитория)
-    // Вы можете дополнить этот список вручную на основе реальных файлов
+    // Стартовый список (те, что вероятно есть в папке)
     const DEFAULT_LANDINGS = [
         { name: 'index.html', url: `${BASE_URL}/index.html` },
         { name: 'main.html', url: `${BASE_URL}/main.html` },
@@ -465,64 +390,71 @@
         { name: 'dashboard.html', url: `${BASE_URL}/dashboard.html` },
         { name: 'startup.html', url: `${BASE_URL}/startup.html` },
         { name: 'ai-landing.html', url: `${BASE_URL}/ai-landing.html` },
-        { name: 'ifield-pro.html', url: `${BASE_URL}/ifield-pro.html` }
+        { name: 'ifield-pro.html', url: `${BASE_URL}/ifield-pro.html` },
+        { name: 'cipher.html', url: `${BASE_URL}/cipher.html` },
+        { name: 'chat.html', url: `${BASE_URL}/chat.html` }
     ];
     
     let allLandings = [];
-    let isLoading = false;
     
+    // DOM элементы
     const gridContainer = document.getElementById('landingsGrid');
     const searchInput = document.getElementById('searchInput');
     const statsSpan = document.getElementById('statsCounter');
     const refreshBtn = document.getElementById('refreshBtn');
     const addBtn = document.getElementById('addBtn');
     const addModal = document.getElementById('addModal');
-    const landingNameInput = document.getElementById('landingNameInput');
-    const cancelModalBtn = document.getElementById('cancelModalBtn');
-    const confirmAddBtn = document.getElementById('confirmAddBtn');
+    const landingNameInput = document.getElementById('landingName');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const confirmBtn = document.getElementById('confirmBtn');
     
-    // Загрузка сохраненных пользовательских лендингов
-    function loadCustomLandings() {
+    // Получить пользовательские лендинги
+    function getCustomLandings() {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
             try {
                 return JSON.parse(saved);
-            } catch(e) { return []; }
+            } catch(e) {
+                return [];
+            }
         }
         return [];
     }
     
-    // Сохранение пользовательских лендингов
+    // Сохранить пользовательские лендинги
     function saveCustomLandings(custom) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(custom));
     }
     
-    // Получение полного списка (базовые + пользовательские)
-    function getFullLandingsList() {
-        const custom = loadCustomLandings();
-        // Объединяем, удаляем дубликаты по url
+    // Получить полный список (базовые + пользовательские)
+    function getFullList() {
+        const custom = getCustomLandings();
         const all = [...DEFAULT_LANDINGS, ...custom];
+        
+        // Удаляем дубликаты по url
         const unique = [];
-        const seenUrls = new Set();
-        for (const land of all) {
-            if (!seenUrls.has(land.url)) {
-                seenUrls.add(land.url);
-                unique.push(land);
+        const seen = new Set();
+        for (const item of all) {
+            if (!seen.has(item.url)) {
+                seen.add(item.url);
+                unique.push(item);
             }
         }
-        return unique.sort((a,b) => a.name.localeCompare(b.name));
+        
+        // Сортируем по имени
+        return unique.sort((a, b) => a.name.localeCompare(b.name));
     }
     
-    // Форматирование названия для отображения
-    function formatTitle(filename) {
-        let title = filename.replace(/\.html$/i, '');
-        title = title.replace(/[-_]/g, ' ');
-        title = title.replace(/\b\w/g, l => l.toUpperCase());
-        if (title.length === 0) title = "Лендинг";
-        return title;
+    // Форматировать название для отображения
+    function formatDisplayName(filename) {
+        let name = filename.replace(/\.html$/i, '');
+        name = name.replace(/[-_]/g, ' ');
+        name = name.replace(/\b\w/g, l => l.toUpperCase());
+        return name || 'Лендинг';
     }
     
-    function escapeHtml(str) {
+    // Эскейп для безопасности
+    function escape(str) {
         if (!str) return '';
         return str.replace(/[&<>]/g, function(m) {
             if (m === '&') return '&amp;';
@@ -532,173 +464,163 @@
         });
     }
     
-    // Проверка доступности лендинга (HEAD запрос)
-    async function checkLandingExists(url) {
-        try {
-            const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
-            // при no-cors нельзя прочитать статус, но запрос всё равно отправится
-            return true; // оптимистично считаем, что существует
-        } catch(e) {
-            return true; // предпологаем что есть
-        }
-    }
-    
-    // Рендер сетки
-    function renderGrid(filterText = '') {
-        if (!allLandings.length) {
-            gridContainer.innerHTML = `<div class="empty-state">📭 Нет доступных лендингов. Добавьте их через кнопку «+ Добавить лендинг»</div>`;
-            statsSpan.innerText = `0 лендингов`;
-            return;
-        }
-        
-        const lowerFilter = filterText.toLowerCase().trim();
+    // Рендер всех карточек
+    function render() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
         let filtered = allLandings;
-        if (lowerFilter !== '') {
+        
+        if (searchTerm) {
             filtered = allLandings.filter(land => 
-                land.name.toLowerCase().includes(lowerFilter) || 
-                formatTitle(land.name).toLowerCase().includes(lowerFilter)
+                land.name.toLowerCase().includes(searchTerm) || 
+                formatDisplayName(land.name).toLowerCase().includes(searchTerm)
             );
         }
         
-        const customSet = new Set(loadCustomLandings().map(l => l.url));
-        statsSpan.innerText = `${filtered.length} / ${allLandings.length} лендингов`;
+        const customSet = new Set(getCustomLandings().map(l => l.url));
+        statsSpan.innerText = `${filtered.length} / ${allLandings.length}`;
         
         if (filtered.length === 0) {
-            gridContainer.innerHTML = `<div class="empty-state">🔎 Ничего не найдено по запросу «${escapeHtml(filterText)}»</div>`;
+            gridContainer.innerHTML = `
+                <div class="empty-state">
+                    🔍 Ничего не найдено<br>
+                    <small style="display:block; margin-top:0.5rem;">Попробуйте другой запрос или добавьте лендинг</small>
+                </div>
+            `;
             return;
         }
         
-        let cardsHtml = '';
+        let html = '';
         for (const land of filtered) {
-            const displayTitle = formatTitle(land.name);
+            const displayName = formatDisplayName(land.name);
             const isCustom = customSet.has(land.url);
-            const previewUrl = land.url;
             
-            cardsHtml += `
-                <div class="card" data-url="${escapeHtml(land.url)}">
-                    <div class="preview" onclick="window.open('${escapeHtml(land.url)}', '_blank')">
-                        <iframe src="${escapeHtml(previewUrl)}" title="${escapeHtml(displayTitle)}" loading="lazy" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
-                        <div class="preview-overlay"><span>🔗 Клик для открытия</span></div>
+            html += `
+                <div class="card">
+                    <div class="card-header">
+                        <h3>
+                            ${escape(displayName)}
+                            ${isCustom ? '<span class="badge-custom">✨ добавлен</span>' : ''}
+                        </h3>
+                        <div class="filename">📄 ${escape(land.name)}</div>
                     </div>
-                    <div class="card-content">
-                        <div class="card-title">
-                            <span>${escapeHtml(displayTitle)}</span>
-                            <span class="filename">${escapeHtml(land.name)}${isCustom ? ' ✨' : ''}</span>
-                        </div>
-                        <a class="url-link" href="${escapeHtml(land.url)}" target="_blank" rel="noopener noreferrer">🔗 ${escapeHtml(land.url)}</a>
+                    <div class="card-body">
+                        <div class="url">🔗 ${escape(land.url)}</div>
                         <div class="card-actions">
-                            <a href="${escapeHtml(land.url)}" class="btn btn-primary" target="_blank">🚀 Открыть</a>
-                            <button class="btn btn-outline copy-link-btn" data-link="${escapeHtml(land.url)}">📋 Копировать</button>
-                            ${isCustom ? `<button class="btn btn-danger delete-landing-btn" data-url="${escapeHtml(land.url)}" data-name="${escapeHtml(land.name)}">🗑️ Удалить</button>` : ''}
+                            <a href="${escape(land.url)}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                                🚀 Открыть
+                            </a>
+                            <button class="btn btn-outline copy-btn" data-url="${escape(land.url)}">
+                                📋 Копировать
+                            </button>
+                            ${isCustom ? `
+                                <button class="btn btn-outline delete-btn" data-url="${escape(land.url)}" data-name="${escape(land.name)}">
+                                    🗑️
+                                </button>
+                            ` : ''}
                         </div>
                     </div>
                 </div>
             `;
         }
-        gridContainer.innerHTML = cardsHtml;
         
-        // обработчики копирования
-        document.querySelectorAll('.copy-link-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const link = btn.getAttribute('data-link');
-                if (link) {
-                    navigator.clipboard.writeText(link).then(() => {
-                        const original = btn.innerText;
-                        btn.innerText = '✅ Готово!';
-                        setTimeout(() => btn.innerText = original, 1500);
-                    }).catch(() => alert('Не удалось скопировать'));
-                }
+        gridContainer.innerHTML = html;
+        
+        // Копирование ссылок
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                navigator.clipboard.writeText(url).then(() => {
+                    const originalText = this.innerText;
+                    this.innerText = '✅ Готово!';
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                    }, 1500);
+                }).catch(() => {
+                    alert('Не удалось скопировать');
+                });
             });
         });
         
-        // обработчики удаления
-        document.querySelectorAll('.delete-landing-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const url = btn.getAttribute('data-url');
-                const name = btn.getAttribute('data-name');
+        // Удаление кастомных лендингов
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                const name = this.getAttribute('data-name');
+                
                 if (confirm(`Удалить лендинг "${name}"?`)) {
-                    let custom = loadCustomLandings();
+                    let custom = getCustomLandings();
                     custom = custom.filter(l => l.url !== url);
                     saveCustomLandings(custom);
-                    refreshLandings();
+                    refreshList();
                 }
             });
         });
     }
     
-    // Обновление списка и рендер
-    function refreshLandings() {
-        allLandings = getFullLandingsList();
-        renderGrid(searchInput.value);
+    // Обновить список
+    function refreshList() {
+        allLandings = getFullList();
+        render();
     }
     
-    // Добавление нового лендинга
-    function addLanding(rawName) {
-        let fileName = rawName.trim();
-        if (!fileName) return false;
-        
-        // Добавляем .html если нет
-        if (!fileName.endsWith('.html') && !fileName.includes('.')) {
-            fileName = fileName + '.html';
-        } else if (!fileName.endsWith('.html') && fileName.includes('.')) {
-            // возможно уже есть расширение, но не html
-            alert('Имя файла должно заканчиваться на .html');
+    // Добавить новый лендинг
+    function addLanding(inputName) {
+        let name = inputName.trim();
+        if (!name) {
+            alert('Введите имя файла');
             return false;
         }
         
-        // Проверяем, чтобы имя было безопасным (без слешей и тд)
-        if (fileName.includes('/') || fileName.includes('\\')) {
-            alert('Имя файла не должно содержать слешей');
+        // Добавляем .html если нужно
+        if (!name.endsWith('.html') && !name.includes('.')) {
+            name = name + '.html';
+        }
+        
+        // Проверка на опасные символы
+        if (name.includes('/') || name.includes('\\') || name.includes(' ')) {
+            alert('Имя файла не должно содержать пробелов, слешей или обратных слешей');
             return false;
         }
         
-        const fullUrl = `${BASE_URL}/${encodeURIComponent(fileName)}`;
+        const fullUrl = `${BASE_URL}/${encodeURIComponent(name)}`;
         
-        // Проверяем дубликаты
-        const existing = allLandings.some(l => l.url === fullUrl);
-        if (existing) {
-            alert(`Лендинг "${fileName}" уже есть в списке!`);
+        // Проверка дубликата
+        const exists = allLandings.some(l => l.url === fullUrl);
+        if (exists) {
+            alert(`Лендинг "${name}" уже есть в списке!`);
             return false;
         }
         
-        const newLanding = { name: fileName, url: fullUrl };
-        const custom = loadCustomLandings();
+        const newLanding = { name: name, url: fullUrl };
+        const custom = getCustomLandings();
         custom.push(newLanding);
         saveCustomLandings(custom);
         
-        refreshLandings();
+        refreshList();
         return true;
+    }
+    
+    // Модальное окно
+    function openModal() {
+        landingNameInput.value = '';
+        addModal.classList.add('active');
+        landingNameInput.focus();
+    }
+    
+    function closeModal() {
+        addModal.classList.remove('active');
     }
     
     // Инициализация
     function init() {
-        refreshLandings();
+        refreshList();
         
-        searchInput.addEventListener('input', () => {
-            renderGrid(searchInput.value);
-        });
+        searchInput.addEventListener('input', render);
+        refreshBtn.addEventListener('click', refreshList);
+        addBtn.addEventListener('click', openModal);
         
-        refreshBtn.addEventListener('click', () => {
-            refreshLandings();
-        });
-        
-        // Модалка добавления
-        addBtn.addEventListener('click', () => {
-            landingNameInput.value = '';
-            addModal.classList.add('active');
-            landingNameInput.focus();
-        });
-        
-        function closeModal() {
-            addModal.classList.remove('active');
-        }
-        
-        cancelModalBtn.addEventListener('click', closeModal);
-        addModal.addEventListener('click', (e) => {
-            if (e.target === addModal) closeModal();
-        });
-        
-        confirmAddBtn.addEventListener('click', () => {
+        cancelBtn.addEventListener('click', closeModal);
+        confirmBtn.addEventListener('click', () => {
             const name = landingNameInput.value.trim();
             if (name) {
                 addLanding(name);
@@ -710,8 +632,12 @@
         
         landingNameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                confirmAddBtn.click();
+                confirmBtn.click();
             }
+        });
+        
+        addModal.addEventListener('click', (e) => {
+            if (e.target === addModal) closeModal();
         });
     }
     
