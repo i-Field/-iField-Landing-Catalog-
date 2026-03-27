@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>CIPHER · P2P</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg: #07070f;
+  --surface: #0f0f1c;
+  --border: #1a1a30;
+  --accent: #00e87a;
+  --accent-dim: rgba(0,232,122,0.12);
+  --text: #c8cce0;
+  --muted: #42426a;
+  --danger: #ff4060;
+  --font: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Grid bg */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,232,122,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,232,122,0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Screens ── */
+.screen { display: none; width: 100%; max-width: 400px; flex-direction: column; gap: 14px; position: relative; z-index: 1; }
+.screen.active { display: flex; animation: up 0.25s ease; }
+@keyframes up { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── Logo ── */
+.logo { text-align: center; margin-bottom: 4px; }
+.logo-tag  { font-size: 10px; letter-spacing: .4em; color: var(--accent); opacity: .7; text-transform: uppercase; }
+.logo-name { font-size: 36px; font-weight: 600; letter-spacing: .08em; color: #fff; line-height: 1.1; }
+.logo-sub  { font-size: 10px; color: var(--muted); letter-spacing: .2em; margin-top: 3px; }
+
+/* ── Card ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+
+/* ── Label ── */
+.lbl { font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+
+/* ── Input ── */
+input.field {
+  width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; color: var(--text); font-family: var(--font); font-size: 14px;
+  outline: none; transition: border-color .2s;
+}
+input.field:focus { border-color: var(--accent); }
+input.field::placeholder { color: var(--muted); }
+
+/* ── Buttons ── */
+.btn {
+  width: 100%; padding: 13px; border: none; border-radius: 8px;
+  font-family: var(--font); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; cursor: pointer; transition: all .15s; font-weight: 500;
+}
+.btn-p { background: var(--accent); color: #000; }
+.btn-p:hover { filter: brightness(1.1); }
+.btn-p:active { filter: brightness(.9); }
+.btn-s { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.btn-s:hover { background: var(--accent-dim); }
+.btn-g { background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: 10px; }
+.btn-g:hover { border-color: var(--muted); color: var(--text); }
+
+/* ── Status pill ── */
+.pill { display: flex; align-items: center; gap: 8px; font-size: 10px; color: var(--muted); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+.dot.g { background: var(--accent); animation: blink 2.5s infinite; }
+.dot.y { background: #ffb800; animation: blink 1s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* ── QR ── */
+.qr-box { display: flex; justify-content: center; align-items: center; padding: 14px; background: #fff; border-radius: 8px; }
+.qr-box canvas, .qr-box img { display: block !important; }
+
+/* ── Camera ── */
+.cam-box { position: relative; border-radius: 10px; overflow: hidden; background: #000; aspect-ratio: 1; }
+.cam-box video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scan-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.scan-frame { width: 55%; aspect-ratio: 1; border: 2px solid var(--accent); border-radius: 8px; position: relative; box-shadow: 0 0 0 9999px rgba(0,0,0,0.45); }
+.scan-beam { position: absolute; top: 0; left: 4px; right: 4px; height: 2px; background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: beam 2s ease-in-out infinite; }
+@keyframes beam { 0%{top:0} 100%{top:calc(100% - 2px)} }
+
+/* ── Spinner ── */
+.spin { width: 30px; height: 30px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: rotate .7s linear infinite; margin: 0 auto; }
+@keyframes rotate { to { transform: rotate(360deg); } }
+
+/* ── Divider ── */
+.divider { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 10px; }
+.divider::before,.divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── Chat ── */
+#sChat { position: fixed; inset: 0; max-width: 100%; background: var(--bg); display: none; flex-direction: column; padding: 0; gap: 0; z-index: 10; }
+#sChat.active { display: flex; }
+
+.chat-hdr { padding: 14px 16px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.chat-hdr-title { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--text); }
+
+#msgs { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+
+.msg { max-width: 78%; padding: 10px 13px; border-radius: 10px; font-size: 13px; line-height: 1.5; word-break: break-word; }
+.msg.me { align-self: flex-end; background: var(--accent-dim); border: 1px solid rgba(0,232,122,.2); }
+.msg.them { align-self: flex-start; background: var(--surface); border: 1px solid var(--border); }
+.msg-t { font-size: 9px; color: var(--muted); margin-top: 4px; text-align: right; }
+
+.chat-inp { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.chat-inp input { flex: 1; }
+.send-btn {
+  width: 44px; height: 44px; min-width: 44px; background: var(--accent); border: none;
+  border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #000;
+  transition: filter .15s;
+}
+.send-btn:active { filter: brightness(.85); }
+
+/* ── Toast ── */
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px);
+  background: var(--surface); border: 1px solid var(--border); color: var(--text);
+  padding: 9px 16px; border-radius: 8px; font-size: 11px; transition: transform .25s; z-index: 999; white-space: nowrap;
+}
+#toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── Misc ── */
+.center { text-align: center; }
+.t-sm { font-size: 11px; line-height: 1.65; color: var(--muted); }
+.t-acc { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ═══ WELCOME ═══ -->
+<div class="screen active" id="sWelcome">
+  <div class="logo">
+    <div class="logo-tag">iField</div>
+    <div class="logo-name">CIPHER</div>
+    <div class="logo-sub">End-to-end · P2P · Zero servers</div>
+  </div>
+
+  <div class="card">
+    <div class="lbl">Shared passphrase</div>
+    <input class="field" id="passInput" type="password" placeholder="Enter secret passphrase…" autocomplete="off">
+    <div class="t-sm" style="margin-top:9px">Both sides use the same passphrase. It never leaves your device.</div>
+  </div>
+
+  <button class="btn btn-p" onclick="hostStart()">⊕ &nbsp;Create Room</button>
+  <div class="divider">or</div>
+  <button class="btn btn-s" onclick="guestStart()">↓ &nbsp;Join Room (scan QR)</button>
+
+  <div class="card">
+    <div class="pill">
+      <div class="dot g"></div>
+      <span>WebRTC P2P · AES-256-GCM · PBKDF2 key · No relay</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HOST — SHOW OFFER QR ═══ -->
+<div class="screen" id="sHostQR">
+  <div class="logo">
+    <div class="logo-tag">Step 1 / 2 · Host</div>
+    <div class="logo-name" style="font-size:24px">Show this QR</div>
+    <div class="logo-sub">Let your partner scan it</div>
+  </div>
+
+  <div class="card">
+    <div id="qrOffer" class="qr-box"><div class="spin"></div></div>
+  </div>
+
+  <div class="card t-sm center">Partner scans → gets answer QR → you scan it next</div>
+
+  <button class="btn btn-p" onclick="hostScanAnswer()">Scan partner's answer QR →</button>
+  <button class="btn btn-g" onclick="goWelcome()">← Back</button>
+</div>
+
+<!-- ═══ HOST — SCAN ANSWER ═══ -->
+<div class="screen" id="sHostScan">
+  <div class="logo">
+    <div class="logo-tag">Step 2 / 2 · Host</div>
+    <div class="logo-name" style="font-size:24px">Scan Answer</div>
+    <div class="logo-sub">Point at partner's screen</div>
+  </div>
+
+  <div class="cam-box">
+    <video id="vHost" autoplay playsinline muted></video>
+    <canvas id="cHost" style="display:none"></canvas>
+    <div class="scan-overlay"><div class="scan-frame"><div class="scan-beam"></div></div></div>
+  </div>
+
+  <button class="btn btn-g" onclick="camStop('vHost'); showScreen('sHostQR')">← Back</button>
+</div>
+
+<!-- ═══ GUEST — SCAN OFFER ═══ -->
+<div class="screen" id="sGuestScan">
+  <div class="logo">
+    <div class="logo-tag">Step 1 / 2 · Guest</div>
+    <div class="logo-name" style="font-size:24px">Scan Offer QR</div>
+    <div class="logo-sub">Point at the host's screen</div>
+  </div>
+
+  <div class="cam-box">
+    <video id="vGuest" autoplay playsinline muted></video>
+    <canvas id="cGuest" style="display:none"></canvas>
+    <div class="scan-overlay"><div class="scan-frame"><div class="scan-beam"></div></div></div>
+  </div>
+
+  <button class="btn btn-g" onclick="camStop('vGuest'); goWelcome()">← Back</button>
+</div>
+
+<!-- ═══ GUEST — SHOW ANSWER QR ═══ -->
+<div class="screen" id="sGuestQR">
+  <div class="logo">
+    <div class="logo-tag">Step 2 / 2 · Guest</div>
+    <div class="logo-name" style="font-size:24px">Show this QR</div>
+    <div class="logo-sub">Let the host scan it</div>
+  </div>
+
+  <div class="card">
+    <div id="qrAnswer" class="qr-box"><div class="spin"></div></div>
+  </div>
+
+  <div class="card t-sm center">
+    <div class="pill" style="justify-content:center">
+      <div class="dot y"></div><span>Waiting for host to scan…</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONNECTING ═══ -->
+<div class="screen" id="sConnecting">
+  <div class="card center" style="padding:40px 20px">
+    <div class="spin" style="margin-bottom:20px"></div>
+    <div class="lbl" style="margin:0 0 8px">Establishing encrypted tunnel</div>
+    <div class="t-sm">Direct P2P handshake in progress…</div>
+  </div>
+</div>
+
+<!-- ═══ CHAT ═══ -->
+<div class="screen" id="sChat">
+  <div class="chat-hdr">
+    <div>
+      <div class="chat-hdr-title">CIPHER · Encrypted Channel</div>
+      <div class="pill" style="margin-top:5px">
+        <div class="dot g"></div>
+        <span>Connected · AES-256-GCM</span>
+      </div>
+    </div>
+    <button class="btn btn-g" style="width:auto;padding:6px 12px;font-size:9px" onclick="disconnect()">End Session</button>
+  </div>
+
+  <div id="msgs"></div>
+
+  <div class="chat-inp">
+    <input class="field" id="chatIn" placeholder="Type message…" autocomplete="off">
+    <button class="send-btn" onclick="sendMsg()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+<script>
+// ════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════
+let pc = null;
+let dc = null;
+let cryptoKey = null;
+
+// ════════════════════════════════════════════
+//  UTILS
+// ════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goWelcome() {
+  ['vHost','vGuest'].forEach(camStop);
+  if (pc) { pc.close(); pc = null; }
+  showScreen('sWelcome');
+}
+
+function toast(msg, ms = 3200) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), ms);
+}
+
+function uint8ToB64(arr) {
+  let s = ''; const chunk = 8192;
+  for (let i = 0; i < arr.length; i += chunk)
+    s += String.fromCharCode(...arr.subarray(i, i + chunk));
+  return btoa(s);
+}
+
+function b64ToUint8(b64) {
+  return new Uint8Array([...atob(b64)].map(c => c.charCodeAt(0)));
+}
+
+function compress(str)   { return uint8ToB64(pako.deflate(new TextEncoder().encode(str))); }
+function decompress(b64) { return new TextDecoder().decode(pako.inflate(b64ToUint8(b64))); }
+
+// ════════════════════════════════════════════
+//  CRYPTO  (AES-256-GCM + PBKDF2)
+// ════════════════════════════════════════════
+async function deriveKey(passphrase) {
+  const raw = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(passphrase), 'PBKDF2', false, ['deriveKey']
+  );
+  return crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt: new TextEncoder().encode('iField-CIPHER-v1'), iterations:100000, hash:'SHA-256' },
+    raw, { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']
+  );
+}
+
+async function encrypt(text) {
+  const iv  = crypto.getRandomValues(new Uint8Array(12));
+  const ct  = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, cryptoKey, new TextEncoder().encode(text));
+  const out = new Uint8Array(12 + ct.byteLength);
+  out.set(iv); out.set(new Uint8Array(ct), 12);
+  return uint8ToB64(out);
+}
+
+async function decrypt(b64) {
+  const buf = b64ToUint8(b64);
+  const dec = await crypto.subtle.decrypt({ name:'AES-GCM', iv: buf.slice(0,12) }, cryptoKey, buf.slice(12));
+  return new TextDecoder().decode(dec);
+}
+
+// ════════════════════════════════════════════
+//  WebRTC HELPERS
+// ════════════════════════════════════════════
+function newPC() {
+  pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.cloudflare.com:3478' }] });
+  return pc;
+}
+
+// Wait until all ICE candidates are gathered (vanilla ICE)
+function waitICE(p) {
+  return new Promise((res, rej) => {
+    const t = setTimeout(() => rej(new Error('ICE timeout (20s)')), 20000);
+    if (p.iceGatheringState === 'complete') { clearTimeout(t); res(); return; }
+    p.onicegatheringstatechange = () => { if (p.iceGatheringState === 'complete') { clearTimeout(t); res(); } };
+  });
+}
+
+function wireChannel(channel) {
+  dc = channel;
+  dc.onopen  = () => { showScreen('sChat'); toast('🔒 Encrypted channel open'); };
+  dc.onclose = () => toast('Channel closed');
+  dc.onmessage = async ({ data }) => {
+    try { addMsg(await decrypt(data), 'them'); }
+    catch { toast('⚠ Decrypt failed — wrong passphrase?'); }
+  };
+}
+
+// ════════════════════════════════════════════
+//  HOST FLOW
+// ════════════════════════════════════════════
+async function hostStart() {
+  const pass = document.getElementById('passInput').value.trim();
+  if (!pass) { toast('Enter a passphrase first'); return; }
+
+  try {
+    cryptoKey = await deriveKey(pass);
+    newPC();
+
+    const ch = pc.createDataChannel('cipher');
+    wireChannel(ch);
+
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+
+    showScreen('sHostQR');
+    document.getElementById('qrOffer').innerHTML = '<div class="spin"></div>';
+    toast('Gathering connection info…', 12000);
+
+    await waitICE(pc);
+
+    makeQR('qrOffer', compress(JSON.stringify(pc.localDescription)));
+    toast('QR ready — show to partner');
+  } catch (e) {
+    toast('Error: ' + e.message); console.error(e);
+  }
+}
+
+function hostScanAnswer() {
+  showScreen('sHostScan');
+  camStart('vHost', 'cHost', async data => {
+    try {
+      await pc.setRemoteDescription(JSON.parse(decompress(data)));
+      showScreen('sConnecting');
+      toast('Answer received! Connecting…');
+    } catch (e) {
+      toast('Bad QR — try again'); console.error(e);
+    }
+  });
+}
+
+// ════════════════════════════════════════════
+//  GUEST FLOW
+// ════════════════════════════════════════════
+async function guestStart() {
+  const pass = document.getElementById('passInput').value.trim();
+  if (!pass) { toast('Enter a passphrase first'); return; }
+
+  try {
+    cryptoKey = await deriveKey(pass);
+    showScreen('sGuestScan');
+
+    camStart('vGuest', 'cGuest', async data => {
+      try {
+        const offerDesc = JSON.parse(decompress(data));
+        newPC();
+        pc.ondatachannel = e => wireChannel(e.channel);
+
+        await pc.setRemoteDescription(offerDesc);
+        const answer = await pc.createAnswer();
+        await pc.setLocalDescription(answer);
+
+        showScreen('sGuestQR');
+        document.getElementById('qrAnswer').innerHTML = '<div class="spin"></div>';
+        toast('Generating answer QR…', 10000);
+
+        await waitICE(pc);
+
+        makeQR('qrAnswer', compress(JSON.stringify(pc.localDescription)));
+        toast('Show this QR to the host');
+      } catch (e) {
+        toast('Error: ' + e.message); console.error(e);
+      }
+    });
+  } catch (e) {
+    toast('Error: ' + e.message); console.error(e);
+  }
+}
+
+// ════════════════════════════════════════════
+//  QR GENERATE
+// ════════════════════════════════════════════
+function makeQR(elId, text) {
+  const el = document.getElementById(elId);
+  el.innerHTML = '';
+  new QRCode(el, { text, width:256, height:256, colorDark:'#000', colorLight:'#fff', correctLevel: QRCode.CorrectLevel.L });
+}
+
+// ════════════════════════════════════════════
+//  CAMERA / SCAN
+// ════════════════════════════════════════════
+function camStart(videoId, canvasId, onData) {
+  const video  = document.getElementById(videoId);
+  const canvas = document.getElementById(canvasId);
+  const ctx    = canvas.getContext('2d');
+  let done = false;
+
+  navigator.mediaDevices.getUserMedia({ video:{ facingMode:'environment' }, audio:false })
+    .then(stream => {
+      video.srcObject = stream;
+      video.play();
+      (function tick() {
+        if (done) return;
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          ctx.drawImage(video, 0, 0);
+          const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const qr  = jsQR(img.data, img.width, img.height);
+          if (qr) { done = true; camStop(videoId); onData(qr.data); return; }
+        }
+        requestAnimationFrame(tick);
+      })();
+    })
+    .catch(e => { toast('Camera error: ' + e.message); showScreen('sWelcome'); });
+}
+
+function camStop(videoId) {
+  const v = document.getElementById(videoId);
+  if (v && v.srcObject) { v.srcObject.getTracks().forEach(t => t.stop()); v.srcObject = null; }
+}
+
+// ════════════════════════════════════════════
+//  CHAT
+// ════════════════════════════════════════════
+function addMsg(text, from) {
+  const el  = document.getElementById('msgs');
+  const div = document.createElement('div');
+  div.className = 'msg ' + from;
+  const t = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  div.innerHTML = `<div>${esc(text)}</div><div class="msg-t">${t}</div>`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function sendMsg() {
+  const inp = document.getElementById('chatIn');
+  const txt = inp.value.trim();
+  if (!txt || !dc || dc.readyState !== 'open') return;
+  try {
+    dc.send(await encrypt(txt));
+    addMsg(txt, 'me');
+    inp.value = '';
+  } catch (e) { toast('Send error: ' + e.message); }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.activeElement.id === 'chatIn') sendMsg();
+});
+
+function disconnect() {
+  if (pc) { pc.close(); pc = null; }
+  goWelcome();
+  toast('Session ended');
+}
+</script>
+</body>
+</html>
