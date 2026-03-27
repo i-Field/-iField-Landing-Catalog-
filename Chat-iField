@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iField P2P Chat</title>
+<style>
+body {
+  margin:0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background:#000;
+  color:#0f0;
+  overflow:hidden;
+}
+
+/* Матрица */
+#matrixCanvas {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+}
+
+/* QR-код */
+#qrCode {
+  position:fixed;
+  top:5px;
+  right:5px;
+  z-index:4;
+  background:rgba(0,0,0,0.5);
+  padding:5px;
+  border-radius:10px;
+}
+
+/* Генератор пароля */
+#passwordGen {
+  position:fixed;
+  top:5px;
+  left:5px;
+  z-index:4;
+  background:rgba(0,0,0,0.5);
+  padding:5px;
+  border-radius:10px;
+  display:flex;
+  gap:5px;
+}
+
+/* Чат */
+#chatBox {
+  position:fixed;
+  top:15%;
+  left:10%;
+  width:320px;
+  height:60%;
+  background:rgba(0,0,0,0.7);
+  border-radius:15px;
+  padding:10px;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  cursor:move;
+}
+
+#chatHeader {
+  font-weight:bold;
+  margin-bottom:5px;
+  cursor:move;
+}
+
+#messages {
+  flex:1;
+  overflow-y:auto;
+  margin-bottom:5px;
+  word-break:break-word;
+}
+
+#inputBox {
+  display:flex;
+}
+#inputBox input {
+  flex:1;
+  padding:8px;
+  border-radius:10px;
+  border:none;
+  background:#111;
+  color:#0f0;
+}
+#inputBox button {
+  margin-left:5px;
+  padding:8px 12px;
+  border:none;
+  border-radius:10px;
+  background:#0a0;
+  color:#000;
+  cursor:pointer;
+}
+
+/* Нижняя панель */
+#statusBar {
+  position:fixed;
+  bottom:5px;
+  left:50%;
+  transform:translateX(-50%);
+  font-family:monospace;
+  font-size:14px;
+  color:#0f0;
+  z-index:3;
+  background:rgba(0,0,0,0.5);
+  padding:5px 10px;
+  border-radius:10px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="matrixCanvas"></canvas>
+
+<div id="passwordGen">
+  <input type="text" id="roomPass" placeholder="Пароль комнаты">
+  <button id="genPassBtn">Сгенерировать</button>
+</div>
+
+<div id="qrCode"></div>
+
+<div id="chatBox">
+  <div id="chatHeader">iField Chat</div>
+  <div id="messages"></div>
+  <div id="inputBox">
+    <input type="text" id="msgInput" placeholder="Введите сообщение...">
+    <button id="sendBtn">Отправить</button>
+  </div>
+</div>
+
+<div id="statusBar">Инициализация...</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>
+// --- МАТРИЦА ---
+const canvas=document.getElementById('matrixCanvas');
+const ctx=canvas.getContext('2d');
+let w=canvas.width=window.innerWidth;
+let h=canvas.height=window.innerHeight;
+let cols=Math.floor(w/20)+1;
+let ypos=Array(cols).fill(0);
+
+function matrixLoop(){
+  ctx.fillStyle='rgba(0,0,0,0.05)';
+  ctx.fillRect(0,0,w,h);
+  ctx.fillStyle='#0f0';
+  ctx.font='20px monospace';
+  for(let i=0;i<cols;i++){
+    let text=String.fromCharCode(33+Math.random()*94);
+    ctx.fillText(text,i*20,ypos[i]*20);
+    if(ypos[i]*20>h && Math.random()>0.975) ypos[i]=0;
+    ypos[i]++;
+  }
+}
+setInterval(matrixLoop,60);
+
+// --- QR-КОД ---
+const qrDiv=document.getElementById('qrCode');
+let roomCode=Math.random().toString(36).substring(2,8);
+QRCode.toCanvas(qrDiv, roomCode, {width:100});
+
+// --- ПАРОЛЬ ---
+const roomPassInput=document.getElementById('roomPass');
+document.getElementById('genPassBtn').onclick=()=>{
+  let p=Math.random().toString(36).substring(2,10);
+  roomPassInput.value=p;
+};
+
+// --- DRAG CHAT ---
+const chatBox=document.getElementById('chatBox');
+const header=document.getElementById('chatHeader');
+let offsetX, offsetY, dragging=false;
+
+header.onmousedown=(e)=>{
+  dragging=true;
+  offsetX=e.clientX-chatBox.offsetLeft;
+  offsetY=e.clientY-chatBox.offsetTop;
+};
+window.onmousemove=(e)=>{
+  if(dragging){
+    chatBox.style.left=(e.clientX-offsetX)+'px';
+    chatBox.style.top=(e.clientY-offsetY)+'px';
+  }
+};
+window.onmouseup=()=>{dragging=false};
+
+// --- P2P WebRTC ---
+let peerConnection=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+let dataChannel=peerConnection.createDataChannel('chat');
+
+dataChannel.onmessage=e=>{
+  addMessage(e.data,'partner');
+};
+peerConnection.ondatachannel=e=>{
+  dataChannel=e.channel;
+  dataChannel.onmessage=e=>{
+    addMessage(e.data,'partner');
+  }
+};
+
+async function createOffer(){
+  let offer=await peerConnection.createOffer();
+  await peerConnection.setLocalDescription(offer);
+  let remote=prompt("Отправьте этот код партнеру:\n"+btoa(JSON.stringify(offer)));
+  let answer=prompt("Вставьте ответ партнера:");
+  await peerConnection.setRemoteDescription(JSON.parse(atob(answer)));
+}
+createOffer();
+
+// --- ШИФРОВАНИЕ AES ---
+async function encrypt(msg,key){
+  let enc=new TextEncoder();
+  let k=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(key));
+  let cryptoKey=await crypto.subtle.importKey('raw',k,{name:'AES-GCM'},false,['encrypt']);
+  let iv=crypto.getRandomValues(new Uint8Array(12));
+  let encMsg=await crypto.subtle.encrypt({name:'AES-GCM',iv},enc.encode(msg),cryptoKey);
+  let buffer=new Uint8Array(encMsg);
+  let full=new Uint8Array(iv.length+buffer.length);
+  full.set(iv); full.set(buffer,iv.length);
+  return btoa(String.fromCharCode(...full));
+}
+async function decrypt(data,key){
+  let arr=new Uint8Array([...atob(data)].map(c=>c.charCodeAt(0)));
+  let iv=arr.slice(0,12);
+  let msg=arr.slice(12);
+  let k=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(key));
+  let cryptoKey=await crypto.subtle.importKey('raw',k,{name:'AES-GCM'},false,['decrypt']);
+  let dec=await crypto.subtle.decrypt({name:'AES-GCM',iv},cryptoKey,msg);
+  return new TextDecoder().decode(dec);
+}
+
+// --- ЧАТ ---
+const messages=document.getElementById('messages');
+function addMessage(msg,type){
+  let div=document.createElement('div');
+  div.innerText=msg;
+  div.style.textAlign=type==='partner'?'left':'right';
+  messages.appendChild(div);
+  messages.scrollTop=messages.scrollHeight;
+  updateStatusBar(msg);
+}
+
+// --- ПОДСКАЗКА ПЕРЦЕПТРОН ---
+function predictReply(msg){
+  let score=0;
+  score+=msg.length>20?1:0;
+  score+=msg.includes('?')?1:0;
+  score+=msg.includes('!')?1:0;
+  score+=(/\p{Emoji}/u.test(msg)?1:0);
+  const responses=["Да","Нет","Возможно","Интересно","Смешно"];
+  return responses[score%responses.length];
+}
+
+// --- ОТПРАВКА ---
+const sendBtn=document.getElementById('sendBtn');
+const msgInput=document.getElementById('msgInput');
+
+sendBtn.onclick=async ()=>{
+  let msg=msgInput.value.trim();
+  if(!msg) return;
+  let enc=await encrypt(msg,roomPassInput.value||roomCode);
+  dataChannel.send(enc);
+  addMessage(msg,'me');
+  msgInput.value='';
+  // подсказка
+  setTimeout(()=>{
+    addMessage("🤖 Подсказка: "+predictReply(msg),'system');
+  },200);
+};
+
+// --- ЛОКАЛЬНАЯ ИСТОРИЯ ---
+window.addEventListener('beforeunload',()=>{
+  localStorage.setItem('chatHistory',messages.innerHTML);
+});
+if(localStorage.getItem('chatHistory')) messages.innerHTML=localStorage.getItem('chatHistory');
+
+// --- НИЖНИЙ БАР ---
+const statusBar=document.getElementById('statusBar');
+function updateStatusBar(lastMsg){
+  let now=new Date();
+  let dateStr=now.toLocaleString('ru-RU')+"."+now.getMilliseconds();
+  let hash=Math.random().toString(36).substring(2,10);
+  let temp=(20+Math.random()*5).toFixed(1)+"°C";
+  let load=(Math.floor(Math.random()*100))+"%";
+  statusBar.innerText=`Время: ${dateStr} | Хэш: ${hash} | Сеть: ${load} | Темп: ${temp} | Сообщение: "${lastMsg}"`;
+}
+setInterval(()=>updateStatusBar(''),1000);
+</script>
+</body>
+</html>
