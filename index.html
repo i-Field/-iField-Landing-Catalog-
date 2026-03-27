@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iField | Авто-поиск лендингов</title>
+    <title>iField | Центральный каталог лендингов</title>
     <style>
         * {
             margin: 0;
@@ -12,14 +12,14 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             padding: 2rem;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -39,87 +39,70 @@
             font-size: 1.1rem;
         }
 
-        .status-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
+        .stats-bar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 60px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
             margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        .status-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .progress-bar {
-            background: #f0f0f0;
-            border-radius: 20px;
-            height: 30px;
-            overflow: hidden;
-            margin: 1rem 0;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .stats {
             color: white;
-            font-size: 0.8rem;
-            font-weight: bold;
+            font-weight: 600;
         }
 
-        .log {
-            background: #f5f5f5;
-            border-radius: 12px;
-            padding: 1rem;
-            max-height: 200px;
-            overflow-y: auto;
-            font-family: monospace;
-            font-size: 0.8rem;
+        .search-box {
+            flex: 1;
+            max-width: 300px;
         }
 
-        .log-entry {
-            padding: 0.25rem 0;
-            border-bottom: 1px solid #e0e0e0;
-            color: #555;
+        .search-box input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            outline: none;
         }
 
-        .log-entry.success {
-            color: #27ae60;
+        .refresh-btn {
+            background: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
 
-        .log-entry.error {
-            color: #e74c3c;
+        .refresh-btn:hover {
+            transform: scale(0.98);
+            background: #f0f0f0;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 1.5rem;
-            margin-top: 1rem;
         }
 
-        .landing-card {
+        .card {
             background: white;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .landing-card:hover {
+        .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
 
         .card-header {
@@ -129,15 +112,18 @@
         }
 
         .card-header h3 {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 0.3rem;
             word-break: break-word;
         }
 
-        .card-header .filename {
+        .project-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
             font-size: 0.7rem;
-            font-family: monospace;
-            opacity: 0.9;
+            margin-top: 0.3rem;
         }
 
         .card-body {
@@ -147,7 +133,7 @@
         .url {
             background: #f5f5f5;
             padding: 0.5rem;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 0.7rem;
             font-family: monospace;
             word-break: break-all;
@@ -198,278 +184,182 @@
             text-align: center;
             padding: 3rem;
             background: white;
-            border-radius: 16px;
+            border-radius: 20px;
             color: #666;
         }
 
-        .search-box {
-            margin-bottom: 1.5rem;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 40px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .search-box input:focus {
-            border-color: #667eea;
-        }
-
-        .toolbar {
-            display: flex;
-            gap: 1rem;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .stats {
-            background: white;
-            padding: 0.5rem 1rem;
-            border-radius: 40px;
-            font-weight: 600;
-            color: #667eea;
-        }
-
-        .refresh-btn {
-            background: white;
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .refresh-btn:hover {
-            background: #f0f0f0;
-            transform: scale(0.98);
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: white;
         }
 
         footer {
             text-align: center;
             margin-top: 2rem;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.6);
             font-size: 0.8rem;
         }
 
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .grid { grid-template-columns: 1fr; }
+            .stats-bar { flex-direction: column; align-items: stretch; }
+            .search-box { max-width: none; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>🔍 iField | Авто-поиск лендингов</h1>
-        <div class="sub">Сканирую репозиторий и нахожу все HTML-страницы</div>
+        <h1>📚 iField | Центральный каталог</h1>
+        <div class="sub">Все лендинги и проекты в одном месте</div>
     </div>
 
-    <div class="status-card" id="statusCard">
-        <div class="status-title">
-            <span>📡</span> Статус сканирования
-        </div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill">0%</div>
-        </div>
-        <div class="log" id="logContainer">
-            <div class="log-entry">⏳ Инициализация...</div>
-        </div>
-    </div>
-
-    <div class="toolbar">
+    <div class="stats-bar">
+        <div class="stats" id="statsCounter">⏳ Загрузка...</div>
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 Поиск по названию...">
+            <input type="text" id="searchInput" placeholder="🔍 Поиск по названию или проекту...">
         </div>
-        <div class="stats" id="statsCounter">0 лендингов</div>
-        <button class="refresh-btn" id="refreshBtn">🔄 Найти все лендинги</button>
+        <button class="refresh-btn" id="refreshBtn">🔄 Обновить каталог</button>
     </div>
 
     <div id="landingsGrid">
-        <div class="empty-state">📦 Нажмите «Найти все лендинги» для сканирования</div>
+        <div class="loading">⏳ Загрузка всех лендингов...</div>
     </div>
 
     <footer>
-        💡 Система автоматически сканирует GitHub репозиторий и находит все HTML файлы<br>
-        Лендинги сохраняются в браузере для быстрого доступа
+        💡 Каталог автоматически собирает все лендинги из ваших проектов<br>
+        Данные сохраняются в браузере для быстрого доступа
     </footer>
 </div>
 
 <script>
-    // Конфигурация
-    const REPO_OWNER = 'i-field';
-    const REPO_NAME = '-iField-Landing-Catalog-';
-    const BASE_URL = `https://${REPO_OWNER}.github.io/${REPO_NAME}`;
-    const API_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees/main?recursive=1`;
-    const STORAGE_KEY = 'ifield_auto_landings';
+    // ========== КОНФИГУРАЦИЯ - ВСЕ ВАШИ РЕПОЗИТОРИИ ==========
+    // Добавьте сюда все ваши проекты/лендинги
+    const PROJECTS = [
+        {
+            name: "🏠 Main Landing",
+            url: "https://i-field.github.io/-iField-Landing-Catalog-/",
+            files: [
+                "index.html",
+                "main.html"
+            ]
+        },
+        {
+            name: "💬 Chat iField",
+            url: "https://i-field.github.io/Chat-iField/",
+            files: ["index.html"]
+        },
+        {
+            name: "⚡ Generator Landing iField Pro",
+            url: "https://i-field.github.io/Generator-Landing-ifield-Pro/",
+            files: ["index.html"]
+        },
+        {
+            name: "🔐 Cipher P2P iField",
+            url: "https://i-field.github.io/cipher-p2p-iField/",
+            files: ["index.html"]
+        },
+        {
+            name: "🎨 iField Generator Landing",
+            url: "https://i-field.github.io/iField-Generator-Landing/",
+            files: ["index.html"]
+        },
+        {
+            name: "🤖 iField Chat",
+            url: "https://i-field.github.io/iField-chat/",
+            files: ["index.html"]
+        }
+    ];
+
+    // Дополнительные лендинги (если есть в папке Files)
+    const EXTRA_LANDINGS = [
+        { name: "8 main", url: "https://i-field.github.io/-iField-Landing-Catalog-/Files/8%20main.html" },
+        { name: "Q Go to file", url: "https://i-field.github.io/-iField-Landing-Catalog-/Files/Q%20Go%20to%20file.html" },
+        { name: "README", url: "https://i-field.github.io/-iField-Landing-Catalog-/README.md" }
+    ];
+
+    const STORAGE_KEY = 'ifield_central_catalog';
     
     let allLandings = [];
-    let isScanning = false;
     
     // DOM элементы
     const gridContainer = document.getElementById('landingsGrid');
     const searchInput = document.getElementById('searchInput');
     const statsSpan = document.getElementById('statsCounter');
     const refreshBtn = document.getElementById('refreshBtn');
-    const logContainer = document.getElementById('logContainer');
-    const progressFill = document.getElementById('progressFill');
     
-    // Добавить лог
-    function addLog(message, type = 'info') {
-        const logEntry = document.createElement('div');
-        logEntry.className = `log-entry ${type}`;
-        logEntry.textContent = message;
-        logContainer.appendChild(logEntry);
-        logContainer.scrollTop = logContainer.scrollHeight;
+    // Собрать все лендинги из проектов
+    function collectAllLandings() {
+        const landings = [];
         
-        // Ограничиваем количество логов
-        while (logContainer.children.length > 50) {
-            logContainer.removeChild(logContainer.firstChild);
+        // Добавляем из основных проектов
+        for (const project of PROJECTS) {
+            for (const file of project.files) {
+                let url = project.url;
+                if (!url.endsWith('/')) url += '/';
+                url += file;
+                
+                landings.push({
+                    name: file === 'index.html' ? project.name : `${project.name} / ${file}`,
+                    fileName: file,
+                    project: project.name,
+                    url: url,
+                    type: 'project'
+                });
+            }
         }
+        
+        // Добавляем дополнительные лендинги из Files
+        for (const extra of EXTRA_LANDINGS) {
+            landings.push({
+                name: extra.name,
+                fileName: extra.name,
+                project: '📁 Дополнительные лендинги',
+                url: extra.url,
+                type: 'extra'
+            });
+        }
+        
+        return landings;
     }
     
-    // Обновить прогресс
-    function updateProgress(current, total, message) {
-        const percent = total > 0 ? (current / total * 100) : 0;
-        progressFill.style.width = `${percent}%`;
-        progressFill.textContent = `${Math.round(percent)}%`;
-        if (message) {
-            addLog(message);
-        }
-    }
-    
-    // Сохранить лендинги
+    // Сохранить в localStorage
     function saveLandings(landings) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(landings));
     }
     
-    // Загрузить сохраненные
+    // Загрузить из localStorage
     function loadSavedLandings() {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
             try {
                 return JSON.parse(saved);
             } catch(e) {
-                return [];
+                return null;
             }
         }
-        return [];
+        return null;
     }
     
-    // Сканирование репозитория
-    async function scanRepository() {
-        if (isScanning) {
-            addLog('⚠️ Сканирование уже выполняется', 'error');
-            return;
-        }
-        
-        isScanning = true;
-        refreshBtn.disabled = true;
-        refreshBtn.textContent = '⏳ Сканирование...';
-        logContainer.innerHTML = '';
-        addLog('🚀 Начинаю сканирование репозитория...');
-        updateProgress(0, 100, 'Подключение к GitHub API...');
-        
+    // Проверить доступность лендинга
+    async function checkLanding(url) {
         try {
-            // Пробуем получить дерево файлов через GitHub API
-            addLog(`📡 Запрос к API: ${API_URL}`);
-            const response = await fetch(API_URL, {
-                headers: {
-                    'Accept': 'application/vnd.github.v3+json'
-                }
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-            }
-            
-            const data = await response.json();
-            addLog(`✅ Получен список файлов (${data.tree?.length || 0} элементов)`, 'success');
-            
-            // Ищем все HTML файлы
-            const htmlFiles = [];
-            let processed = 0;
-            const total = data.tree?.length || 0;
-            
-            if (data.tree && Array.isArray(data.tree)) {
-                for (const item of data.tree) {
-                    processed++;
-                    updateProgress(processed, total, `Обработка: ${item.path}`);
-                    
-                    // Проверяем, что это HTML файл
-                    if (item.type === 'blob' && item.path.toLowerCase().endsWith('.html')) {
-                        // Получаем имя файла без пути
-                        const fileName = item.path.split('/').pop();
-                        const fullUrl = `${BASE_URL}/${item.path}`;
-                        
-                        htmlFiles.push({
-                            name: fileName,
-                            path: item.path,
-                            url: fullUrl,
-                            size: item.size
-                        });
-                        
-                        addLog(`📄 Найден HTML: ${item.path}`, 'success');
-                    }
-                }
-            }
-            
-            addLog(`🎉 Сканирование завершено! Найдено ${htmlFiles.length} HTML файлов`, 'success');
-            updateProgress(100, 100, `Готово! Найдено ${htmlFiles.length} лендингов`);
-            
-            // Сохраняем
-            allLandings = htmlFiles;
-            saveLandings(htmlFiles);
-            renderLandings();
-            
-        } catch (error) {
-            addLog(`❌ Ошибка сканирования: ${error.message}`, 'error');
-            updateProgress(0, 100, 'Ошибка!');
-            
-            // Пробуем загрузить сохраненные
-            const saved = loadSavedLandings();
-            if (saved.length > 0) {
-                addLog(`📦 Загружены сохраненные лендинги (${saved.length} шт.)`, 'info');
-                allLandings = saved;
-                renderLandings();
-            } else {
-                // Если нет сохраненных, показываем пример
-                addLog('💡 Попробуйте использовать публичный репозиторий или проверьте права доступа', 'error');
-                showDemoLandings();
-            }
-        } finally {
-            isScanning = false;
-            refreshBtn.disabled = false;
-            refreshBtn.textContent = '🔄 Найти все лендинги';
+            const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+            return true;
+        } catch(e) {
+            return false;
         }
     }
     
-    // Демо лендинги (если API не работает)
-    function showDemoLandings() {
-        const demoLandings = [
-            { name: 'index.html', path: 'Files/index.html', url: `${BASE_URL}/Files/index.html` },
-            { name: 'main.html', path: 'Files/main.html', url: `${BASE_URL}/Files/main.html` },
-            { name: 'generator.html', path: 'Files/generator.html', url: `${BASE_URL}/Files/generator.html` }
-        ];
-        
-        allLandings = demoLandings;
-        renderLandings();
-        addLog('📌 Показаны демо-лендинги. Для реальных файлов проверьте репозиторий.', 'info');
-    }
-    
-    // Форматировать имя для отображения
-    function formatDisplayName(filename) {
-        let name = filename.replace(/\.html$/i, '');
+    // Форматировать название для отображения
+    function formatDisplayName(landing) {
+        if (landing.name) return landing.name;
+        let name = landing.fileName.replace(/\.html$/i, '');
         name = name.replace(/[-_]/g, ' ');
         name = name.replace(/\b\w/g, l => l.toUpperCase());
-        return name || 'Лендинг';
+        return name;
     }
     
     // Рендер сетки
@@ -480,8 +370,8 @@
         if (searchTerm) {
             filtered = allLandings.filter(land => 
                 land.name.toLowerCase().includes(searchTerm) || 
-                land.path.toLowerCase().includes(searchTerm) ||
-                formatDisplayName(land.name).toLowerCase().includes(searchTerm)
+                land.project.toLowerCase().includes(searchTerm) ||
+                land.fileName.toLowerCase().includes(searchTerm)
             );
         }
         
@@ -491,7 +381,7 @@
             gridContainer.innerHTML = `
                 <div class="empty-state">
                     🔍 Ничего не найдено<br>
-                    <small>Попробуйте другой запрос или нажмите «Найти все лендинги»</small>
+                    <small>Попробуйте другой поисковый запрос</small>
                 </div>
             `;
             return;
@@ -499,22 +389,21 @@
         
         let html = '<div class="grid">';
         for (const land of filtered) {
-            const displayName = formatDisplayName(land.name);
-            const fullUrl = land.url;
+            const displayName = formatDisplayName(land);
             
             html += `
-                <div class="landing-card">
+                <div class="card">
                     <div class="card-header">
                         <h3>${escapeHtml(displayName)}</h3>
-                        <div class="filename">📄 ${escapeHtml(land.path)}</div>
+                        <div class="project-badge">📁 ${escapeHtml(land.project)}</div>
                     </div>
                     <div class="card-body">
-                        <div class="url">🔗 ${escapeHtml(fullUrl)}</div>
+                        <div class="url">🔗 ${escapeHtml(land.url)}</div>
                         <div class="card-actions">
-                            <a href="${escapeHtml(fullUrl)}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                            <a href="${escapeHtml(land.url)}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
                                 🚀 Открыть
                             </a>
-                            <button class="btn btn-secondary" onclick="copyToClipboard('${escapeHtml(fullUrl)}', this)">
+                            <button class="btn btn-secondary" onclick="copyToClipboard('${escapeHtml(land.url)}', this)">
                                 📋 Копировать
                             </button>
                         </div>
@@ -526,7 +415,7 @@
         gridContainer.innerHTML = html;
     }
     
-    // Копирование в буфер
+    // Копирование
     function copyToClipboard(text, btn) {
         navigator.clipboard.writeText(text).then(() => {
             const originalText = btn.innerText;
@@ -549,25 +438,38 @@
         });
     }
     
+    // Обновить каталог
+    function refreshCatalog() {
+        gridContainer.innerHTML = '<div class="loading">🔄 Обновление каталога...</div>';
+        
+        // Собираем все лендинги
+        allLandings = collectAllLandings();
+        
+        // Сохраняем
+        saveLandings(allLandings);
+        
+        // Рендерим
+        setTimeout(() => {
+            renderLandings();
+        }, 500);
+    }
+    
     // Инициализация
     function init() {
-        // Загружаем сохраненные
+        // Пробуем загрузить сохраненные
         const saved = loadSavedLandings();
-        if (saved.length > 0) {
+        if (saved && saved.length > 0) {
             allLandings = saved;
             renderLandings();
-            addLog(`📦 Загружено ${saved.length} сохраненных лендингов`, 'success');
         } else {
-            renderLandings();
+            refreshCatalog();
         }
         
         searchInput.addEventListener('input', renderLandings);
-        refreshBtn.addEventListener('click', scanRepository);
+        refreshBtn.addEventListener('click', refreshCatalog);
     }
     
-    // Делаем функцию глобальной для onclick
     window.copyToClipboard = copyToClipboard;
-    
     init();
 </script>
 </body>
