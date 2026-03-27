@@ -12,72 +12,70 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             padding: 2rem;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        /* Header */
         .header {
             text-align: center;
             margin-bottom: 3rem;
         }
 
-        .logo {
+        .badge {
             background: rgba(255,255,255,0.2);
             backdrop-filter: blur(10px);
             display: inline-block;
             padding: 0.5rem 1.5rem;
             border-radius: 60px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: white;
             margin-bottom: 1rem;
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 800;
             color: white;
-            margin-bottom: 1rem;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            margin-bottom: 0.5rem;
         }
 
         .sub {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            font-size: 1rem;
         }
 
         .source {
-            background: rgba(255,255,255,0.15);
+            background: rgba(0,0,0,0.3);
             backdrop-filter: blur(10px);
             display: inline-block;
             padding: 0.4rem 1rem;
             border-radius: 40px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-family: monospace;
-            color: white;
+            color: #a0c4ff;
             margin-top: 1rem;
+            word-break: break-all;
         }
 
-        /* Toolbar */
         .toolbar {
             background: white;
             border-radius: 60px;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.2rem;
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .search-box {
@@ -85,6 +83,7 @@
             min-width: 200px;
             display: flex;
             align-items: center;
+            gap: 0.5rem;
             background: #f5f5f5;
             border-radius: 40px;
             padding: 0.5rem 1rem;
@@ -95,166 +94,163 @@
             background: none;
             width: 100%;
             outline: none;
-            font-size: 1rem;
-            padding: 0.3rem;
+            font-size: 0.9rem;
         }
 
         .stats {
-            background: #667eea;
+            background: #2c5364;
             color: white;
             padding: 0.4rem 1rem;
             border-radius: 40px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
         }
 
-        .add-btn, .refresh-btn {
-            background: #f5f5f5;
+        .add-btn {
+            background: #2c5364;
+            color: white;
             border: none;
             padding: 0.5rem 1.2rem;
             border-radius: 40px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 0.85rem;
-        }
-
-        .add-btn {
-            background: #667eea;
-            color: white;
         }
 
         .add-btn:hover {
-            background: #5a67d8;
+            background: #1f3e4b;
             transform: scale(0.98);
         }
 
-        .refresh-btn:hover {
+        .reset-btn {
+            background: #f5f5f5;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reset-btn:hover {
             background: #e0e0e0;
         }
 
-        /* Cards Grid */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .card {
+        .list {
             background: white;
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 1.2rem;
-            color: white;
-        }
-
-        .card-header h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.3rem;
-            word-break: break-word;
-        }
-
-        .card-header .filename {
-            font-size: 0.7rem;
-            font-family: monospace;
-            opacity: 0.9;
-            word-break: break-all;
-        }
-
-        .card-body {
-            padding: 1.2rem;
-        }
-
-        .url {
-            background: #f5f5f5;
-            padding: 0.5rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-family: monospace;
-            word-break: break-all;
-            margin-bottom: 1rem;
-            color: #666;
-        }
-
-        .card-actions {
+        .list-header {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
             display: flex;
-            gap: 0.8rem;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #2c5364;
+        }
+
+        .landing-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            transition: background 0.2s;
+        }
+
+        .landing-item:hover {
+            background: #f8f9fa;
+        }
+
+        .landing-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .landing-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1a1a2e;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             flex-wrap: wrap;
         }
 
+        .landing-url {
+            font-size: 0.7rem;
+            font-family: monospace;
+            color: #666;
+            word-break: break-all;
+        }
+
+        .custom-badge {
+            background: #2c5364;
+            color: white;
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+        }
+
+        .landing-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
         .btn {
-            padding: 0.6rem 1rem;
+            padding: 0.5rem 1rem;
             border-radius: 40px;
             text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
             transition: all 0.2s;
             border: none;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
         }
 
-        .btn-primary {
-            background: #667eea;
+        .btn-open {
+            background: #2c5364;
             color: white;
-            flex: 1;
-            justify-content: center;
         }
 
-        .btn-primary:hover {
-            background: #5a67d8;
+        .btn-open:hover {
+            background: #1f3e4b;
         }
 
-        .btn-outline {
-            background: #f5f5f5;
-            color: #667eea;
-            border: 1px solid #e0e0e0;
+        .btn-copy {
+            background: #f0f0f0;
+            color: #333;
         }
 
-        .btn-outline:hover {
+        .btn-copy:hover {
             background: #e0e0e0;
         }
 
-        .btn-danger {
-            background: #ff4757;
-            color: white;
+        .btn-delete {
+            background: #fee;
+            color: #c0392b;
         }
 
-        .btn-danger:hover {
-            background: #ee5a6f;
-        }
-
-        .badge-custom {
-            background: rgba(255,255,255,0.3);
-            padding: 0.2rem 0.5rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            display: inline-block;
-            margin-left: 0.5rem;
+        .btn-delete:hover {
+            background: #fdd;
         }
 
         .empty-state {
             text-align: center;
             padding: 3rem;
-            background: white;
-            border-radius: 24px;
             color: #666;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -275,37 +271,35 @@
 
         .modal-content {
             background: white;
-            border-radius: 32px;
+            border-radius: 24px;
             max-width: 450px;
             width: 90%;
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
         .modal-content h3 {
-            font-size: 1.5rem;
             margin-bottom: 0.5rem;
-            color: #333;
+            color: #1a1a2e;
         }
 
         .modal-content p {
             color: #666;
             margin-bottom: 1rem;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .modal-content input {
             width: 100%;
-            padding: 0.8rem 1rem;
+            padding: 0.7rem 1rem;
             border: 2px solid #e0e0e0;
-            border-radius: 60px;
-            font-size: 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
             margin-bottom: 1.5rem;
             outline: none;
-            transition: border-color 0.2s;
         }
 
         .modal-content input:focus {
-            border-color: #667eea;
+            border-color: #2c5364;
         }
 
         .modal-actions {
@@ -316,46 +310,52 @@
 
         footer {
             text-align: center;
-            margin-top: 3rem;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.8rem;
+            margin-top: 2rem;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.75rem;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             body { padding: 1rem; }
-            h1 { font-size: 2rem; }
-            .grid { grid-template-columns: 1fr; }
+            .landing-item { flex-direction: column; align-items: stretch; }
+            .landing-actions { justify-content: flex-start; }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <div class="logo">⚡ iField Ecosystem</div>
-        <h1>Каталог лендингов</h1>
-        <div class="sub">Все посадочные страницы в одном месте</div>
+        <div class="badge">⚡ iField Ecosystem</div>
+        <h1>📁 Каталог лендингов</h1>
+        <div class="sub">Все ваши посадочные страницы в одном месте</div>
         <div class="source">
-            📁 /-iField-Landing-Catalog-/Files/
+            🔗 https://i-field.github.io/-iField-Landing-Catalog-/Files/
         </div>
     </div>
 
     <div class="toolbar">
         <div class="search-box">
             🔍
-            <input type="text" id="searchInput" placeholder="Поиск лендинга...">
+            <input type="text" id="searchInput" placeholder="Поиск...">
         </div>
-        <div class="stats" id="statsCounter">0 лендингов</div>
-        <button class="add-btn" id="addBtn">➕ Добавить</button>
-        <button class="refresh-btn" id="refreshBtn">🔄 Обновить</button>
+        <div class="stats" id="statsCounter">0</div>
+        <button class="add-btn" id="addBtn">➕ Добавить лендинг</button>
+        <button class="reset-btn" id="resetBtn">🔄 Сбросить</button>
     </div>
 
-    <div id="landingsGrid" class="grid">
-        <div class="empty-state">📦 Загрузка списка лендингов...</div>
+    <div class="list">
+        <div class="list-header">
+            <span>📄 Название</span>
+            <span>⚡ Действия</span>
+        </div>
+        <div id="landingsList">
+            <div class="empty-state">📦 Загрузка...</div>
+        </div>
     </div>
 
     <footer>
-        💡 Нажмите «Добавить», чтобы указать HTML-файл из папки /Files/<br>
-        Все добавленные лендинги сохраняются в вашем браузере
+        💡 Нажмите «Добавить лендинг» и введите имя HTML-файла (например: index.html или main)<br>
+        Все лендинги сохраняются в памяти браузера
     </footer>
 </div>
 
@@ -364,52 +364,32 @@
     <div class="modal-content">
         <h3>➕ Добавить лендинг</h3>
         <p>Введите имя HTML-файла из папки <strong>/Files/</strong></p>
-        <input type="text" id="landingName" placeholder="например: index.html или main.html" autocomplete="off">
+        <input type="text" id="landingNameInput" placeholder="например: index.html, main, generator" autocomplete="off">
         <div class="modal-actions">
-            <button class="btn btn-outline" id="cancelBtn">Отмена</button>
-            <button class="btn btn-primary" id="confirmBtn">Добавить</button>
+            <button class="btn btn-copy" id="modalCancelBtn">Отмена</button>
+            <button class="btn btn-open" id="modalConfirmBtn">Добавить</button>
         </div>
     </div>
 </div>
 
 <script>
-    // Конфигурация
+    // ========== КОНФИГУРАЦИЯ ==========
     const BASE_URL = 'https://i-field.github.io/-iField-Landing-Catalog-/Files';
-    const STORAGE_KEY = 'ifield_landings_list';
+    const STORAGE_KEY = 'ifield_landings_list_v2';
     
-    // Стартовый список (те, что вероятно есть в папке)
+    // СТАРТОВЫЙ СПИСОК (замените на свои файлы)
     const DEFAULT_LANDINGS = [
-        { name: 'index.html', url: `${BASE_URL}/index.html` },
-        { name: 'main.html', url: `${BASE_URL}/main.html` },
-        { name: 'generator.html', url: `${BASE_URL}/generator.html` },
-        { name: 'landing.html', url: `${BASE_URL}/landing.html` },
-        { name: 'product.html', url: `${BASE_URL}/product.html` },
-        { name: 'service.html', url: `${BASE_URL}/service.html` },
-        { name: 'crypto.html', url: `${BASE_URL}/crypto.html` },
-        { name: 'p2p.html', url: `${BASE_URL}/p2p.html` },
-        { name: 'dashboard.html', url: `${BASE_URL}/dashboard.html` },
-        { name: 'startup.html', url: `${BASE_URL}/startup.html` },
-        { name: 'ai-landing.html', url: `${BASE_URL}/ai-landing.html` },
-        { name: 'ifield-pro.html', url: `${BASE_URL}/ifield-pro.html` },
-        { name: 'cipher.html', url: `${BASE_URL}/cipher.html` },
-        { name: 'chat.html', url: `${BASE_URL}/chat.html` }
+        'index.html',
+        'main.html',
+        'generator.html',
+        'landing.html'
     ];
     
+    // ========== ОСНОВНАЯ ЛОГИКА ==========
     let allLandings = [];
     
-    // DOM элементы
-    const gridContainer = document.getElementById('landingsGrid');
-    const searchInput = document.getElementById('searchInput');
-    const statsSpan = document.getElementById('statsCounter');
-    const refreshBtn = document.getElementById('refreshBtn');
-    const addBtn = document.getElementById('addBtn');
-    const addModal = document.getElementById('addModal');
-    const landingNameInput = document.getElementById('landingName');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const confirmBtn = document.getElementById('confirmBtn');
-    
-    // Получить пользовательские лендинги
-    function getCustomLandings() {
+    // Загрузить сохраненные
+    function loadSaved() {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
             try {
@@ -421,31 +401,83 @@
         return [];
     }
     
-    // Сохранить пользовательские лендинги
-    function saveCustomLandings(custom) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(custom));
+    // Сохранить
+    function saveLandings(list) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
     }
     
-    // Получить полный список (базовые + пользовательские)
+    // Получить полный список (сохраненные + дефолтные, без дубликатов)
     function getFullList() {
-        const custom = getCustomLandings();
-        const all = [...DEFAULT_LANDINGS, ...custom];
-        
-        // Удаляем дубликаты по url
+        const saved = loadSaved();
+        const all = [...DEFAULT_LANDINGS, ...saved];
         const unique = [];
         const seen = new Set();
-        for (const item of all) {
-            if (!seen.has(item.url)) {
-                seen.add(item.url);
-                unique.push(item);
+        for (const name of all) {
+            if (!seen.has(name)) {
+                seen.add(name);
+                unique.push(name);
             }
         }
-        
-        // Сортируем по имени
-        return unique.sort((a, b) => a.name.localeCompare(b.name));
+        return unique.sort();
     }
     
-    // Форматировать название для отображения
+    // Обновить глобальный список
+    function refreshList() {
+        allLandings = getFullList();
+        render();
+    }
+    
+    // Добавить лендинг
+    function addLanding(rawName) {
+        let name = rawName.trim();
+        if (!name) {
+            alert('Введите имя файла');
+            return false;
+        }
+        
+        // Добавляем .html если нет расширения
+        if (!name.includes('.')) {
+            name = name + '.html';
+        }
+        
+        // Проверка на опасные символы
+        if (name.includes('/') || name.includes('\\')) {
+            alert('Имя файла не должно содержать / или \\');
+            return false;
+        }
+        
+        // Проверка на дубликат
+        if (allLandings.includes(name)) {
+            alert(`Лендинг "${name}" уже есть в списке!`);
+            return false;
+        }
+        
+        const saved = loadSaved();
+        saved.push(name);
+        saveLandings(saved);
+        refreshList();
+        return true;
+    }
+    
+    // Удалить лендинг
+    function deleteLanding(name) {
+        if (confirm(`Удалить "${name}" из списка?`)) {
+            let saved = loadSaved();
+            saved = saved.filter(n => n !== name);
+            saveLandings(saved);
+            refreshList();
+        }
+    }
+    
+    // Сбросить все добавленные (оставить только дефолтные)
+    function resetToDefault() {
+        if (confirm('Сбросить все добавленные лендинги? Дефолтные останутся.')) {
+            saveLandings([]);
+            refreshList();
+        }
+    }
+    
+    // Форматировать имя для отображения
     function formatDisplayName(filename) {
         let name = filename.replace(/\.html$/i, '');
         name = name.replace(/[-_]/g, ' ');
@@ -453,8 +485,83 @@
         return name || 'Лендинг';
     }
     
-    // Эскейп для безопасности
-    function escape(str) {
+    // Получить полный URL
+    function getFullUrl(filename) {
+        return `${BASE_URL}/${encodeURIComponent(filename)}`;
+    }
+    
+    // Рендер списка
+    function render() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        let filtered = allLandings;
+        
+        if (searchTerm) {
+            filtered = allLandings.filter(name => 
+                name.toLowerCase().includes(searchTerm) || 
+                formatDisplayName(name).toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        const savedSet = new Set(loadSaved());
+        document.getElementById('statsCounter').innerText = `${filtered.length} / ${allLandings.length}`;
+        
+        const container = document.getElementById('landingsList');
+        
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="empty-state">🔍 Ничего не найдено</div>`;
+            return;
+        }
+        
+        let html = '';
+        for (const name of filtered) {
+            const displayName = formatDisplayName(name);
+            const url = getFullUrl(name);
+            const isCustom = savedSet.has(name);
+            
+            html += `
+                <div class="landing-item">
+                    <div class="landing-info">
+                        <div class="landing-name">
+                            📄 ${escapeHtml(displayName)}
+                            ${isCustom ? '<span class="custom-badge">✨ добавлен</span>' : ''}
+                        </div>
+                        <div class="landing-url">🔗 ${escapeHtml(url)}</div>
+                    </div>
+                    <div class="landing-actions">
+                        <a href="${escapeHtml(url)}" class="btn btn-open" target="_blank" rel="noopener noreferrer">
+                            🚀 Открыть
+                        </a>
+                        <button class="btn btn-copy" onclick="copyToClipboard('${escapeHtml(url)}', this)">
+                            📋 Копировать
+                        </button>
+                        ${isCustom ? `
+                            <button class="btn btn-delete" onclick="deleteLanding('${escapeHtml(name)}')">
+                                🗑️
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    }
+    
+    // Копирование в буфер
+    function copyToClipboard(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+            const originalText = btn.innerText;
+            btn.innerText = '✅ Готово!';
+            setTimeout(() => {
+                btn.innerText = originalText;
+            }, 1500);
+        }).catch(() => {
+            alert('Не удалось скопировать');
+        });
+    }
+    
+    // Эскейп
+    function escapeHtml(str) {
         if (!str) return '';
         return str.replace(/[&<>]/g, function(m) {
             if (m === '&') return '&amp;';
@@ -464,164 +571,30 @@
         });
     }
     
-    // Рендер всех карточек
-    function render() {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        let filtered = allLandings;
-        
-        if (searchTerm) {
-            filtered = allLandings.filter(land => 
-                land.name.toLowerCase().includes(searchTerm) || 
-                formatDisplayName(land.name).toLowerCase().includes(searchTerm)
-            );
-        }
-        
-        const customSet = new Set(getCustomLandings().map(l => l.url));
-        statsSpan.innerText = `${filtered.length} / ${allLandings.length}`;
-        
-        if (filtered.length === 0) {
-            gridContainer.innerHTML = `
-                <div class="empty-state">
-                    🔍 Ничего не найдено<br>
-                    <small style="display:block; margin-top:0.5rem;">Попробуйте другой запрос или добавьте лендинг</small>
-                </div>
-            `;
-            return;
-        }
-        
-        let html = '';
-        for (const land of filtered) {
-            const displayName = formatDisplayName(land.name);
-            const isCustom = customSet.has(land.url);
-            
-            html += `
-                <div class="card">
-                    <div class="card-header">
-                        <h3>
-                            ${escape(displayName)}
-                            ${isCustom ? '<span class="badge-custom">✨ добавлен</span>' : ''}
-                        </h3>
-                        <div class="filename">📄 ${escape(land.name)}</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="url">🔗 ${escape(land.url)}</div>
-                        <div class="card-actions">
-                            <a href="${escape(land.url)}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                                🚀 Открыть
-                            </a>
-                            <button class="btn btn-outline copy-btn" data-url="${escape(land.url)}">
-                                📋 Копировать
-                            </button>
-                            ${isCustom ? `
-                                <button class="btn btn-outline delete-btn" data-url="${escape(land.url)}" data-name="${escape(land.name)}">
-                                    🗑️
-                                </button>
-                            ` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        gridContainer.innerHTML = html;
-        
-        // Копирование ссылок
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const url = this.getAttribute('data-url');
-                navigator.clipboard.writeText(url).then(() => {
-                    const originalText = this.innerText;
-                    this.innerText = '✅ Готово!';
-                    setTimeout(() => {
-                        this.innerText = originalText;
-                    }, 1500);
-                }).catch(() => {
-                    alert('Не удалось скопировать');
-                });
-            });
-        });
-        
-        // Удаление кастомных лендингов
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const url = this.getAttribute('data-url');
-                const name = this.getAttribute('data-name');
-                
-                if (confirm(`Удалить лендинг "${name}"?`)) {
-                    let custom = getCustomLandings();
-                    custom = custom.filter(l => l.url !== url);
-                    saveCustomLandings(custom);
-                    refreshList();
-                }
-            });
-        });
-    }
+    // ========== МОДАЛЬНОЕ ОКНО ==========
+    const modal = document.getElementById('addModal');
+    const nameInput = document.getElementById('landingNameInput');
     
-    // Обновить список
-    function refreshList() {
-        allLandings = getFullList();
-        render();
-    }
-    
-    // Добавить новый лендинг
-    function addLanding(inputName) {
-        let name = inputName.trim();
-        if (!name) {
-            alert('Введите имя файла');
-            return false;
-        }
-        
-        // Добавляем .html если нужно
-        if (!name.endsWith('.html') && !name.includes('.')) {
-            name = name + '.html';
-        }
-        
-        // Проверка на опасные символы
-        if (name.includes('/') || name.includes('\\') || name.includes(' ')) {
-            alert('Имя файла не должно содержать пробелов, слешей или обратных слешей');
-            return false;
-        }
-        
-        const fullUrl = `${BASE_URL}/${encodeURIComponent(name)}`;
-        
-        // Проверка дубликата
-        const exists = allLandings.some(l => l.url === fullUrl);
-        if (exists) {
-            alert(`Лендинг "${name}" уже есть в списке!`);
-            return false;
-        }
-        
-        const newLanding = { name: name, url: fullUrl };
-        const custom = getCustomLandings();
-        custom.push(newLanding);
-        saveCustomLandings(custom);
-        
-        refreshList();
-        return true;
-    }
-    
-    // Модальное окно
     function openModal() {
-        landingNameInput.value = '';
-        addModal.classList.add('active');
-        landingNameInput.focus();
+        nameInput.value = '';
+        modal.classList.add('active');
+        nameInput.focus();
     }
     
     function closeModal() {
-        addModal.classList.remove('active');
+        modal.classList.remove('active');
     }
     
-    // Инициализация
-    function init() {
+    // ========== ИНИЦИАЛИЗАЦИЯ ==========
+    document.addEventListener('DOMContentLoaded', () => {
         refreshList();
         
-        searchInput.addEventListener('input', render);
-        refreshBtn.addEventListener('click', refreshList);
-        addBtn.addEventListener('click', openModal);
-        
-        cancelBtn.addEventListener('click', closeModal);
-        confirmBtn.addEventListener('click', () => {
-            const name = landingNameInput.value.trim();
+        document.getElementById('searchInput').addEventListener('input', render);
+        document.getElementById('addBtn').addEventListener('click', openModal);
+        document.getElementById('resetBtn').addEventListener('click', resetToDefault);
+        document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
+        document.getElementById('modalConfirmBtn').addEventListener('click', () => {
+            const name = nameInput.value.trim();
             if (name) {
                 addLanding(name);
                 closeModal();
@@ -630,18 +603,16 @@
             }
         });
         
-        landingNameInput.addEventListener('keypress', (e) => {
+        nameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                confirmBtn.click();
+                document.getElementById('modalConfirmBtn').click();
             }
         });
         
-        addModal.addEventListener('click', (e) => {
-            if (e.target === addModal) closeModal();
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
         });
-    }
-    
-    init();
+    });
 </script>
 </body>
 </html>
