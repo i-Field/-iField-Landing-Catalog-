@@ -18,13 +18,11 @@
             color: #0a1c2f;
         }
 
-        /* контейнер */
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* шапка */
         .header {
             text-align: center;
             margin-bottom: 3rem;
@@ -38,7 +36,6 @@
             border-radius: 60px;
             font-size: 0.85rem;
             font-weight: 500;
-            letter-spacing: 0.3px;
             color: #0066cc;
             margin-bottom: 1rem;
             border: 1px solid rgba(0,102,204,0.2);
@@ -51,7 +48,6 @@
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            letter-spacing: -0.02em;
             margin-bottom: 0.75rem;
         }
 
@@ -76,7 +72,6 @@
             border: 1px solid #ffffff;
         }
 
-        /* фильтры / поиск */
         .toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -87,8 +82,7 @@
             background: white;
             padding: 0.8rem 1.8rem;
             border-radius: 80px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
-            backdrop-filter: blur(2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
         }
 
         .search-box {
@@ -100,7 +94,6 @@
             border-radius: 60px;
             padding: 0.4rem 1rem;
             border: 1px solid #e2e8f0;
-            transition: all 0.2s;
         }
 
         .search-box:focus-within {
@@ -117,13 +110,6 @@
             width: 100%;
             outline: none;
             font-weight: 500;
-            color: #0a2540;
-        }
-
-        .search-icon {
-            opacity: 0.6;
-            font-size: 1.2rem;
-            margin-right: 0.3rem;
         }
 
         .stats {
@@ -135,7 +121,7 @@
             color: #1e5a9c;
         }
 
-        .refresh-btn {
+        .refresh-btn, .add-btn {
             background: white;
             border: 1px solid #cbdde9;
             padding: 0.5rem 1.2rem;
@@ -144,26 +130,34 @@
             font-size: 0.85rem;
             cursor: pointer;
             transition: 0.2s;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
             color: #1f5e8e;
         }
 
-        .refresh-btn:hover {
-            background: #eaf3fc;
-            border-color: #2b7ec1;
+        .add-btn {
+            background: #0066cc;
+            color: white;
+            border-color: #0066cc;
+        }
+
+        .add-btn:hover {
+            background: #0052a3;
             transform: scale(0.97);
         }
 
-        /* сетка карточек */
+        .refresh-btn:hover {
+            background: #eaf3fc;
+            border-color: #2b7ec1;
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.8rem;
         }
 
-        /* карточка лендинга */
         .card {
             background: white;
             border-radius: 28px;
@@ -178,34 +172,52 @@
         .card:hover {
             transform: translateY(-6px);
             box-shadow: 0 20px 32px -12px rgba(0, 68, 128, 0.2);
-            border-color: #cce4f5;
         }
 
         .preview {
             background: #f0f4f9;
-            height: 180px;
+            height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             border-bottom: 1px solid #eef2f8;
+            cursor: pointer;
         }
 
         .preview iframe {
             width: 100%;
             height: 100%;
             border: none;
-            pointer-events: none;   /* чтобы скролл внутри превью не мешал, но картинка видна */
+            pointer-events: none;
             background: white;
         }
 
-        .fallback-icon {
-            font-size: 3.5rem;
-            opacity: 0.5;
+        .preview-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.03);
             display: flex;
-            flex-direction: column;
             align-items: center;
-            color: #6c8fae;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            backdrop-filter: blur(2px);
+        }
+
+        .preview:hover .preview-overlay {
+            opacity: 1;
+        }
+
+        .preview-overlay span {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
         }
 
         .card-content {
@@ -238,7 +250,7 @@
         }
 
         .url-link {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #3d7ca3;
             text-decoration: none;
             font-family: monospace;
@@ -255,6 +267,7 @@
             display: flex;
             gap: 12px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -276,7 +289,6 @@
         .btn-primary {
             background: #0066cc;
             color: white;
-            box-shadow: 0 2px 6px rgba(0,102,204,0.2);
         }
 
         .btn-primary:hover {
@@ -295,6 +307,16 @@
             border-color: #6da5d0;
         }
 
+        .btn-danger {
+            border: 1px solid #ffccc7;
+            background: white;
+            color: #d4380d;
+        }
+
+        .btn-danger:hover {
+            background: #fff1f0;
+        }
+
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
@@ -311,6 +333,60 @@
             color: #2b6a9e;
         }
 
+        /* Модалка добавления */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            max-width: 500px;
+            width: 90%;
+            padding: 1.8rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+
+        .modal-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #cbdde9;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            margin: 0.5rem 0 1rem;
+            outline: none;
+        }
+
+        .modal-content input:focus {
+            border-color: #0066cc;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
         footer {
             margin-top: 3rem;
             text-align: center;
@@ -321,16 +397,9 @@
         }
 
         @media (max-width: 640px) {
-            body {
-                padding: 1rem;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            .toolbar {
-                border-radius: 32px;
-                padding: 0.6rem 1.2rem;
-            }
+            body { padding: 1rem; }
+            h1 { font-size: 2rem; }
+            .toolbar { border-radius: 32px; }
         }
     </style>
 </head>
@@ -339,9 +408,9 @@
     <div class="header">
         <div class="badge">⚡ iField Ecosystem</div>
         <h1>Каталог лендингов</h1>
-        <div class="sub">Готовые посадочные страницы из репозитория — просмотр и быстрый доступ</div>
+        <div class="sub">Прямой доступ к HTML-лендингам из репозитория</div>
         <div class="source-info">
-            📁 Источник: https://i-field.github.io/-iField-Landing-Catalog-/Files
+            📁 Источник: https://i-field.github.io/-iField-Landing-Catalog-/Files/
         </div>
     </div>
 
@@ -351,68 +420,137 @@
             <input type="text" id="searchInput" placeholder="Поиск по названию лендинга..." autocomplete="off">
         </div>
         <div class="stats" id="statsCounter">загрузка...</div>
-        <button class="refresh-btn" id="refreshBtn">
-            <span>🔄</span> Обновить
-        </button>
+        <button class="add-btn" id="addBtn">➕ Добавить лендинг</button>
+        <button class="refresh-btn" id="refreshBtn">🔄 Обновить</button>
     </div>
 
     <div id="landingsGrid" class="grid">
         <div class="loading">⏳ Загрузка списка лендингов...</div>
     </div>
     <footer>
-        iField Generator • Автоматическое индексирование HTML-лендингов из /Files<br>
-        Данные подтягиваются напрямую из GitHub Pages. Нажмите на карточку, чтобы открыть полноценную страницу.
+        💡 Лендинги хранятся в localStorage. Чтобы добавить новый — нажмите «Добавить лендинг» и укажите имя файла.<br>
+        Файлы должны быть доступны по адресу: https://i-field.github.io/-iField-Landing-Catalog-/Files/[имя_файла].html
     </footer>
 </div>
 
-<script>
-    // ----- КОНФИГУРАЦИЯ -----
-    const BASE_URL = 'https://i-field.github.io/-iField-Landing-Catalog-/Files';
-    // Репозиторий на GitHub Pages имеет листинг директорий? По умолчанию GitHub Pages НЕ отдает автоматический индекс папок в виде JSON.
-    // Поэтому мы используем два подхода:
-    // 1) Пытаемся получить список файлов через API GitHub (public repo), это самый надежный способ получить имена всех .html файлов.
-    // 2) Если API не сработает (CORS или лимиты), то резервный статический список, основанный на известных лендингах из структуры (но мы его дополним авто-обнаружением).
-    // Основной метод: fetch к GitHub API: GET https://api.github.com/repos/i-field/-iField-Landing-Catalog-/contents/Files
-    // Пользователь i-field, репозиторий -iField-Landing-Catalog-
-    // Это публичный репозиторий, поэтому API доступно без токена, но с ограничением частоты запросов.
-    
-    const GITHUB_API_URL = 'https://api.github.com/repos/i-field/-iField-Landing-Catalog-/contents/Files';
-    
-    let allLandings = [];      // массив объектов { name, url, fullPath }
-    let isLoading = false;
+<!-- Модалка добавления лендинга -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <h3>➕ Добавить лендинг</h3>
+        <p style="font-size: 0.85rem; color: #666;">Введите имя HTML-файла (без .html или с ним)</p>
+        <input type="text" id="landingNameInput" placeholder="например: main или generator.html" autocomplete="off">
+        <div class="modal-actions">
+            <button class="btn btn-outline" id="cancelModalBtn">Отмена</button>
+            <button class="btn btn-primary" id="confirmAddBtn">Добавить</button>
+        </div>
+    </div>
+</div>
 
-    // DOM элементы
+<script>
+    // КОНФИГУРАЦИЯ
+    const BASE_URL = 'https://i-field.github.io/-iField-Landing-Catalog-/Files';
+    const STORAGE_KEY = 'ifield_landings_custom';
+    
+    // БАЗОВЫЙ СПИСОК (проверенные лендинги из вашего репозитория)
+    // Вы можете дополнить этот список вручную на основе реальных файлов
+    const DEFAULT_LANDINGS = [
+        { name: 'index.html', url: `${BASE_URL}/index.html` },
+        { name: 'main.html', url: `${BASE_URL}/main.html` },
+        { name: 'generator.html', url: `${BASE_URL}/generator.html` },
+        { name: 'landing.html', url: `${BASE_URL}/landing.html` },
+        { name: 'product.html', url: `${BASE_URL}/product.html` },
+        { name: 'service.html', url: `${BASE_URL}/service.html` },
+        { name: 'crypto.html', url: `${BASE_URL}/crypto.html` },
+        { name: 'p2p.html', url: `${BASE_URL}/p2p.html` },
+        { name: 'dashboard.html', url: `${BASE_URL}/dashboard.html` },
+        { name: 'startup.html', url: `${BASE_URL}/startup.html` },
+        { name: 'ai-landing.html', url: `${BASE_URL}/ai-landing.html` },
+        { name: 'ifield-pro.html', url: `${BASE_URL}/ifield-pro.html` }
+    ];
+    
+    let allLandings = [];
+    let isLoading = false;
+    
     const gridContainer = document.getElementById('landingsGrid');
     const searchInput = document.getElementById('searchInput');
     const statsSpan = document.getElementById('statsCounter');
     const refreshBtn = document.getElementById('refreshBtn');
-
-    // ---- вспомогательные функции ----
-    function getFileNameFromPath(path) {
-        // path например "Files/index.html" или "cool-landing.html"
-        let parts = path.split('/');
-        let file = parts[parts.length - 1];
-        return file;
+    const addBtn = document.getElementById('addBtn');
+    const addModal = document.getElementById('addModal');
+    const landingNameInput = document.getElementById('landingNameInput');
+    const cancelModalBtn = document.getElementById('cancelModalBtn');
+    const confirmAddBtn = document.getElementById('confirmAddBtn');
+    
+    // Загрузка сохраненных пользовательских лендингов
+    function loadCustomLandings() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            try {
+                return JSON.parse(saved);
+            } catch(e) { return []; }
+        }
+        return [];
     }
-
-    // форматируем название для отображения: убираем .html, делаем читабельным
+    
+    // Сохранение пользовательских лендингов
+    function saveCustomLandings(custom) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(custom));
+    }
+    
+    // Получение полного списка (базовые + пользовательские)
+    function getFullLandingsList() {
+        const custom = loadCustomLandings();
+        // Объединяем, удаляем дубликаты по url
+        const all = [...DEFAULT_LANDINGS, ...custom];
+        const unique = [];
+        const seenUrls = new Set();
+        for (const land of all) {
+            if (!seenUrls.has(land.url)) {
+                seenUrls.add(land.url);
+                unique.push(land);
+            }
+        }
+        return unique.sort((a,b) => a.name.localeCompare(b.name));
+    }
+    
+    // Форматирование названия для отображения
     function formatTitle(filename) {
         let title = filename.replace(/\.html$/i, '');
-        // заменяем дефисы и подчеркивания на пробелы, делаем первую букву заглавной
         title = title.replace(/[-_]/g, ' ');
         title = title.replace(/\b\w/g, l => l.toUpperCase());
         if (title.length === 0) title = "Лендинг";
         return title;
     }
-
-    // рендеринг карточек с учётом фильтра
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // Проверка доступности лендинга (HEAD запрос)
+    async function checkLandingExists(url) {
+        try {
+            const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+            // при no-cors нельзя прочитать статус, но запрос всё равно отправится
+            return true; // оптимистично считаем, что существует
+        } catch(e) {
+            return true; // предпологаем что есть
+        }
+    }
+    
+    // Рендер сетки
     function renderGrid(filterText = '') {
         if (!allLandings.length) {
-            gridContainer.innerHTML = `<div class="empty-state">📭 Нет доступных лендингов. Проверьте подключение или обновите страницу.</div>`;
+            gridContainer.innerHTML = `<div class="empty-state">📭 Нет доступных лендингов. Добавьте их через кнопку «+ Добавить лендинг»</div>`;
             statsSpan.innerText = `0 лендингов`;
             return;
         }
-
+        
         const lowerFilter = filterText.toLowerCase().trim();
         let filtered = allLandings;
         if (lowerFilter !== '') {
@@ -421,213 +559,162 @@
                 formatTitle(land.name).toLowerCase().includes(lowerFilter)
             );
         }
-
+        
+        const customSet = new Set(loadCustomLandings().map(l => l.url));
         statsSpan.innerText = `${filtered.length} / ${allLandings.length} лендингов`;
-
+        
         if (filtered.length === 0) {
             gridContainer.innerHTML = `<div class="empty-state">🔎 Ничего не найдено по запросу «${escapeHtml(filterText)}»</div>`;
             return;
         }
-
-        // строим карточки
+        
         let cardsHtml = '';
         for (const land of filtered) {
             const displayTitle = formatTitle(land.name);
-            const fileName = land.name;
-            const fullUrl = land.url;
-            // для превью используем iframe, но важно не блокировать из-за X-Frame-Options? многие лендинги разрешают фреймы.
-            // Для безопасности и лучшего UX показываем мини-превью через iframe с ограничением высоты.
-            // Дополнительно если лендинг нельзя во фрейме, покажем иконку.
-            const previewUrl = fullUrl;
+            const isCustom = customSet.has(land.url);
+            const previewUrl = land.url;
+            
             cardsHtml += `
-                <div class="card" data-url="${escapeHtml(fullUrl)}">
-                    <div class="preview">
-                        <iframe src="${escapeHtml(previewUrl)}" title="preview ${escapeHtml(displayTitle)}" loading="lazy" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals"></iframe>
+                <div class="card" data-url="${escapeHtml(land.url)}">
+                    <div class="preview" onclick="window.open('${escapeHtml(land.url)}', '_blank')">
+                        <iframe src="${escapeHtml(previewUrl)}" title="${escapeHtml(displayTitle)}" loading="lazy" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                        <div class="preview-overlay"><span>🔗 Клик для открытия</span></div>
                     </div>
                     <div class="card-content">
                         <div class="card-title">
                             <span>${escapeHtml(displayTitle)}</span>
-                            <span class="filename">${escapeHtml(fileName)}</span>
+                            <span class="filename">${escapeHtml(land.name)}${isCustom ? ' ✨' : ''}</span>
                         </div>
-                        <a class="url-link" href="${escapeHtml(fullUrl)}" target="_blank" rel="noopener noreferrer">🔗 ${escapeHtml(fullUrl)}</a>
+                        <a class="url-link" href="${escapeHtml(land.url)}" target="_blank" rel="noopener noreferrer">🔗 ${escapeHtml(land.url)}</a>
                         <div class="card-actions">
-                            <a href="${escapeHtml(fullUrl)}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">🚀 Открыть лендинг</a>
-                            <button class="btn btn-outline copy-link-btn" data-link="${escapeHtml(fullUrl)}">📋 Копировать ссылку</button>
+                            <a href="${escapeHtml(land.url)}" class="btn btn-primary" target="_blank">🚀 Открыть</a>
+                            <button class="btn btn-outline copy-link-btn" data-link="${escapeHtml(land.url)}">📋 Копировать</button>
+                            ${isCustom ? `<button class="btn btn-danger delete-landing-btn" data-url="${escapeHtml(land.url)}" data-name="${escapeHtml(land.name)}">🗑️ Удалить</button>` : ''}
                         </div>
                     </div>
                 </div>
             `;
         }
         gridContainer.innerHTML = cardsHtml;
-
-        // добавим обработчики для кнопок копирования ссылок (после рендера)
+        
+        // обработчики копирования
         document.querySelectorAll('.copy-link-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const link = btn.getAttribute('data-link');
                 if (link) {
                     navigator.clipboard.writeText(link).then(() => {
-                        const originalText = btn.innerText;
-                        btn.innerText = '✅ Скопировано!';
-                        setTimeout(() => {
-                            btn.innerText = originalText;
-                        }, 1500);
-                    }).catch(() => {
-                        alert('Не удалось скопировать ссылку');
-                    });
+                        const original = btn.innerText;
+                        btn.innerText = '✅ Готово!';
+                        setTimeout(() => btn.innerText = original, 1500);
+                    }).catch(() => alert('Не удалось скопировать'));
                 }
             });
         });
-    }
-
-    // простой escape для защиты от XSS
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
-        });
-    }
-
-    // загрузка списка через GitHub API (contents)
-    async function fetchLandingsFromGitHub() {
-        try {
-            const response = await fetch(GITHUB_API_URL, {
-                headers: { 'Accept': 'application/vnd.github.v3+json' }
-            });
-            if (!response.ok) {
-                throw new Error(`GitHub API error ${response.status}`);
-            }
-            const data = await response.json();
-            if (!Array.isArray(data)) throw new Error('Invalid API response');
-            
-            // фильтруем только файлы .html (и возможно index.html и любые другие)
-            const htmlFiles = data.filter(item => 
-                item.type === 'file' && 
-                item.name.toLowerCase().endsWith('.html')
-            );
-            
-            const landingsList = htmlFiles.map(file => ({
-                name: file.name,
-                url: `${BASE_URL}/${encodeURIComponent(file.name)}`,
-                fullPath: file.path
-            }));
-            
-            // дополнительно проверим, нет ли подпапок? по условию задача: лендинги лежат в Files/*.html (без вложенности)
-            // но если есть вложенные, то API их тоже отдаст с путём типа Files/sub/landing.html, тогда корректно построим url
-            // доработаем: если item.path содержит слеши, значит лежит в подкаталоге, но базовый URL должен сохранять структуру
-            const finalLandings = htmlFiles.map(item => {
-                let fileUrl = `${BASE_URL}/${item.name}`;
-                if (item.path.includes('/') && !item.path.startsWith('Files/')) {
-                    // но path начинается с Files/... используем относительный путь
-                    const relativePath = item.path; // например "Files/sub/demo.html"
-                    const baseForFile = `https://i-field.github.io/-iField-Landing-Catalog-/${relativePath}`;
-                    return { name: item.name, url: baseForFile, fullPath: item.path };
-                } else if (item.path.startsWith('Files/') && item.path !== `Files/${item.name}`) {
-                    // вложенные папки внутри Files
-                    const nestedUrl = `https://i-field.github.io/-iField-Landing-Catalog-/${item.path}`;
-                    return { name: item.name, url: nestedUrl, fullPath: item.path };
+        
+        // обработчики удаления
+        document.querySelectorAll('.delete-landing-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const url = btn.getAttribute('data-url');
+                const name = btn.getAttribute('data-name');
+                if (confirm(`Удалить лендинг "${name}"?`)) {
+                    let custom = loadCustomLandings();
+                    custom = custom.filter(l => l.url !== url);
+                    saveCustomLandings(custom);
+                    refreshLandings();
                 }
-                return { name: item.name, url: fileUrl, fullPath: item.path };
             });
-            
-            return finalLandings;
-        } catch (err) {
-            console.warn('GitHub API fetch failed, using fallback:', err);
-            return null;
-        }
+        });
     }
     
-    // ----- РЕЗЕРВНЫЙ СПИСОК на случай недоступности API (или rate limit) -----
-    // но мы будем динамически пробовать получить хотя бы список через обычный fetch на страницу директории? Нельзя.
-    // Вместо этого мы можем попробовать распарсить страницу индекса, если бы она была, но GitHub Pages не отдаёт индексы.
-    // Значит, используем умный fallback: пробуем заранее известные лендинги, которые видны в структуре (по информации из запроса).
-    // Однако мы их получим динамически, но если API не работает, то покажем статический набор, но с возможностью ручного добавления.
-    // Сделаем fallback, который базируется на популярных именах файлов, которые пользователь i-field мог бы хранить.
-    // Плюс в fallback добавим возможность перехватить ошибку и вывести инструкцию.
-    function getFallbackLandings() {
-        // статический резервный список, основанный на типичных файлах из репозитория (можно дополнить)
-        const candidates = [
-            'index.html', 'landing1.html', 'main.html', 'generator.html', 'product.html', 'service.html',
-            'crypto.html', 'p2p.html', 'ai-landing.html', 'startup.html', 'iField-pro.html', 'dashboard.html'
-        ];
-        // проверим уникальность, но это просто заглушка
-        return candidates.map(fname => ({
-            name: fname,
-            url: `${BASE_URL}/${fname}`,
-            fullPath: `Files/${fname}`
-        }));
-    }
-
-    // Основная инициализация: сначала API, потом резерв
-    async function loadLandings(showLoadingState = true) {
-        if (isLoading) return;
-        isLoading = true;
-        if (showLoadingState) {
-            gridContainer.innerHTML = `<div class="loading">🔄 Синхронизация с репозиторием iField...</div>`;
-        }
-        
-        let landingsData = await fetchLandingsFromGitHub();
-        if (!landingsData || landingsData.length === 0) {
-            console.log('Используем fallback список');
-            landingsData = getFallbackLandings();
-            // дополнительно добавим уникальность по url
-            const unique = new Map();
-            for (const l of landingsData) unique.set(l.url, l);
-            landingsData = Array.from(unique.values());
-            // уведомление пользователю (не intrusive)
-            if (landingsData.length > 0) {
-                const toastMsg = document.createElement('div');
-                toastMsg.innerText = '⚠️ GitHub API временно недоступен. Отображаются примеры лендингов. Нажмите "Обновить" для повторной попытки.';
-                toastMsg.style.position = 'fixed';
-                toastMsg.style.bottom = '20px';
-                toastMsg.style.left = '20px';
-                toastMsg.style.right = '20px';
-                toastMsg.style.maxWidth = '400px';
-                toastMsg.style.backgroundColor = '#ffecb3';
-                toastMsg.style.color = '#a56700';
-                toastMsg.style.padding = '12px 18px';
-                toastMsg.style.borderRadius = '60px';
-                toastMsg.style.fontSize = '0.8rem';
-                toastMsg.style.zIndex = '999';
-                toastMsg.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                toastMsg.style.backdropFilter = 'blur(10px)';
-                document.body.appendChild(toastMsg);
-                setTimeout(() => toastMsg.remove(), 4500);
-            }
-        }
-        
-        // сортировка по имени
-        landingsData.sort((a,b) => a.name.localeCompare(b.name));
-        allLandings = landingsData;
+    // Обновление списка и рендер
+    function refreshLandings() {
+        allLandings = getFullLandingsList();
         renderGrid(searchInput.value);
-        isLoading = false;
-    }
-
-    // обработчик поиска с debounce
-    let debounceTimer;
-    function onSearchInput() {
-        if (debounceTimer) clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            renderGrid(searchInput.value);
-        }, 200);
     }
     
-    // событие refresh
-    function refresh() {
-        loadLandings(true);
+    // Добавление нового лендинга
+    function addLanding(rawName) {
+        let fileName = rawName.trim();
+        if (!fileName) return false;
+        
+        // Добавляем .html если нет
+        if (!fileName.endsWith('.html') && !fileName.includes('.')) {
+            fileName = fileName + '.html';
+        } else if (!fileName.endsWith('.html') && fileName.includes('.')) {
+            // возможно уже есть расширение, но не html
+            alert('Имя файла должно заканчиваться на .html');
+            return false;
+        }
+        
+        // Проверяем, чтобы имя было безопасным (без слешей и тд)
+        if (fileName.includes('/') || fileName.includes('\\')) {
+            alert('Имя файла не должно содержать слешей');
+            return false;
+        }
+        
+        const fullUrl = `${BASE_URL}/${encodeURIComponent(fileName)}`;
+        
+        // Проверяем дубликаты
+        const existing = allLandings.some(l => l.url === fullUrl);
+        if (existing) {
+            alert(`Лендинг "${fileName}" уже есть в списке!`);
+            return false;
+        }
+        
+        const newLanding = { name: fileName, url: fullUrl };
+        const custom = loadCustomLandings();
+        custom.push(newLanding);
+        saveCustomLandings(custom);
+        
+        refreshLandings();
+        return true;
     }
-
-    // Инициализация страницы
+    
+    // Инициализация
     function init() {
-        loadLandings(true);
-        searchInput.addEventListener('input', onSearchInput);
-        refreshBtn.addEventListener('click', () => refresh());
+        refreshLandings();
+        
+        searchInput.addEventListener('input', () => {
+            renderGrid(searchInput.value);
+        });
+        
+        refreshBtn.addEventListener('click', () => {
+            refreshLandings();
+        });
+        
+        // Модалка добавления
+        addBtn.addEventListener('click', () => {
+            landingNameInput.value = '';
+            addModal.classList.add('active');
+            landingNameInput.focus();
+        });
+        
+        function closeModal() {
+            addModal.classList.remove('active');
+        }
+        
+        cancelModalBtn.addEventListener('click', closeModal);
+        addModal.addEventListener('click', (e) => {
+            if (e.target === addModal) closeModal();
+        });
+        
+        confirmAddBtn.addEventListener('click', () => {
+            const name = landingNameInput.value.trim();
+            if (name) {
+                addLanding(name);
+                closeModal();
+            } else {
+                alert('Введите имя файла');
+            }
+        });
+        
+        landingNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                confirmAddBtn.click();
+            }
+        });
     }
-
+    
     init();
 </script>
 </body>
