@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>iField — Landing Builder</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%239b4dff'><animateTransform attributeName='transform' type='rotate' from='0 50 50' to='360 50 50' dur='2s' repeatCount='indefinite'/>⚡</text></svg>">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    background: #010101;
+    font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ========== КОСМІЧНИЙ ФОН ========== */
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, #03050a 0%, #000000 100%);
+  }
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle 3s infinite alternate;
+  }
+  @keyframes twinkle {
+    0% { opacity: 0; transform: scale(0.5); }
+    100% { opacity: 0.8; transform: scale(1); }
+  }
+  .dna-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.08"><path fill="none" stroke="%239b4dff" stroke-width="0.5" d="M20 50 L180 50 M20 60 L180 60 M20 70 L180 70 M20 80 L180 80 M20 90 L180 90 M20 100 L180 100 M20 110 L180 110 M20 120 L180 120 M20 130 L180 130 M20 140 L180 140 M20 150 L180 150"/><path fill="none" stroke="%2340e0d0" stroke-width="0.3" d="M40 30 L160 30 M40 170 L160 170"/><circle cx="100" cy="40" r="2" fill="%239b4dff" opacity="0.3"/><circle cx="100" cy="160" r="2" fill="%2340e0d0" opacity="0.3"/></svg>');
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .nebula {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 40%, rgba(155,77,255,0.08), transparent 60%);
+    animation: nebulaPulse 12s infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  @keyframes nebulaPulse {
+    0% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+    100% { opacity: 0.3; transform: scale(1); }
+  }
+  .glow-orb {
+    position: fixed;
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, rgba(155,77,255,0.15), transparent);
+    top: -20vh;
+    right: -20vw;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: pulseGlow 8s infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  @keyframes pulseGlow {
+    0%,100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* ПЕРЕМИКАЧ МОВ */
+  .lang-switcher {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .lang-btn {
+    background: rgba(30,40,58,0.6);
+    border: 1px solid rgba(155,77,255,0.4);
+    color: #b07cff;
+    padding: 6px 14px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .lang-btn.active {
+    background: linear-gradient(135deg, #40E0D0, #9b4dff);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 0 10px rgba(64,224,208,0.3);
+  }
+
+  /* БІГУЧІ СТРІЧКИ */
+  .marquee {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(12px);
+    padding: 12px 0;
+    border-radius: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 0.5px solid rgba(155,77,255,0.3);
+    margin-bottom: 20px;
+  }
+  .marquee-bottom {
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+  .marquee-content {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: #b07cff;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .marquee-content span {
+    margin: 0 20px;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .marquee-content span:hover {
+    color: #fff;
+    text-shadow: 0 0 8px #9b4dff;
+    transform: scale(1.05);
+  }
+  @keyframes marqueeLeft {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marqueeRight {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
+  }
+  .marquee .marquee-content { animation: marqueeLeft 40s linear infinite; }
+  .marquee-bottom .marquee-content { animation: marqueeRight 50s linear infinite; }
+
+  /* ГОЛОВНА КНОПКА (Apple Intelligence стиль) */
+  .hero-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #40E0D0, #9b4dff, #2c6eff);
+    background-size: 200% 200%;
+    border: none;
+    border-radius: 60px;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    cursor: pointer;
+    margin: 32px 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    animation: gradientShift 3s ease infinite;
+    box-shadow: 0 0 15px rgba(64,224,208,0.3), 0 0 5px rgba(155,77,255,0.5);
+  }
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  /* Іскра на кнопці */
+  .hero-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    transition: left 0.5s;
+  }
+  .hero-btn:hover::before {
+    left: 100%;
+  }
+  .hero-btn:active {
+    transform: scale(0.98);
+  }
+  .hero-btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(0.3);
+  }
+
+  /* ФОРМА */
+  .field { margin-bottom: 16px; }
+  .field input, .field textarea {
+    width: 100%;
+    background: rgba(20, 28, 40, 0.7);
+    border: 1px solid rgba(155,77,255,0.3);
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: white;
+    font-size: 16px;
+    font-family: inherit;
+  }
+  .field input:focus, .field textarea:focus {
+    outline: none;
+    border-color: #40E0D0;
+    background: rgba(20, 28, 40, 0.9);
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #b07cff;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .additional-toggle {
+    text-align: center;
+    margin: 16px 0;
+    color: #6a7a9a;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 8px;
+  }
+  .additional-options { display: none; margin-bottom: 24px; }
+  .additional-options.open { display: block; }
+
+  .image-upload-area {
+    background: rgba(20,28,40,0.6);
+    border: 1px dashed rgba(155,77,255,0.5);
+    border-radius: 14px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+  .image-preview { display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; }
+  .preview-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; }
+
+  .limits {
+    background: rgba(0,0,0,0.4);
+    border-radius: 30px;
+    padding: 14px 20px;
+    margin: 24px 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .limit-free { color: #22c55e; font-weight: bold; }
+  .limit-paid { color: #40E0D0; }
+
+  .back-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(155,77,255,0.5);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 40px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: inline-block;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { background: rgba(155,77,255,0.2); }
+
+  .result-section { display: none; margin-top: 32px; }
+  .preview-frame { width: 100%; height: 480px; border: none; border-radius: 24px; background: #05070c; }
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .action-buttons button {
+    flex: 1;
+    background: rgba(30,40,58,0.8);
+    color: white;
+    border: 1px solid rgba(155,77,255,0.4);
+    padding: 12px;
+    border-radius: 40px;
+    cursor: pointer;
+  }
+  .action-buttons button:first-child { background: linear-gradient(135deg, #2c6eff, #1a4fcc); border: none; }
+  .next-step { margin-top: 20px; padding: 20px; background: rgba(155,77,255,0.1); border-radius: 24px; text-align: center; display: none; }
+  .victory-message {
+    background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05));
+    border: 1px solid #22c55e;
+    border-radius: 24px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .ai-loading {
+    text-align: center;
+    padding: 16px;
+    background: rgba(155,77,255,0.1);
+    border-radius: 40px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #40E0D0;
+    display: none;
+  }
+  .reviews {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid rgba(155,77,255,0.3);
+  }
+  .review-stars { color: #ffd700; font-size: 20px; margin-bottom: 10px; }
+  .review-text { font-size: 14px; color: #aaa; font-style: italic; max-width: 400px; margin: 0 auto; }
+  .review-author { margin-top: 8px; font-size: 12px; color: #b07cff; }
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #8a9ac0;
+  }
+  footer {
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(155,77,255,0.3);
+    text-align: center;
+    font-size: 12px;
+    color: #6a7a9a;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  footer a {
+    color: #b07cff;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  footer a:hover { color: #fff; text-shadow: 0 0 4px #9b4dff; }
+  .status {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(64,224,208,0.95);
+    padding: 10px 20px;
+    border-radius: 40px;
+    color: #010101;
+    font-weight: 500;
+    font-size: 13px;
+    z-index: 1000;
+  }
+
+  @media (max-width: 600px) {
+    .hero-btn { font-size: 20px; padding: 16px; }
+    .marquee-content { font-size: 12px; }
+    .stats { gap: 15px; }
+    footer { gap: 15px; }
+  }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="dna-pattern"></div>
+<div class="nebula"></div>
+<div class="glow-orb"></div>
+
+<div class="container" id="app">
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="ua">UA</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="ru">RU</button>
+  </div>
+
+  <div class="marquee">
+    <div class="marquee-content" id="templateMarqueeTop">
+      <span data-template="sci-fi">🎬 SCI-FI</span> <span data-template="luxury">💎 LUXURY</span> <span data-template="nature">🌿 NATURE</span> <span data-template="neon">🚀 NEON</span>
+      <span data-template="dark-glass">🔮 DARK GLASS</span> <span data-template="holographic">✨ HOLOGRAPHIC</span> <span data-template="cyberpunk">⚡ CYBERPUNK</span> <span data-template="minimal-white">🤍 MINIMAL WHITE</span>
+      <span data-template="sci-fi">🎬 SCI-FI</span> <span data-template="luxury">💎 LUXURY</span> <span data-template="nature">🌿 NATURE</span> <span data-template="neon">🚀 NEON</span>
+      <span data-template="dark-glass">🔮 DARK GLASS</span> <span data-template="holographic">✨ HOLOGRAPHIC</span> <span data-template="cyberpunk">⚡ CYBERPUNK</span> <span data-template="minimal-white">🤍 MINIMAL WHITE</span>
+    </div>
+  </div>
+
+  <button class="hero-btn" id="generateBtn">✨ CREATE YOUR SITE ✨</button>
+
+  <div id="formArea">
+    <div class="field"><label id="labelBrand">BRAND NAME</label><input id="brand" placeholder="iField Studio" value="iField Studio"></div>
+    <div class="field"><label id="labelNiche">NICHE / SPHERE</label><input id="niche" placeholder="manicure, coffee, IT" value="premium manicure"></div>
+    <div class="field"><label id="labelProduct">MAIN OFFER</label><input id="product" placeholder="Crystal Shell coating" value="Crystal Shell"></div>
+
+    <div class="additional-toggle" id="additionalToggle" onclick="toggleAdditional()">▼ ADDITIONAL OPTIONS ▼</div>
+    <div id="additionalOptions" class="additional-options">
+      <div class="field"><label id="labelDesc">DESCRIPTION</label><textarea id="description" rows="3">Long-lasting coating up to 4 weeks. Safe formula, European quality.</textarea></div>
+      <div class="field"><label id="labelPhoto">PHOTO URL</label><input id="imageUrl" placeholder="https://..."></div>
+      <div class="image-upload-area" onclick="document.getElementById('imageFile').click()">📸 Click to upload photo<input type="file" id="imageFile" accept="image/*" style="display:none" onchange="uploadImage(this)"></div>
+      <div class="image-preview" id="imagePreview"></div>
+      <div class="field"><label id="labelContact">CONTACTS</label><input id="contact" placeholder="@username" value="@ifield_studio"></div>
+    </div>
+
+    <div class="limits">
+      <span>🎁 <span class="limit-free" id="limitCount">3</span> <span id="limitFreeText">free</span></span>
+      <span>💎 Unlimited — <span class="limit-paid">50 Stars</span></span>
+      <span>⭐ Public link — <span class="limit-paid">200 Stars</span></span>
+    </div>
+  </div>
+
+  <div class="marquee marquee-bottom">
+    <div class="marquee-content" id="templateMarqueeBottom">
+      <span data-template="sci-fi">🎬 SCI-FI</span> <span data-template="luxury">💎 LUXURY</span> <span data-template="nature">🌿 NATURE</span> <span data-template="neon">🚀 NEON</span>
+      <span data-template="dark-glass">🔮 DARK GLASS</span> <span data-template="holographic">✨ HOLOGRAPHIC</span> <span data-template="cyberpunk">⚡ CYBERPUNK</span> <span data-template="minimal-white">🤍 MINIMAL WHITE</span>
+      <span data-template="sci-fi">🎬 SCI-FI</span> <span data-template="luxury">💎 LUXURY</span> <span data-template="nature">🌿 NATURE</span> <span data-template="neon">🚀 NEON</span>
+      <span data-template="dark-glass">🔮 DARK GLASS</span> <span data-template="holographic">✨ HOLOGRAPHIC</span> <span data-template="cyberpunk">⚡ CYBERPUNK</span> <span data-template="minimal-white">🤍 MINIMAL WHITE</span>
+    </div>
+  </div>
+
+  <div id="aiLoading" class="ai-loading">🤖 Analyzing...</div>
+  <div class="result-section" id="resultSection">
+    <button class="back-btn" onclick="goBack()">← BACK</button>
+    <div id="victoryMessage" class="victory-message"><div style="font-size:32px;">🎉</div><div style="font-weight:bold; font-size:18px;" id="victoryTitle">Site created!</div><div style="font-size:13px;" id="victorySub">You are one step closer to clients</div></div>
+    <iframe class="preview-frame" id="previewFrame"></iframe>
+    <div class="action-buttons">
+      <button id="btnDownload" onclick="downloadLanding()">📥 Download</button>
+      <button id="btnCopy" onclick="copyHTML()">📋 Copy code</button>
+      <button id="btnShare" onclick="simpleShare()">📱 Share</button>
+      <button id="btnPublish" onclick="publishToGitHubPages()" style="background:linear-gradient(135deg,#24292e,#0a0c10);">▲ Publish</button>
+    </div>
+    <div id="nextStep" class="next-step">
+      <div style="font-size:24px;">🚀</div>
+      <div style="font-weight:bold; margin-bottom:12px;" id="nextTitle">Your site is ready!</div>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:16px 0;">
+        <button onclick="downloadLanding()" style="background:linear-gradient(135deg,#2c6eff,#1a4fcc); color:white; border:none; padding:12px 20px; border-radius:40px;">📥 Download</button>
+        <button onclick="editInline()" style="background:rgba(255,255,255,0.1); color:white; border:1px solid #3c7eff; padding:12px 20px; border-radius:40px;" id="editBtn">✏️ Edit</button>
+        <button onclick="unlockAndPublish()" style="background:linear-gradient(135deg,#ffd700,#ffb347); color:#1a1a2e; border:none; padding:12px 20px; border-radius:40px;" id="getLinkBtn">⭐ Get public link — 200 Stars</button>
+      </div>
+      <p id="shareHint" style="font-size:11px; color:#aaa;">💡 Click "Get public link" — pay in Telegram and get a link to your site!</p>
+    </div>
+  </div>
+
+  <div class="reviews">
+    <div class="review-stars">★★★★★</div>
+    <div class="review-text" id="reviewText">"I made a landing in 5 minutes! Shared with friends — already got my first client"</div>
+    <div class="review-author" id="reviewAuthor">— Anna, nail studio owner</div>
+    <div class="stats">
+      <span id="statLandings">🏆 1500+ landings created</span>
+      <span id="statRecommend">⭐ 98% recommend</span>
+    </div>
+  </div>
+
+  <footer>
+    <a href="https://t.me/ifield_lab" target="_blank" id="footerTelegram">💬 Telegram</a>
+    <a href="http://fiverr.com/s/2KRdzKN" target="_blank" id="footerFiverr">🎯 Fiverr</a>
+    <a href="https://github.com/i-Field/ifield-studio" target="_blank" id="footerGitHub">🐙 GitHub</a>
+    <a href="https://i-field.github.io/ifield-studio" target="_blank" id="footerPortfolio">🌐 Portfolio</a>
+  </footer>
+</div>
+
+<script>
+  // ========== ЛОКАЛІЗАЦІЯ ==========
+  const LANG = {
+    ua: {
+      brand: 'НАЗВА БРЕНДУ', niche: 'НІША / СФЕРА', product: 'ГОЛОВНИЙ ОФФЕР',
+      desc: 'ОПИС', photo: 'URL ФОТО', contact: 'КОНТАКТИ', addToggle: '▼ ДОДАТКОВІ ОПЦІЇ ▼',
+      limitFree: 'безкоштовно', victoryTitle: 'Сайт створено!', victorySub: 'Ти вже на 1 крок ближче до клієнтів',
+      nextTitle: 'Твій сайт готовий!', editBtn: '✏️ Редагувати', getLinkBtn: '⭐ Отримати публічне посилання — 200 Stars',
+      shareHint: '💡 Натисни "Отримати публічне посилання" — оплати в Telegram і отримай посилання на свій сайт!',
+      reviewText: '"Зробив лендінг за 5 хвилин! Поділився з друзями — вже є перший клієнт"',
+      reviewAuthor: '— Анна, власниця студії манікюру',
+      statLandings: '🏆 1500+ лендінгів створено', statRecommend: '⭐ 98% рекомендують',
+      footerTelegram: '💬 Telegram', footerFiverr: '🎯 Fiverr', footerGitHub: '🐙 GitHub', footerPortfolio: '🌐 Портфоліо',
+      generateBtn: '✨ СТВОРИТИ САЙТ ✨', backBtn: '← НАЗАД', download: '📥 Завантажити', copy: '📋 Копіювати код', share: '📱 Поділитись', publish: '▲ Опублікувати'
+    },
+    en: {
+      brand: 'BRAND NAME', niche: 'NICHE / SPHERE', product: 'MAIN OFFER',
+      desc: 'DESCRIPTION', photo: 'PHOTO URL', contact: 'CONTACTS', addToggle: '▼ ADDITIONAL OPTIONS ▼',
+      limitFree: 'free', victoryTitle: 'Site created!', victorySub: 'You are one step closer to clients',
+      nextTitle: 'Your site is ready!', editBtn: '✏️ Edit', getLinkBtn: '⭐ Get public link — 200 Stars',
+      shareHint: '💡 Click "Get public link" — pay in Telegram and get a link to your site!',
+      reviewText: '"I made a landing in 5 minutes! Shared with friends — already got my first client"',
+      reviewAuthor: '— Anna, nail studio owner',
+      statLandings: '🏆 1500+ landings created', statRecommend: '⭐ 98% recommend',
+      footerTelegram: '💬 Telegram', footerFiverr: '🎯 Fiverr', footerGitHub: '🐙 GitHub', footerPortfolio: '🌐 Portfolio',
+      generateBtn: '✨ CREATE YOUR SITE ✨', backBtn: '← BACK', download: '📥 Download', copy: '📋 Copy code', share: '📱 Share', publish: '▲ Publish'
+    },
+    ru: {
+      brand: 'НАЗВАНИЕ БРЕНДА', niche: 'НИША / СФЕРА', product: 'ГЛАВНОЕ ПРЕДЛОЖЕНИЕ',
+      desc: 'ОПИСАНИЕ', photo: 'URL ФОТО', contact: 'КОНТАКТЫ', addToggle: '▼ ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ ▼',
+      limitFree: 'бесплатно', victoryTitle: 'Сайт создан!', victorySub: 'Ты на шаг ближе к клиентам',
+      nextTitle: 'Твой сайт готов!', editBtn: '✏️ Редактировать', getLinkBtn: '⭐ Получить публичную ссылку — 200 Stars',
+      shareHint: '💡 Нажми "Получить публичную ссылку" — оплати в Telegram и получи ссылку на свой сайт!',
+      reviewText: '"Сделал лендинг за 5 минут! Поделился с друзьями — уже есть первый клиент"',
+      reviewAuthor: '— Анна, владелица студии маникюра',
+      statLandings: '🏆 1500+ лендингов создано', statRecommend: '⭐ 98% рекомендуют',
+      footerTelegram: '💬 Telegram', footerFiverr: '🎯 Fiverr', footerGitHub: '🐙 GitHub', footerPortfolio: '🌐 Портфолио',
+      generateBtn: '✨ СОЗДАТЬ САЙТ ✨', backBtn: '← НАЗАД', download: '📥 Скачать', copy: '📋 Копировать код', share: '📱 Поделиться', publish: '▲ Опубликовать'
+    }
+  };
+
+  // ========== ШАБЛОНИ ==========
+  const TEMPLATES = {
+    'sci-fi': { gradient: 'linear-gradient(135deg, #ffffff, #7bb2ff)', bg: '#0a0c1a', text: '#e2e8f0', accent: '#2c6eff', name: 'Sci-Fi' },
+    'luxury': { gradient: 'linear-gradient(135deg, #FFD700, #FFA500)', bg: '#1a1610', text: '#f5f2ed', accent: '#c8a96e', name: 'Luxury' },
+    'nature': { gradient: 'linear-gradient(135deg, #90EE90, #228B22)', bg: '#0a1a0a', text: '#e0f0e0', accent: '#6B8E23', name: 'Nature' },
+    'neon': { gradient: 'linear-gradient(135deg, #FF00FF, #00FFFF)', bg: '#0a0a1a', text: '#f0f0ff', accent: '#ff00ff', name: 'Neon' },
+    'dark-glass': { gradient: 'linear-gradient(135deg, #aaa, #333)', bg: '#080c14', text: '#ffffff', accent: '#6c5ce7', name: 'Dark Glass' },
+    'holographic': { gradient: 'linear-gradient(135deg, #ff77aa, #77aaff, #77ffaa)', bg: '#050a12', text: '#eef4ff', accent: '#c084fc', name: 'Holographic' },
+    'cyberpunk': { gradient: 'linear-gradient(135deg, #ff3366, #33ff66)', bg: '#0a0a0f', text: '#ffcc88', accent: '#ff3366', name: 'Cyberpunk' },
+    'minimal-white': { gradient: 'linear-gradient(135deg, #ffffff, #f5f5f5)', bg: '#ffffff', text: '#111111', accent: '#000000', name: 'Minimal White' }
+  };
+
+  let currentLang = 'en';
+  let currentTemplate = 'sci-fi';
+  let currentHTML = '';
+  let uploadedImageData = '';
+  let freeGenerations = localStorage.getItem('freeGenerations') ? parseInt(localStorage.getItem('freeGenerations')) : 3;
+
+  // ========== ЗОРЯНЕ НЕБО ==========
+  function createStars() {
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 350; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 3 + 1;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 5}s`;
+      star.style.animationDuration = `${2 + Math.random() * 3}s`;
+      starsContainer.appendChild(star);
+    }
+  }
+
+  function updateBadge() {
+    document.getElementById('limitCount').innerText = freeGenerations;
+    const btn = document.getElementById('generateBtn');
+    if (freeGenerations <= 0) {
+      btn.classList.add('disabled');
+      btn.disabled = true;
+    } else {
+      btn.classList.remove('disabled');
+      btn.disabled = false;
+    }
+    const limitFreeText = document.getElementById('limitFreeText');
+    if (limitFreeText) limitFreeText.innerText = LANG[currentLang].limitFree;
+  }
+
+  function toggleAdditional() {
+    document.getElementById('additionalOptions').classList.toggle('open');
+  }
+
+  function setTemplate(template) {
+    currentTemplate = template;
+    showStatus(`🎨 Template ${TEMPLATES[template].name} activated`);
+  }
+
+  function buildHTML() {
+    const brand = document.getElementById('brand').value.trim() || 'iField Studio';
+    const niche = document.getElementById('niche').value.trim() || 'your niche';
+    const product = document.getElementById('product').value.trim() || 'solution';
+    const desc = document.getElementById('description').value.trim() || 'Quality solution';
+    const contact = document.getElementById('contact').value.trim() || '@contact';
+    const img = uploadedImageData || document.getElementById('imageUrl').value.trim() || 'https://placehold.co/600x400/1a1f2a/7bb2ff?text=Product';
+    const t = TEMPLATES[currentTemplate];
+    const contactLink = contact.startsWith('@') ? `https://t.me/${contact.slice(1)}` : contact;
+    return `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${brand} | ${product}</title><style>
+*{margin:0;padding:0;box-sizing:border-box}body{min-height:100vh;background:radial-gradient(circle at 20% 30%, ${t.bg === '#ffffff' ? '#f0f0f0' : '#06080f'}, ${t.bg});font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:24px}
+.container{max-width:720px;width:100%;background:${t.bg === '#ffffff' ? 'rgba(255,255,255,0.95)' : 'rgba(12,18,28,0.68)'};backdrop-filter:blur(24px);border-radius:56px;border:0.5px solid rgba(80,140,255,0.3);padding:48px 36px;text-align:center}
+.badge{display:inline-block;font-size:12px;background:rgba(60,130,255,0.2);padding:6px 14px;border-radius:40px;color:${t.accent};margin-bottom:24px}
+h1{font-size:48px;font-weight:700;background:${t.gradient};-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:12px}
+.product{font-size:20px;color:${t.accent};margin-bottom:24px}
+.product-image{width:100%;max-width:400px;margin:0 auto 32px;border-radius:32px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+.product-image img{width:100%;display:block}
+.description{color:${t.text};line-height:1.6;margin-bottom:32px}
+.features{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:40px}
+.feature{background:rgba(255,255,255,0.05);padding:10px 18px;border-radius:40px;font-size:13px;color:${t.text};border:0.5px solid ${t.accent}}
+.contact-btn{display:inline-block;background:linear-gradient(135deg,#fff,#eef5ff);color:#021a3b;text-decoration:none;padding:16px 32px;border-radius:44px;font-weight:600;font-size:18px}
+.footer{margin-top:48px;font-size:12px;color:#5a6a8a}
+@media(max-width:520px){.container{padding:32px 24px}h1{font-size:32px}}</style></head>
+<body><div class="container"><div class="badge">⚡ iField Studio • ${niche}</div><h1>${brand}</h1><div class="product">${product}</div><div class="product-image"><img src="${img}" alt="${product}"></div><div class="description">${desc}</div><div class="features"><div class="feature">✨ minimalism</div><div class="feature">⚡ quick start</div><div class="feature">🔮 premium quality</div></div><a href="${contactLink}" class="contact-btn" target="_blank">📩 Contact now</a><div class="footer">${contact}</div></div></body></html>`;
+  }
+
+  function showStatus(msg, isError = false) {
+    const s = document.createElement('div'); s.className = 'status'; s.textContent = msg;
+    s.style.background = isError ? 'rgba(255,70,70,0.95)' : 'rgba(64,224,208,0.95)';
+    s.style.color = isError ? 'white' : '#010101';
+    document.body.appendChild(s); setTimeout(() => s.remove(), 4000);
+  }
+
+  function playClickSound() {
+    try { new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3").play().catch(()=>{}); } catch(e) {}
+  }
+
+  function animateBuild(callback) {
+    const loader = document.getElementById('aiLoading');
+    loader.style.display = 'block';
+    setTimeout(() => { loader.style.display = 'none'; callback(); }, 1800);
+  }
+
+  function generateLanding() {
+    if (freeGenerations <= 0) {
+      showStatus('⚠️ Limit reached! Get unlimited for 50 Stars', true);
+      return;
+    }
+    freeGenerations--; localStorage.setItem('freeGenerations', freeGenerations); updateBadge();
+    currentHTML = buildHTML();
+    document.getElementById('resultSection').style.display = 'block';
+    document.getElementById('formArea').style.display = 'none';
+    document.getElementById('previewFrame').srcdoc = currentHTML;
+    document.getElementById('nextStep').style.display = 'block';
+    document.getElementById('victoryMessage').style.display = 'block';
+    showStatus(`✅ Landing created! ${freeGenerations} free left`);
+    document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function startGeneration() {
+    if (freeGenerations <= 0) {
+      showStatus('⚠️ Limit reached! Get unlimited for 50 Stars', true);
+      return;
+    }
+    playClickSound();
+    animateBuild(() => generateLanding());
+  }
+
+  function goBack() {
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('formArea').style.display = 'block';
+    document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function checkAccess() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('paid') === 'true') {
+      showStatus('✅ Payment confirmed! Unlimited access granted!');
+      freeGenerations = 999;
+      localStorage.setItem('freeGenerations', freeGenerations);
+      updateBadge();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }
+
+  async function publishToGitHubPages() {
+    if (!currentHTML) { alert('Generate first!'); return; }
+    let token = localStorage.getItem('github_token');
+    if (!token) {
+      token = prompt('🔑 Enter GitHub token (gist only):\nhttps://github.com/settings/tokens/new');
+      if (!token) return;
+      localStorage.setItem('github_token', token);
+    }
+    const brand = document.getElementById('brand').value.trim() || 'landing';
+    const fileName = `${brand.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${Date.now()}.html`;
+    try {
+      const res = await fetch('https://api.github.com/gists', {
+        method: 'POST', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ description: `Landing: ${brand}`, public: true, files: { [fileName]: { content: currentHTML } } })
+      });
+      const data = await res.json();
+      const url = `https://htmlpreview.github.io/?https://gist.githubusercontent.com/${data.owner.login}/${data.id}/raw/${fileName}`;
+      await navigator.clipboard.writeText(url);
+      showStatus(`✅ Link copied: ${url}`);
+      alert(`🎉 Your landing is live!\n${url}\nLink copied!`);
+    } catch(e) { showStatus('❌ Publish failed', true); localStorage.removeItem('github_token'); }
+  }
+
+  function downloadLanding() {
+    if (!currentHTML) return;
+    const blob = new Blob([currentHTML], { type: 'text/html' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `landing-${Date.now()}.html`; a.click(); URL.revokeObjectURL(a.href);
+    showStatus('📥 Downloaded!');
+  }
+  async function copyHTML() { if (!currentHTML) return; await navigator.clipboard.writeText(currentHTML); showStatus('📋 Code copied!'); }
+  function editInline() { document.getElementById('previewFrame').contentDocument.body.contentEditable = 'true'; showStatus('✏️ Edit mode: change text directly!'); }
+  function simpleShare() {
+    if (!currentHTML) { alert('Generate first!'); return; }
+    const blob = new Blob([currentHTML], { type: 'text/html' });
+    const file = new File([blob], `landing-${Date.now()}.html`, { type: 'text/html' });
+    if (navigator.share) navigator.share({ title: 'My landing', files: [file] }).catch(()=>navigator.clipboard.writeText(window.location.href));
+    else navigator.clipboard.writeText(window.location.href);
+  }
+  function unlockAndPublish() { window.open('https://t.me/ifield_studio_bot?start=publish_200', '_blank'); showStatus('📱 Opening Telegram for 200 Stars'); }
+  function uploadImage(input) {
+    if (input.files?.[0]) {
+      const r = new FileReader();
+      r.onload = e => {
+        uploadedImageData = e.target.result;
+        document.getElementById('imagePreview').innerHTML = `<img src="${uploadedImageData}" class="preview-img">`;
+        document.getElementById('imageUrl').value = '';
+        showStatus('✅ Photo uploaded!');
+      };
+      r.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('ifield_lang', lang);
+    const t = LANG[lang];
+    document.getElementById('labelBrand').innerText = t.brand;
+    document.getElementById('labelNiche').innerText = t.niche;
+    document.getElementById('labelProduct').innerText = t.product;
+    document.getElementById('labelDesc').innerText = t.desc;
+    document.getElementById('labelPhoto').innerText = t.photo;
+    document.getElementById('labelContact').innerText = t.contact;
+    document.getElementById('additionalToggle').innerText = t.addToggle;
+    document.getElementById('limitFreeText').innerText = t.limitFree;
+    document.getElementById('victoryTitle').innerText = t.victoryTitle;
+    document.getElementById('victorySub').innerText = t.victorySub;
+    document.getElementById('nextTitle').innerText = t.nextTitle;
+    document.getElementById('editBtn').innerText = t.editBtn;
+    document.getElementById('getLinkBtn').innerHTML = t.getLinkBtn;
+    document.getElementById('shareHint').innerHTML = t.shareHint;
+    document.getElementById('reviewText').innerText = t.reviewText;
+    document.getElementById('reviewAuthor').innerText = t.reviewAuthor;
+    document.getElementById('statLandings').innerHTML = t.statLandings;
+    document.getElementById('statRecommend').innerHTML = t.statRecommend;
+    document.getElementById('footerTelegram').innerHTML = t.footerTelegram;
+    document.getElementById('footerFiverr').innerHTML = t.footerFiverr;
+    document.getElementById('footerGitHub').innerHTML = t.footerGitHub;
+    document.getElementById('footerPortfolio').innerHTML = t.footerPortfolio;
+    document.getElementById('generateBtn').innerHTML = t.generateBtn;
+    document.querySelector('.back-btn').innerHTML = t.backBtn;
+    document.getElementById('btnDownload').innerHTML = t.download;
+    document.getElementById('btnCopy').innerHTML = t.copy;
+    document.getElementById('btnShare').innerHTML = t.share;
+    document.getElementById('btnPublish').innerHTML = t.publish;
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+  }
+
+  function initMarqueeClicks() {
+    const topSpans = document.querySelectorAll('#templateMarqueeTop span');
+    const bottomSpans = document.querySelectorAll('#templateMarqueeBottom span');
+    const allSpans = [...topSpans, ...bottomSpans];
+    allSpans.forEach(span => {
+      span.addEventListener('click', () => setTemplate(span.dataset.template));
+    });
+  }
+
+  createStars();
+  updateBadge();
+  checkAccess();
+  initMarqueeClicks();
+  document.getElementById('generateBtn').addEventListener('click', startGeneration);
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+  setLanguage('en');
+</script>
+</body>
+</html>
