@@ -3,26 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>iField | Автокаталог лендингов</title>
     
-    <title>iField | Центральный каталог лендингов и AI-проектов</title>
-    
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="https://i-field.github.io/-iField-Landing-Catalog-/favicon.png">
-    <link rel="shortcut icon" type="image/png" href="https://i-field.github.io/-iField-Landing-Catalog-/favicon.png">
-    
-    <!-- OPEN GRAPH (Telegram, WhatsApp, Facebook) -->
-    <meta property="og:title" content="iField | Центральный каталог лендингов и AI-проектов">
-    <meta property="og:description" content="🚀 Все проекты iField в одном месте: AI Creator, генераторы лендингов, чат-боты, файловый менеджер. Создавай, управляй, эволюционируй!">
+    <!-- МЕТА-ТЕГИ ДЛЯ ПРЕВЬЮ -->
+    <meta property="og:title" content="iField | Центральный каталог лендингов">
+    <meta property="og:description" content="🚀 Все проекты iField в одном месте. Автоматический каталог HTML файлов.">
     <meta property="og:image" content="https://i-field.github.io/-iField-Landing-Catalog-/preview.png">
     <meta property="og:url" content="https://i-field.github.io/-iField-Landing-Catalog-/">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="iField Ecosystem">
-    
-    <!-- TWITTER CARDS -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="iField | Центральный каталог лендингов">
-    <meta name="twitter:description" content="🚀 Все проекты iField в одном месте: AI Creator, генераторы, чат-боты и файловый менеджер.">
-    <meta name="twitter:image" content="https://i-field.github.io/-iField-Landing-Catalog-/preview.png">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,121 +18,231 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
-            padding: 2rem;
+            padding: 20px;
         }
         .container { max-width: 1200px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 2rem; }
-        h1 { color: white; font-size: 2.5rem; margin-bottom: 0.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        .sub { color: rgba(255,255,255,0.9); font-size: 1.1rem; }
-        .stats-bar {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 60px;
-            padding: 1rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
+        h1 { text-align: center; color: white; font-size: 2rem; margin-bottom: 10px; }
+        .sub { text-align: center; color: rgba(255,255,255,0.9); margin-bottom: 20px; font-size: 0.9rem; }
+        .status {
+            background: rgba(0,0,0,0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 0.85rem;
         }
-        .stats { background: white; color: #667eea; padding: 0.5rem 1rem; border-radius: 40px; font-weight: 600; }
-        .search-box { flex: 1; max-width: 300px; }
-        .search-box input { width: 100%; padding: 0.6rem 1rem; border: none; border-radius: 40px; font-size: 0.9rem; outline: none; }
-        .refresh-btn { background: white; border: none; padding: 0.6rem 1.2rem; border-radius: 40px; font-weight: 600; cursor: pointer; }
-        .refresh-btn:hover { transform: scale(0.98); background: #f0f0f0; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; }
-        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-        .card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1rem; color: white; }
-        .card-header h3 { font-size: 1.1rem; margin-bottom: 0.3rem; word-break: break-word; }
-        .project-name { font-size: 0.7rem; opacity: 0.9; background: rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 20px; display: inline-block; }
-        .card-body { padding: 1rem; }
-        .url { background: #f8f9fa; padding: 0.5rem; border-radius: 10px; font-size: 0.7rem; font-family: monospace; word-break: break-all; margin-bottom: 1rem; color: #666; }
-        .card-actions { display: flex; gap: 0.5rem; }
-        .btn { padding: 0.5rem 1rem; border-radius: 40px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem; cursor: pointer; flex: 1; justify-content: center; border: none; }
-        .btn-primary { background: #667eea; color: white; }
-        .btn-primary:hover { background: #5a67d8; }
-        .btn-secondary { background: #f0f0f0; color: #667eea; }
-        .empty-state { text-align: center; padding: 3rem; background: white; border-radius: 20px; color: #666; }
-        footer { text-align: center; margin-top: 2rem; color: rgba(255,255,255,0.7); font-size: 0.8rem; }
-        @media (max-width: 768px) {
-            body { padding: 1rem; }
-            .grid { grid-template-columns: 1fr; }
-            .stats-bar { flex-direction: column; align-items: stretch; }
-            .search-box { max-width: none; }
+        .search-box { margin-bottom: 20px; text-align: center; }
+        .search-box input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            text-align: center;
+        }
+        .stats { text-align: center; color: white; margin-bottom: 20px; font-weight: bold; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            color: white;
+        }
+        .card-header h3 { font-size: 1rem; word-break: break-word; }
+        .card-folder {
+            font-size: 0.65rem;
+            opacity: 0.8;
+            margin-top: 5px;
+            font-family: monospace;
+        }
+        .card-body { padding: 15px; }
+        .card-url {
+            background: #f5f5f5;
+            padding: 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-family: monospace;
+            word-break: break-all;
+            margin-bottom: 15px;
+            color: #666;
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btn:hover { background: #5a67d8; }
+        .loading, .error {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            color: #666;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7rem;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <h1>📚 iField | Центральный каталог</h1>
-        <div class="sub">Все проекты и лендинги в одном месте</div>
+    <h1>📚 iField | Автокаталог</h1>
+    <div class="sub">Все HTML файлы из репозитория — автоматически</div>
+    
+    <div class="status" id="status">🔍 Сканирую репозиторий...</div>
+    
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Поиск лендинга...">
     </div>
-
-    <div class="stats-bar">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 Поиск лендинга...">
-        </div>
-        <div class="stats" id="statsCounter">Загрузка...</div>
-        <button class="refresh-btn" id="refreshBtn">🔄 Обновить</button>
+    
+    <div class="stats" id="statsCounter">0 лендингов</div>
+    
+    <div id="landingsGrid" class="grid">
+        <div class="loading">⏳ Загрузка...</div>
     </div>
-
-    <div id="landingsGrid">
-        <div class="empty-state">⏳ Загрузка каталога...</div>
-    </div>
-
-    <footer>
-        💡 Все проекты iField собраны в одном месте<br>
-        Нажми на карточку, чтобы открыть лендинг
-    </footer>
+    
+    <footer>💡 Просто добавь любой .html файл в репозиторий — он появится здесь автоматически</footer>
 </div>
 
 <script>
-    const LANDINGS = [
-        { name: "🏠 Главный каталог", project: "iField Landing Catalog", url: "https://i-field.github.io/-iField-Landing-Catalog-/" },
-        { name: "🤖 iField AI Creator", project: "AI Игра", url: "https://i-field.github.io/-iField-Landing-Catalog-/ai-creator.html" },
-        { name: "🎨 iField Studio", project: "Web Design Studio", url: "https://i-field.github.io/ifield-studio/" },
-        { name: "🌌 iField Ecosystem", project: "X-FIELD Concept", url: "https://i-field.github.io/ifield-ecosystem/" },
-        { name: "💬 Chat iField", project: "Chat", url: "https://i-field.github.io/Chat-iField/" },
-        { name: "⚡ Generator Landing Pro", project: "Generator", url: "https://i-field.github.io/Generator-Landing-ifield-Pro/" },
-        { name: "🔐 Cipher P2P iField", project: "Cipher", url: "https://i-field.github.io/cipher-p2p-iField/" },
-        { name: "🎨 iField Generator", project: "Generator", url: "https://i-field.github.io/iField-Generator-Landing/" },
-        { name: "🤖 iField Chat", project: "Chat", url: "https://i-field.github.io/iField-chat/" },
-        { name: "📁 Файловый менеджер", project: "iField Tools", url: "https://i-field.github.io/-iField-Landing-Catalog-/file-manager.html" }
-    ];
-
-    let allLandings = LANDINGS;
-    const gridContainer = document.getElementById('landingsGrid');
+    // НАСТРОЙКИ (измени если нужно)
+    const REPO_OWNER = 'i-field';
+    const REPO_NAME = '-iField-Landing-Catalog-';
+    const BRANCH = 'main';
+    
+    const API_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees/${BRANCH}?recursive=1`;
+    const BASE_URL = `https://${REPO_OWNER}.github.io/${REPO_NAME}`;
+    
+    let allFiles = [];
+    let isLoading = false;
+    
+    const grid = document.getElementById('landingsGrid');
     const searchInput = document.getElementById('searchInput');
     const statsSpan = document.getElementById('statsCounter');
-    const refreshBtn = document.getElementById('refreshBtn');
-
-    function renderLandings() {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        let filtered = allLandings;
-        if (searchTerm) {
-            filtered = allLandings.filter(land => land.name.toLowerCase().includes(searchTerm) || land.project.toLowerCase().includes(searchTerm) || land.url.toLowerCase().includes(searchTerm));
+    const statusDiv = document.getElementById('status');
+    
+    async function scanRepository() {
+        if (isLoading) return;
+        isLoading = true;
+        statusDiv.innerHTML = '📡 Подключаюсь к GitHub API...';
+        
+        try {
+            const response = await fetch(API_URL);
+            
+            if (!response.ok) {
+                throw new Error(`Ошибка ${response.status}: репозиторий может быть приватным`);
+            }
+            
+            const data = await response.json();
+            
+            if (!data.tree) {
+                throw new Error('Не удалось получить список файлов');
+            }
+            
+            // Находим все HTML файлы
+            const htmlFiles = data.tree.filter(file => {
+                return file.type === 'blob' && file.path.toLowerCase().endsWith('.html');
+            });
+            
+            allFiles = htmlFiles.map(file => ({
+                name: file.path.split('/').pop(),
+                path: file.path,
+                folder: file.path.includes('/') ? file.path.substring(0, file.path.lastIndexOf('/')) : 'Корень',
+                url: `${BASE_URL}/${file.path}`,
+                size: file.size
+            }));
+            
+            // Сортируем по имени
+            allFiles.sort((a, b) => a.name.localeCompare(b.name));
+            
+            if (allFiles.length === 0) {
+                statusDiv.innerHTML = '⚠️ HTML файлы не найдены. Добавьте .html файлы в репозиторий';
+                grid.innerHTML = '<div class="error">📭 Нет HTML файлов<br><small>Добавьте любой .html файл в репозиторий</small></div>';
+                statsSpan.textContent = `0 / 0`;
+            } else {
+                statusDiv.innerHTML = `✅ Найдено ${allFiles.length} HTML файлов`;
+                render();
+            }
+            
+        } catch (error) {
+            console.error(error);
+            statusDiv.innerHTML = `❌ Ошибка: ${error.message}`;
+            grid.innerHTML = `<div class="error">⚠️ Не удалось загрузить файлы<br><br><small>Убедитесь что репозиторий публичный</small></div>`;
+        } finally {
+            isLoading = false;
         }
-        statsSpan.textContent = `${filtered.length} / ${allLandings.length}`;
-        if (filtered.length === 0) { gridContainer.innerHTML = '<div class="empty-state">🔍 Ничего не найдено</div>'; return; }
+    }
+    
+    function formatName(filename) {
+        let name = filename.replace(/\.html$/i, '');
+        name = name.replace(/[-_]/g, ' ');
+        name = name.replace(/\b\w/g, l => l.toUpperCase());
+        return name || 'Лендинг';
+    }
+    
+    function render() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        let filtered = allFiles;
+        
+        if (searchTerm) {
+            filtered = allFiles.filter(file => 
+                file.name.toLowerCase().includes(searchTerm) || 
+                formatName(file.name).toLowerCase().includes(searchTerm) ||
+                file.folder.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        statsSpan.textContent = `${filtered.length} / ${allFiles.length}`;
+        
+        if (filtered.length === 0) {
+            grid.innerHTML = '<div class="error">🔍 Ничего не найдено</div>';
+            return;
+        }
+        
         let html = '<div class="grid">';
-        for (const land of filtered) {
-            html += `<div class="card"><div class="card-header"><h3>${escapeHtml(land.name)}</h3><div class="project-name">📁 ${escapeHtml(land.project)}</div></div><div class="card-body"><div class="url">🔗 ${escapeHtml(land.url)}</div><div class="card-actions"><a href="${escapeHtml(land.url)}" class="btn btn-primary" target="_blank">🚀 Открыть</a><button class="btn btn-secondary" onclick="copyUrl('${escapeHtml(land.url)}', this)">📋 Копировать</button></div></div></div>`;
+        for (const file of filtered) {
+            const displayName = formatName(file.name);
+            
+            html += `
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📄 ${escapeHtml(displayName)}</h3>
+                        <div class="card-folder">📁 ${escapeHtml(file.folder)}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-url">🔗 ${escapeHtml(file.url)}</div>
+                        <a href="${escapeHtml(file.url)}" class="btn" target="_blank">🚀 Открыть</a>
+                    </div>
+                </div>
+            `;
         }
         html += '</div>';
-        gridContainer.innerHTML = html;
+        grid.innerHTML = html;
     }
-
-    function copyUrl(url, btn) {
-        navigator.clipboard.writeText(url).then(() => {
-            const original = btn.innerHTML;
-            btn.innerHTML = '✅ Готово!';
-            setTimeout(() => { btn.innerHTML = original; }, 1500);
-        });
-    }
-
+    
     function escapeHtml(str) {
         if (!str) return '';
         return str.replace(/[&<>]/g, function(m) {
@@ -154,11 +252,11 @@
             return m;
         });
     }
-
-    searchInput.addEventListener('input', renderLandings);
-    refreshBtn.addEventListener('click', () => renderLandings());
-    renderLandings();
-    window.copyUrl = copyUrl;
+    
+    searchInput.addEventListener('input', render);
+    
+    // ЗАПУСК
+    scanRepository();
 </script>
 </body>
 </html>
