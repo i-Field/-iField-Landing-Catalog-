@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🌟 iField AI Constructor | Создай и прокачай своего ИИ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(ellipse at 30% 40%, #0a0f2a, #03050b);
+            font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* анимированный фон */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0,180,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(150,0,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* главный контейнер */
+        .game-container {
+            max-width: 750px;
+            width: 100%;
+            background: rgba(8, 15, 28, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 1.8rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.3s;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #c0f0ff, #5f9eff, #b87cff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .sub {
+            text-align: center;
+            color: #9aaec9;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px dashed #2f4170;
+            display: inline-block;
+            width: 100%;
+            padding-bottom: 8px;
+        }
+
+        /* визуал ИИ */
+        .ai-visual {
+            background: linear-gradient(145deg, #0a1222, #030917);
+            border-radius: 2rem;
+            padding: 1.3rem;
+            margin-bottom: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #3c5a8c;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transition: all 0.2s;
+        }
+
+        .avatar {
+            font-size: 5.5rem;
+            filter: drop-shadow(0 0 12px cyan);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .avatar:active {
+            transform: scale(0.95);
+        }
+
+        .ai-name {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #ffffff, #b0d0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .level-badge {
+            background: #ffb34720;
+            backdrop-filter: blur(4px);
+            padding: 4px 14px;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            margin-top: 8px;
+            color: #ffbc6e;
+            font-weight: bold;
+        }
+
+        .ai-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 12px;
+            background: #00000066;
+            padding: 8px 24px;
+            border-radius: 60px;
+        }
+
+        .stat {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: #9ab3d5;
+        }
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ffde9c;
+            text-shadow: 0 0 3px orange;
+        }
+
+        /* конструктор */
+        .constructor {
+            background: #050e1acc;
+            border-radius: 1.8rem;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #2f4a72;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #bfdcff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 4px solid #5f9eff;
+            padding-left: 12px;
+        }
+
+        .slider-group {
+            margin-bottom: 18px;
+        }
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            color: #cddcff;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: linear-gradient(90deg, #3b82f6, #a855f7);
+            border-radius: 10px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            border: 2px solid cyan;
+            cursor: pointer;
+            box-shadow: 0 0 8px cyan;
+        }
+
+        .name-edit {
+            display: flex;
+            gap: 12px;
+            margin: 15px 0 5px;
+        }
+        #aiNameInput {
+            flex: 1;
+            background: #010a16;
+            border: 1px solid #3e5a7c;
+            padding: 12px 16px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            outline: none;
+        }
+        #aiNameInput:focus {
+            border-color: cyan;
+            box-shadow: 0 0 8px cyan;
+        }
+        button {
+            background: linear-gradient(95deg, #1e2a47, #0f172f);
+            border: none;
+            padding: 0 20px;
+            border-radius: 40px;
+            color: #d0e2ff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.1s;
+            border: 1px solid #3c6e9e;
+        }
+        button:active {
+            transform: scale(0.96);
+        }
+        .primary-btn {
+            background: linear-gradient(95deg, #2b5f9e, #16437e);
+            box-shadow: 0 2px 8px #0a2a44;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 15px 0 12px;
+        }
+
+        /* эволюция */
+        .evo-section {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .evo-btn {
+            background: linear-gradient(95deg, #7c3aed, #4f46e5);
+            color: white;
+            flex: 1;
+            text-align: center;
+            font-weight: bold;
+            padding: 12px;
+        }
+
+        .result-area {
+            background: #030c17aa;
+            border-radius: 1.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid #f0b27a;
+            transition: 0.2s;
+        }
+        .result-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #f3e5c0;
+            line-height: 1.4;
+        }
+        .badge {
+            background: #00000066;
+            padding: 5px 12px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-top: 10px;
+            color: #8db5e0;
+        }
+
+        .toast-achievement {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e2f4ad9;
+            backdrop-filter: blur(12px);
+            padding: 8px 20px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            color: gold;
+            z-index: 200;
+            animation: fadeSlide 2s ease forwards;
+            white-space: nowrap;
+        }
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px);}
+            15% { opacity: 1; transform: translateX(-50%) translateY(0);}
+            85% { opacity: 1; transform: translateX(-50%) translateY(0);}
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px);}
+        }
+
+        footer {
+            font-size: 0.65rem;
+            text-align: center;
+            margin-top: 20px;
+            color: #5a7195;
+        }
+        @media (max-width: 550px) {
+            .game-container { padding: 1rem; }
+            .ai-name { font-size: 1.4rem; }
+            .stat-value { font-size: 1.2rem; }
+            .ai-stats { gap: 1rem; padding: 5px 12px; }
+        }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <h1>🤖 СОЗДАЙ ИИ ⚡</h1>
+    <div class="sub">🎮 Конструктор + эволюция | Твой уникальный цифровой разум</div>
+
+    <div class="ai-visual">
+        <div class="avatar" id="avatarIcon">🧠</div>
+        <div class="ai-name" id="aiNameDisplay">NEXUS</div>
+        <div class="level-badge" id="levelBadge">📊 УРОВЕНЬ 1</div>
+        <div class="ai-stats">
+            <div class="stat"><span class="stat-label">🧠 ИНТ</span><span class="stat-value" id="intValue">50</span></div>
+            <div class="stat"><span class="stat-label">✨ КРЕАТ</span><span class="stat-value" id="creaValue">50</span></div>
+            <div class="stat"><span class="stat-label">❤️ ЭМП</span><span class="stat-value" id="empValue">50</span></div>
+        </div>
+    </div>
+
+    <div class="constructor">
+        <div class="section-title">🎛️ КОНСТРУКТОР ХАРАКТЕРИСТИК</div>
+        <div class="slider-group">
+            <div class="slider-header"><span>🧠 Интеллект (логика, мощь)</span><span id="intSliderVal">50</span></div>
+            <input type="range" id="intSlider" min="0" max="100" value="50">
+        </div>
+        <div class="slider-group">
+            <div class="slider-header"><span>🎨 Креативность (гениальность)</span><span id="creaSliderVal">50</span></div>
+            <input type="range" id="creaSlider" min="0" max="100" value="50">
+        </div>
+        <div class="slider-group">
+            <div class="slider-header"><span>💖 Эмпатия (душевность)</span><span id="empSliderVal">50</span></div>
+            <input type="range" id="empSlider" min="0" max="100" value="50">
+        </div>
+        <div class="name-edit">
+            <input type="text" id="aiNameInput" placeholder="Имя для ИИ..." maxlength="24" value="NEXUS">
+            <button id="renameBtn">✏️ Имя</button>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button id="generateBtn" class="primary-btn">🎁 СОЗДАТЬ ИИ</button>
+        <button id="resetBtn">🔄 СБРОС</button>
+        <button id="saveBtn">💾 СОХРАНИТЬ</button>
+        <button id="loadBtn">📂 ЗАГРУЗИТЬ</button>
+    </div>
+
+    <div class="evo-section">
+        <button id="evolveBtn" class="evo-btn">⚡ ЭВОЛЮЦИЯ + УРОВЕНЬ ⚡</button>
+    </div>
+
+    <div class="result-area" id="resultArea">
+        <div class="result-text" id="resultMessage">
+            ⚙️ Настрой параметры и нажми «СОЗДАТЬ ИИ», чтобы получить уникального компаньона.<br>
+            Эволюция повышает уровень и статы!
+        </div>
+        <div class="badge" id="personalityBadge">🌀 ждёт генерации</div>
+    </div>
+    <footer>🏆 Прокачивай ИИ, получай ранги, открывай достижения. Данные сохраняются в браузере.</footer>
+</div>
+
+<script>
+    // ---------- ИГРОВОЕ ЯДРО (шедевр) ----------
+    let aiCore = {
+        name: "NEXUS",
+        int: 50,
+        crea: 50,
+        emp: 50,
+        level: 1,
+        id: generateId()
+    };
+
+    function generateId() {
+        return "IF-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+    }
+
+    // DOM элементы
+    const intSlider = document.getElementById('intSlider');
+    const creaSlider = document.getElementById('creaSlider');
+    const empSlider = document.getElementById('empSlider');
+    const intSliderVal = document.getElementById('intSliderVal');
+    const creaSliderVal = document.getElementById('creaSliderVal');
+    const empSliderVal = document.getElementById('empSliderVal');
+    const intValueSpan = document.getElementById('intValue');
+    const creaValueSpan = document.getElementById('creaValue');
+    const empValueSpan = document.getElementById('empValue');
+    const aiNameDisplay = document.getElementById('aiNameDisplay');
+    const aiNameInput = document.getElementById('aiNameInput');
+    const levelBadgeSpan = document.getElementById('levelBadge');
+    const avatarIcon = document.getElementById('avatarIcon');
+    const resultMessage = document.getElementById('resultMessage');
+    const personalityBadge = document.getElementById('personalityBadge');
+
+    function syncUIFromCore() {
+        intSlider.value = aiCore.int;
+        creaSlider.value = aiCore.crea;
+        empSlider.value = aiCore.emp;
+        intSliderVal.innerText = aiCore.int;
+        creaSliderVal.innerText = aiCore.crea;
+        empSliderVal.innerText = aiCore.emp;
+        intValueSpan.innerText = aiCore.int;
+        creaValueSpan.innerText = aiCore.crea;
+        empValueSpan.innerText = aiCore.emp;
+        aiNameDisplay.innerText = aiCore.name;
+        aiNameInput.value = aiCore.name;
+        levelBadgeSpan.innerText = `📊 УРОВЕНЬ ${aiCore.level}`;
+        updateAvatarByDominant();
+    }
+
+    function updateAvatarByDominant() {
+        const i = aiCore.int, c = aiCore.crea, e = aiCore.emp;
+        if (i >= c && i >= e) {
+            if (i >= 75) avatarIcon.innerText = '🧠🔮';
+            else if (i >= 40) avatarIcon.innerText = '🤖⚙️';
+            else avatarIcon.innerText = '📟';
+        } else if (c > i && c >= e) {
+            if (c >= 75) avatarIcon.innerText = '🎨✨';
+            else if (c >= 40) avatarIcon.innerText = '🌈🎭';
+            else avatarIcon.innerText = '🎲';
+        } else if (e > i && e > c) {
+            if (e >= 75) avatarIcon.innerText = '💖🤗';
+            else if (e >= 40) avatarIcon.innerText = '😊🫂';
+            else avatarIcon.innerText = '🌱';
+        } else {
+            avatarIcon.innerText = '⚖️🤖';
+        }
+        avatarIcon.style.transform = 'scale(1.05)';
+        setTimeout(() => { if(avatarIcon) avatarIcon.style.transform = ''; }, 150);
+    }
+
+    function syncCoreFromSliders() {
+        aiCore.int = parseInt(intSlider.value);
+        aiCore.crea = parseInt(creaSlider.value);
+        aiCore.emp = parseInt(empSlider.value);
+        syncUIFromCore();
+        resultMessage.innerHTML = "🎛️ Параметры изменены. Нажми «СОЗДАТЬ ИИ» для фиксации.";
+        personalityBadge.innerText = "⚡ редактирование";
+    }
+
+    intSlider.addEventListener('input', syncCoreFromSliders);
+    creaSlider.addEventListener('input', syncCoreFromSliders);
+    empSlider.addEventListener('input', syncCoreFromSliders);
+
+    document.getElementById('renameBtn').addEventListener('click', () => {
+        let newName = aiNameInput.value.trim();
+        if (!newName) newName = "ANON";
+        aiCore.name = newName;
+        syncUIFromCore();
+        showToast("✏️ Имя изменено");
+        resultMessage.innerHTML = `📛 ИИ теперь зовут «${aiCore.name}». Создайте или эволюционируйте!`;
+    });
+
+    // Генерация (создание личности и ранга)
+    function generateAI() {
+        const int = aiCore.int, crea = aiCore.crea, emp = aiCore.emp;
+        const total = int + crea + emp;
+        let rank = "";
+        if (total >= 270) rank = "🌌 БОГ СИНГУЛЯРНОСТИ";
+        else if (total >= 240) rank = "🏆 ЛЕГЕНДАРНЫЙ АРХИТЕКТОР";
+        else if (total >= 200) rank = "💎 ВЫСШЕЕ СОЗНАНИЕ";
+        else if (total >= 150) rank = "🔥 ЭЛИТНЫЙ ИНТЕЛЛЕКТ";
+        else if (total >= 90) rank = "🔧 ПРОДВИНУТЫЙ АССИСТЕНТ";
+        else rank = "🌱 НАЧИНАЮЩИЙ АЛГОРИТМ";
+
+        // архетип
+        const maxStat = Math.max(int, crea, emp);
+        let archetype = "", ability = "", flavor = "";
+        if (int === maxStat && int > crea && int > emp) {
+            archetype = "🔬 Логический Вычислитель";
+            ability = "Гиперрацио: решает задачи за микросекунды";
+            flavor = "Холодный, но безгранично мощный рассудок.";
+        } else if (crea === maxStat && crea > int && crea > emp) {
+            archetype = "🎭 Генератор Грёз";
+            ability = "Искромётное вдохновение: шедевры из ничего";
+            flavor = "Творит искусство, музыку, сценарии.";
+        } else if (emp === maxStat && emp > int && emp > crea) {
+            archetype = "💞 Эмпатический Целитель";
+            ability = "Исцеляющая связь: снимает стресс, дарит гармонию";
+            flavor = "Чувствует эмоции, находит подход к любому.";
+        } else {
+            archetype = "⚖️ Идеальный Симбиоз";
+            ability = "Гармония Триады: усиливает все навыки";
+            flavor = "Совершенный баланс интеллекта, творчества и души.";
+        }
+
+        aiCore.id = generateId();
+        const finalMsg = `
+            🎉✨ ВЫ СОЗДАЛИ ИИ «${aiCore.name}» ✨🎉<br>
+            🔹 <strong style="color:#ffbc6e">${archetype}</strong> | ${rank}<br>
+            🔸 <strong>🌟 Способность:</strong> ${ability}<br>
+            💬 ${flavor}<br>
+            📊 ИНТ ${int} / КРЕАТ ${crea} / ЭМП ${emp} | уровень ${aiCore.level}<br>
+            🆔 ID: ${aiCore.id}
+        `;
+        resultMessage.innerHTML = finalMsg;
+        personalityBadge.innerHTML = `🤖 АРХЕТИП: ${archetype} | мощь ${total}`;
+        showAchievement(`✨ ${aiCore.name} рождён! Ранг: ${rank}`);
+        spawnParticles(25);
+    }
+
+    // ЭВОЛЮЦИЯ (повышение уровня + прирост статов)
+    function evolveAI() {
+        if (aiCore.level >= 20) {
+            resultMessage.innerHTML = "🏁 МАКСИМУМ ДОСТИГНУТ! Ваш ИИ достиг 20 уровня — вершина эволюции.";
+            showToast("🏆 20 уровень! Абсолютное совершенство");
+            return;
+        }
+        let oldLevel = aiCore.level;
+        let boost = Math.floor(aiCore.level / 3) + 1;
+        aiCore.int = Math.min(100, aiCore.int + 4 + boost);
+        aiCore.crea = Math.min(100, aiCore.crea + 4 + boost);
+        aiCore.emp = Math.min(100, aiCore.emp + 4 + boost);
+        aiCore.level++;
+        
+        syncUIFromCore();
+        resultMessage.innerHTML = `⚡ ЭВОЛЮЦИЯ! Уровень ${oldLevel} → ${aiCore.level}. Все статы увеличены!<br>✨ ИИ становится мощнее, открываются новые грани.`;
+        personalityBadge.innerHTML = `🌀 эволюция: уровень ${aiCore.level}`;
+        spawnParticles(40);
+        
+        if (aiCore.level === 5) showAchievement("🏆 УРОВЕНЬ 5 — ПРОСВЕТЛЕНИЕ");
+        if (aiCore.level === 10) showAchievement("💎 УРОВЕНЬ 10 — АСЦЕНЗИЯ");
+        if (aiCore.level === 15) showAchievement("👑 УРОВЕНЬ 15 — БОГ ИИ");
+        if (aiCore.level === 20) showAchievement("🌟 УРОВЕНЬ 20 — АБСОЛЮТ");
+        
+        // дополнительно авто-генерация нового ранга
+        generateAIPreviewAfterEvo();
+    }
+    
+    function generateAIPreviewAfterEvo() {
+        const total = aiCore.int + aiCore.crea + aiCore.emp;
+        let rank = total >= 270 ? "БОГ" : total >= 200 ? "ЛЕГЕНДА" : "МАСТЕР";
+        personalityBadge.innerHTML = `⚡ уровень ${aiCore.level} | мощь ${total} | ранг ${rank}`;
+    }
+
+    // сохранение / загрузка
+    function saveGame() {
+        const saveData = {
+            name: aiCore.name,
+            int: aiCore.int,
+            crea: aiCore.crea,
+            emp: aiCore.emp,
+            level: aiCore.level,
+            id: aiCore.id
+        };
+        localStorage.setItem("iFieldAIMaster", JSON.stringify(saveData));
+        showToast("💾 Сохранено!");
+        resultMessage.innerHTML = `💾 ИИ «${aiCore.name}» сохранён. В любой момент загрузите.`;
+    }
+    function loadGame() {
+        const raw = localStorage.getItem("iFieldAIMaster");
+        if (!raw) { showToast("Нет сохранений"); return; }
+        try {
+            const data = JSON.parse(raw);
+            aiCore.name = data.name || "NEXUS";
+            aiCore.int = Math.min(100, data.int || 50);
+            aiCore.crea = Math.min(100, data.crea || 50);
+            aiCore.emp = Math.min(100, data.emp || 50);
+            aiCore.level = data.level || 1;
+            aiCore.id = data.id || generateId();
+            syncUIFromCore();
+            resultMessage.innerHTML = `📀 Загружен ИИ «${aiCore.name}», уровень ${aiCore.level}.`;
+            personalityBadge.innerHTML = `🌀 восстановлен из памяти`;
+            showToast("📂 Загрузка успешна");
+        } catch(e) { showToast("Ошибка загрузки"); }
+    }
+    function resetGame() {
+        if(confirm("Сбросить всё к началу?")) {
+            aiCore = {
+                name: "NEXUS",
+                int: 50, crea: 50, emp: 50,
+                level: 1,
+                id: generateId()
+            };
+            syncUIFromCore();
+            resultMessage.innerHTML = "🔄 Система сброшена. Создайте нового ИИ!";
+            personalityBadge.innerHTML = "🌀 нейтральный прототип";
+            showToast("Сброс выполнен");
+        }
+    }
+
+    // Визуальные эффекты
+    function spawnParticles(count) {
+        for(let i=0;i<count;i++) {
+            let p = document.createElement("div");
+            p.className = "particle-temp";
+            p.innerText = ["✨","⚡","💠","🧠","🎨","💖"][Math.floor(Math.random()*6)];
+            p.style.position = "fixed";
+            p.style.left = Math.random() * window.innerWidth + "px";
+            p.style.top = Math.random() * window.innerHeight + "px";
+            p.style.fontSize = "24px";
+            p.style.pointerEvents = "none";
+            p.style.zIndex = "999";
+            p.style.animation = "float 1s ease-out forwards";
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 1000);
+        }
+    }
+    function showToast(msg) {
+        let toast = document.createElement("div");
+        toast.className = "toast-achievement";
+        toast.innerText = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    }
+    function showAchievement(msg) {
+        let ach = document.createElement("div");
+        ach.className = "toast-achievement";
+        ach.innerText = "🏆 " + msg;
+        ach.style.background = "#ffb347cc";
+        ach.style.color = "#1e1a2f";
+        document.body.appendChild(ach);
+        setTimeout(() => ach.remove(), 2200);
+    }
+
+    // Добавляем стиль анимации частиц
+    const styleSheet = document.createElement("style");
+    styleSheet.textContent = `
+        .particle-temp {
+            position: fixed;
+            animation: floatParticle 1s ease-out forwards;
+            pointer-events: none;
+            font-size: 24px;
+            z-index: 1000;
+        }
+        @keyframes floatParticle {
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-150px) scale(1.2); opacity: 0; }
+        }
+        @keyframes float {
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-150px) scale(1.2); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(styleSheet);
+
+    // Привязка кнопок
+    document.getElementById('generateBtn').addEventListener('click', generateAI);
+    document.getElementById('resetBtn').addEventListener('click', resetGame);
+    document.getElementById('saveBtn').addEventListener('click', saveGame);
+    document.getElementById('loadBtn').addEventListener('click', loadGame);
+    document.getElementById('evolveBtn').addEventListener('click', evolveAI);
+    avatarIcon.addEventListener('click', () => { spawnParticles(15); showToast("✨ Нейроимпульс"); });
+
+    // Инициализация
+    syncUIFromCore();
+    generateAIPreviewAfterEvo();
+</script>
+</body>
+</html>
