@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iField — Концепция поля</title>
+<style>
+  :root {
+    --teal: #00D4AA;
+    --blue: #4F9EF5;
+    --dark: #030810;
+    --dark2: #0A1628;
+    --dark3: #111827;
+    --text: #F0F4FF;
+    --muted: #8892A4;
+    --gold: #F5C842;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–dark);
+color: var(–text);
+font-family: ‘Segoe UI’, system-ui, -apple-system, sans-serif;
+overflow-x: hidden;
+}
+
+/* Floating particles */
+.particles {
+position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+pointer-events: none; z-index: 0;
+overflow: hidden;
+}
+.particle {
+position: absolute;
+border-radius: 50%;
+opacity: 0;
+animation: float linear infinite;
+}
+@keyframes float {
+0% { transform: translateY(100vh) scale(0); opacity: 0; }
+10% { opacity: 0.6; }
+90% { opacity: 0.2; }
+100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+/* Nav */
+nav {
+position: fixed; top: 0; width: 100%; z-index: 100;
+background: rgba(3, 8, 16, 0.9);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid rgba(0, 212, 170, 0.15);
+padding: 1rem 2rem;
+display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+font-size: 1.4rem; font-weight: 700; letter-spacing: 0.1em;
+}
+.nav-brand span:first-child { color: var(–teal); font-style: italic; }
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a {
+color: var(–muted); text-decoration: none; font-size: 0.9rem;
+letter-spacing: 0.05em; transition: color 0.3s;
+}
+.nav-links a:hover { color: var(–teal); }
+.nav-cta {
+background: linear-gradient(135deg, var(–teal), var(–blue));
+color: var(–dark);
+padding: 0.5rem 1.4rem;
+border-radius: 2rem;
+text-decoration: none;
+font-weight: 700;
+font-size: 0.85rem;
+transition: opacity 0.3s;
+}
+.nav-cta:hover { opacity: 0.85; }
+
+/* Hero */
+.hero {
+min-height: 100vh;
+display: flex; align-items: center; justify-content: center;
+text-align: center;
+position: relative;
+padding: 8rem 2rem 4rem;
+}
+
+.hero-ring {
+position: absolute;
+border-radius: 50%;
+border: 1px solid;
+animation: pulse 4s ease-in-out infinite;
+}
+@keyframes pulse {
+0%, 100% { opacity: 0.2; transform: scale(1); }
+50% { opacity: 0.5; transform: scale(1.05); }
+}
+
+.hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+.hero-badge {
+display: inline-block;
+background: rgba(0, 212, 170, 0.1);
+border: 1px solid rgba(0, 212, 170, 0.3);
+color: var(–teal);
+padding: 0.4rem 1.2rem;
+border-radius: 2rem;
+font-size: 0.8rem;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+margin-bottom: 2rem;
+}
+
+.hero h1 {
+font-size: clamp(3rem, 8vw, 6rem);
+font-weight: 900;
+letter-spacing: -0.02em;
+line-height: 1;
+margin-bottom: 1.5rem;
+}
+.hero h1 .i { color: var(–teal); font-style: italic; }
+.hero h1 .field { color: var(–text); }
+
+.hero-sub {
+font-size: clamp(1rem, 2.5vw, 1.4rem);
+color: var(–muted);
+line-height: 1.7;
+margin-bottom: 3rem;
+max-width: 600px;
+margin-left: auto;
+margin-right: auto;
+}
+
+.hero-quote {
+font-size: 1rem;
+font-style: italic;
+color: var(–blue);
+margin-bottom: 3rem;
+padding: 1rem 2rem;
+border-left: 3px solid var(–teal);
+text-align: left;
+background: rgba(79, 158, 245, 0.05);
+border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+background: linear-gradient(135deg, var(–teal), #00B896);
+color: var(–dark);
+padding: 0.9rem 2.2rem;
+border-radius: 0.5rem;
+text-decoration: none;
+font-weight: 700;
+font-size: 0.95rem;
+transition: transform 0.2s, box-shadow 0.2s;
+box-shadow: 0 0 30px rgba(0, 212, 170, 0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(0, 212, 170, 0.5); }
+.btn-ghost {
+border: 1px solid rgba(0, 212, 170, 0.4);
+color: var(–teal);
+padding: 0.9rem 2.2rem;
+border-radius: 0.5rem;
+text-decoration: none;
+font-weight: 600;
+font-size: 0.95rem;
+transition: background 0.3s;
+}
+.btn-ghost:hover { background: rgba(0, 212, 170, 0.1); }
+
+/* Section */
+section { padding: 6rem 2rem; position: relative; z-index: 1; }
+.container { max-width: 1100px; margin: 0 auto; }
+
+.section-label {
+font-size: 0.75rem;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–teal);
+font-weight: 700;
+margin-bottom: 1rem;
+}
+.section-title {
+font-size: clamp(1.8rem, 4vw, 2.8rem);
+font-weight: 800;
+margin-bottom: 1.5rem;
+line-height: 1.2;
+}
+.section-body {
+font-size: 1.05rem;
+color: var(–muted);
+line-height: 1.8;
+max-width: 680px;
+}
+
+/* Concept section */
+.concept { background: var(–dark2); }
+.concept-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 4rem;
+align-items: center;
+margin-top: 3rem;
+}
+@media (max-width: 768px) { .concept-grid { grid-template-columns: 1fr; } }
+
+.concept-visual {
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+height: 320px;
+}
+.ring {
+position: absolute;
+border-radius: 50%;
+border: 1px solid;
+animation: spin-slow linear infinite;
+}
+@keyframes spin-slow {
+from { transform: rotate(0deg); }
+to { transform: rotate(360deg); }
+}
+.ring-center {
+width: 60px; height: 60px;
+background: radial-gradient(circle, var(–teal), var(–blue));
+border-radius: 50%;
+box-shadow: 0 0 40px rgba(0, 212, 170, 0.5);
+z-index: 5;
+}
+
+.concept-points { display: flex; flex-direction: column; gap: 1.5rem; }
+.concept-point {
+display: flex;
+gap: 1rem;
+align-items: flex-start;
+}
+.point-icon {
+width: 40px; height: 40px; min-width: 40px;
+background: rgba(0, 212, 170, 0.1);
+border: 1px solid rgba(0, 212, 170, 0.3);
+border-radius: 0.5rem;
+display: flex; align-items: center; justify-content: center;
+font-size: 1.1rem;
+}
+.point-text h4 { color: var(–text); font-size: 1rem; margin-bottom: 0.3rem; }
+.point-text p { color: var(–muted); font-size: 0.9rem; line-height: 1.6; }
+
+/* Stats */
+.stats { background: var(–dark3); }
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 2rem;
+margin-top: 3rem;
+}
+.stat-card {
+background: var(–dark2);
+border: 1px solid rgba(0, 212, 170, 0.15);
+border-radius: 1rem;
+padding: 2rem;
+text-align: center;
+transition: border-color 0.3s, box-shadow 0.3s;
+}
+.stat-card:hover {
+border-color: rgba(0, 212, 170, 0.5);
+box-shadow: 0 0 30px rgba(0, 212, 170, 0.1);
+}
+.stat-number {
+font-size: 3rem;
+font-weight: 900;
+color: var(–teal);
+line-height: 1;
+margin-bottom: 0.5rem;
+font-family: Georgia, serif;
+}
+.stat-label { color: var(–muted); font-size: 0.85rem; }
+
+/* How it works */
+.how { background: var(–dark); }
+.steps {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 2rem;
+margin-top: 3rem;
+}
+.step {
+background: var(–dark2);
+border-radius: 1rem;
+padding: 2rem;
+position: relative;
+border-top: 3px solid var(–teal);
+transition: transform 0.3s;
+}
+.step:hover { transform: translateY(-5px); }
+.step-num {
+font-size: 3.5rem;
+font-weight: 900;
+color: rgba(0, 212, 170, 0.15);
+line-height: 1;
+font-family: Georgia, serif;
+margin-bottom: 1rem;
+}
+.step h3 { color: var(–text); font-size: 1.05rem; margin-bottom: 0.75rem; }
+.step p { color: var(–muted); font-size: 0.9rem; line-height: 1.6; }
+
+/* Book CTA */
+.book-cta {
+background: var(–dark2);
+border-top: 1px solid rgba(0, 212, 170, 0.15);
+}
+.book-card {
+background: linear-gradient(135deg, rgba(0, 212, 170, 0.05), rgba(79, 158, 245, 0.05));
+border: 1px solid rgba(0, 212, 170, 0.2);
+border-radius: 1.5rem;
+padding: 3rem;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 3rem;
+align-items: center;
+}
+@media (max-width: 768px) { .book-card { grid-template-columns: 1fr; } }
+
+.book-title {
+font-size: 2.5rem;
+font-weight: 900;
+font-family: Georgia, serif;
+letter-spacing: 0.1em;
+color: var(–teal);
+margin-bottom: 0.5rem;
+}
+.book-subtitle {
+color: var(–muted);
+font-size: 1rem;
+font-style: italic;
+margin-bottom: 1.5rem;
+line-height: 1.6;
+}
+.book-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+.tag {
+background: rgba(0, 212, 170, 0.1);
+border: 1px solid rgba(0, 212, 170, 0.25);
+color: var(–teal);
+padding: 0.3rem 0.8rem;
+border-radius: 2rem;
+font-size: 0.8rem;
+}
+.book-right { text-align: center; }
+.book-num {
+font-size: 8rem;
+font-weight: 900;
+color: rgba(0, 212, 170, 0.1);
+font-family: Georgia, serif;
+line-height: 1;
+margin-bottom: 1rem;
+}
+
+/* Footer */
+footer {
+background: var(–dark);
+border-top: 1px solid rgba(255,255,255,0.05);
+padding: 3rem 2rem;
+text-align: center;
+}
+.footer-brand {
+font-size: 1.5rem;
+font-weight: 700;
+margin-bottom: 0.5rem;
+}
+.footer-brand span { color: var(–teal); font-style: italic; }
+footer p { color: var(–muted); font-size: 0.85rem; margin-bottom: 0.3rem; }
+.footer-links { display: flex; gap: 2rem; justify-content: center; margin-top: 1.5rem; }
+.footer-links a { color: var(–muted); text-decoration: none; font-size: 0.85rem; transition: color 0.3s; }
+.footer-links a:hover { color: var(–teal); }
+</style>
+
+</head>
+<body>
+
+<!-- Particles -->
+
+<div class="particles" id="particles"></div>
+
+<!-- Nav -->
+
+<nav>
+  <div class="nav-brand">
+    <span>i</span><span>Field</span>
+  </div>
+  <div class="nav-links">
+    <a href="#concept">Концепция</a>
+    <a href="#how">Как работает</a>
+    <a href="#book">Книга</a>
+    <a href="#contact">Контакт</a>
+  </div>
+  <a href="#book" class="nav-cta">Читать книгу</a>
+</nav>
+
+<!-- Hero -->
+
+<section class="hero">
+  <!-- Rings -->
+  <div class="hero-ring" style="width:200px;height:200px;border-color:rgba(0,212,170,0.25);animation-delay:0s;"></div>
+  <div class="hero-ring" style="width:350px;height:350px;border-color:rgba(79,158,245,0.15);animation-delay:1s;"></div>
+  <div class="hero-ring" style="width:500px;height:500px;border-color:rgba(0,212,170,0.08);animation-delay:2s;"></div>
+  <div class="hero-ring" style="width:650px;height:650px;border-color:rgba(79,158,245,0.05);animation-delay:3s;"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">Концепция распределённого поля</div>
+    <h1>
+      <span class="i">i</span><span class="field">Field</span>
+    </h1>
+    <p class="hero-sub">
+      Энергия, вода, данные, люди — это одно поле.<br>
+      Если видеть поле — можно чинить мир, не латая дыры.
+    </p>
+    <blockquote class="hero-quote">
+      «Проблема не в трубах. Проблема в том, что мы думаем о распределении,<br>
+      а не о связи.» — Роман, инженер-системщик
+    </blockquote>
+    <div class="hero-buttons">
+      <a href="#concept" class="btn-primary">Понять концепцию</a>
+      <a href="#book" class="btn-ghost">Читать «4 2 Округ»</a>
+    </div>
+  </div>
+</section>
+
+<!-- Concept -->
+
+<section class="concept" id="concept">
+  <div class="container">
+    <div class="section-label">Концепция</div>
+    <h2 class="section-title">Не распределение.<br>Связь.</h2>
+    <p class="section-body">
+      Большинство системных проблем — дефицита, несправедливости, конфликтов —
+      возникают не из-за нехватки ресурсов. А из-за неправильной модели восприятия.
+      Мы видим отдельные элементы. А нужно видеть поле.
+    </p>
+
+```
+<div class="concept-grid">
+  <div class="concept-visual">
+    <!-- Animated field rings -->
+    <div class="ring" style="width:260px;height:260px;border-color:rgba(0,212,170,0.15);animation-duration:20s;"></div>
+    <div class="ring" style="width:190px;height:190px;border-color:rgba(79,158,245,0.2);animation-duration:14s;animation-direction:reverse;"></div>
+    <div class="ring" style="width:130px;height:130px;border-color:rgba(0,212,170,0.3);animation-duration:9s;"></div>
+    <div class="ring" style="width:80px;height:80px;border-color:rgba(245,200,66,0.3);animation-duration:6s;animation-direction:reverse;"></div>
+    <div class="ring-center"></div>
+  </div>
+
+  <div class="concept-points">
+    <div class="concept-point">
+      <div class="point-icon">🌊</div>
+      <div class="point-text">
+        <h4>Вода, энергия, данные — одно поле</h4>
+        <p>Традиционные системы управляют ими отдельно. iField видит единую связь — и находит точки оптимизации, которые невозможно заметить в изоляции.</p>
+      </div>
+    </div>
+    <div class="concept-point">
+      <div class="point-icon">🔗</div>
+      <div class="point-text">
+        <h4>Резонанс вместо контроля</h4>
+        <p>Система не управляет — она резонирует. Как камертон задаёт ноту, а не диктует её. Это фундаментальная смена парадигмы.</p>
+      </div>
+    </div>
+    <div class="concept-point">
+      <div class="point-icon">🧠</div>
+      <div class="point-text">
+        <h4>Минимизация страдания как метрика</h4>
+        <p>Не прибыль. Не КПД. Не рост. Вопрос: где больше всего боли — и что система может сделать с этим прямо сейчас.</p>
+      </div>
+    </div>
+    <div class="concept-point">
+      <div class="point-icon">🌱</div>
+      <div class="point-text">
+        <h4>Система учится без обучения</h4>
+        <p>Не алгоритм, не нейросеть в привычном смысле. Экосистема, которая адаптируется как живая среда — впитывая паттерны, а не правила.</p>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- Stats -->
+
+<section class="stats" id="stats">
+  <div class="container">
+    <div class="section-label">Цифры концепции</div>
+    <h2 class="section-title">Если считать честно</h2>
+
+```
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-number">5 500</div>
+    <div class="stat-label">$ в год достаточно каждому человеку<br>для достойной жизни</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">30%</div>
+    <div class="stat-label">падение энергопотребления<br>в «белом квартале»</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">53.6</div>
+    <div class="stat-label">ТГц — частота, которая<br>открывает калиевые каналы нейронов</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">42</div>
+    <div class="stat-label">квартал, где всё<br>началось</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">0.00</div>
+    <div class="stat-label">сумма к оплате.<br>Не ошибка.</div>
+  </div>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- How it works -->
+
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-label">Механика</div>
+    <h2 class="section-title">Как работает iField</h2>
+
+```
+<div class="steps">
+  <div class="step">
+    <div class="step-num">01</div>
+    <h3>Видит паттерны</h3>
+    <p>Не данные — связи между данными. Система анализирует не потребление, а отношения между узлами поля.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">02</div>
+    <h3>Находит резонанс</h3>
+    <p>Где система «течёт» — там она создаёт резонанс. Не внешнее давление, а внутреннее согласование частот.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">03</div>
+    <h3>Убирает страх</h3>
+    <p>Большинство потерь — от страха дефицита, а не от самого дефицита. iField работает с первопричиной.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">04</div>
+    <h3>Не управляет</h3>
+    <p>Это самое сложное. Система даёт возможность — и отходит. Люди сами принимают решения, когда им не страшно.</p>
+  </div>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- Book CTA -->
+
+<section class="book-cta" id="book">
+  <div class="container">
+    <div class="section-label">Художественное воплощение</div>
+    <h2 class="section-title" style="margin-bottom:2rem;">Концепция в действии</h2>
+
+```
+<div class="book-card">
+  <div class="book-left">
+    <div class="book-title">4 2 Округ</div>
+    <p class="book-subtitle">
+      Роман-диалог о том, что происходит, когда iField перестаёт быть теорией
+      и становится реальностью одного квартала.
+    </p>
+    <div class="book-tags">
+      <span class="tag">Антиутопия</span>
+      <span class="tag">Нейробиология</span>
+      <span class="tag">Свобода</span>
+      <span class="tag">ИИ</span>
+      <span class="tag">Украина</span>
+      <span class="tag">188 стр.</span>
+    </div>
+    <p style="color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:2rem;">
+      Инженер Роман обнаруживает: в одном квартале города исчезли долги.
+      Нейробиолог Алина измеряет: мозг жителей перестроился на клеточном уровне.
+      Аналитик корпорации Илья понимает: это угрожает всему, во что он верил.
+    </p>
+    <div class="hero-buttons" style="justify-content:flex-start;">
+      <a href="#contact" class="btn-primary">Получить книгу</a>
+      <a href="#contact" class="btn-ghost">Связаться с автором</a>
+    </div>
+  </div>
+  <div class="book-right">
+    <div class="book-num">42</div>
+    <p style="color:var(--teal);font-style:italic;font-size:1rem;">«Свобода заразна.»</p>
+    <p style="color:var(--muted);font-size:0.85rem;margin-top:0.5rem;">— Роман Безликий</p>
+  </div>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- Contact -->
+
+<section id="contact" style="background:var(--dark3);padding:5rem 2rem;text-align:center;">
+  <div class="container">
+    <div class="section-label">Контакт</div>
+    <h2 class="section-title">Готовы думать вместе?</h2>
+    <p class="section-body" style="margin:0 auto 2rem;text-align:center;">
+      Открыт к диалогу с издательствами, исследователями, инвесторами и просто думающими людьми.
+    </p>
+
+```
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;max-width:800px;margin:0 auto;">
+  <div style="background:var(--dark2);border:1px solid rgba(0,212,170,0.2);border-radius:1rem;padding:1.5rem;text-align:center;">
+    <div style="font-size:1.8rem;margin-bottom:0.75rem;">📖</div>
+    <div style="color:var(--text);font-weight:700;margin-bottom:0.3rem;">Книга</div>
+    <div style="color:var(--muted);font-size:0.85rem;">Права на издание, перевод, адаптацию</div>
+  </div>
+  <div style="background:var(--dark2);border:1px solid rgba(79,158,245,0.2);border-radius:1rem;padding:1.5rem;text-align:center;">
+    <div style="font-size:1.8rem;margin-bottom:0.75rem;">🔬</div>
+    <div style="color:var(--text);font-weight:700;margin-bottom:0.3rem;">iField</div>
+    <div style="color:var(--muted);font-size:0.85rem;">Исследование и развитие концепции</div>
+  </div>
+  <div style="background:var(--dark2);border:1px solid rgba(245,200,66,0.2);border-radius:1rem;padding:1.5rem;text-align:center;">
+    <div style="font-size:1.8rem;margin-bottom:0.75rem;">🎙️</div>
+    <div style="color:var(--text);font-weight:700;margin-bottom:0.3rem;">Медиа</div>
+    <div style="color:var(--muted);font-size:0.85rem;">Интервью, подкасты, лекции</div>
+  </div>
+</div>
+
+<div style="margin-top:3rem;">
+  <a href="mailto:romanbezkiy@proton.me" style="color:var(--teal);font-size:1.2rem;font-weight:700;text-decoration:none;letter-spacing:0.05em;">
+    romanbezkiy@proton.me
+  </a>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- Footer -->
+
+<footer>
+  <div class="footer-brand"><span>i</span>Field  /  4 2 Округ</div>
+  <p>Роман Безликий  •  Украина  •  2026</p>
+  <p style="margin-top:0.5rem;font-style:italic;color:var(--muted);">
+    «Если перестать чинить — мир перестаёт течь.»
+  </p>
+  <div class="footer-links">
+    <a href="#concept">Концепция</a>
+    <a href="#book">Книга</a>
+    <a href="#contact">Контакт</a>
+  </div>
+</footer>
+
+<script>
+// Floating particles
+const container = document.getElementById('particles');
+const colors = ['#00D4AA', '#4F9EF5', '#F5C842'];
+
+for (let i = 0; i < 25; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 4 + 1;
+  p.style.cssText = `
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;
+    background:${colors[Math.floor(Math.random()*colors.length)]};
+    animation-duration:${Math.random()*20+10}s;
+    animation-delay:${Math.random()*15}s;
+  `;
+  container.appendChild(p);
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
