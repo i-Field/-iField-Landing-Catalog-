@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iField — Sci-Fi Experience</title>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, sans-serif; }
+body { overflow-x:hidden; color:white; height:100vh; background:#000; cursor:grab; }
+
+header, footer { text-align:center; padding:20px; position:relative; z-index:10; }
+header a, footer a { color:#aaa; text-decoration:none; margin:0 10px; transition:0.3s; }
+header a:hover, footer a:hover { color:white; }
+
+.hero { text-align:center; padding:80px 20px; position:relative; z-index:10; }
+.hero h1 { font-size:60px; background:linear-gradient(90deg,#00f0ff,#ff00ff); -webkit-background-clip:text; color:transparent; }
+
+.slider { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; height:80vh; position:relative; z-index:10; perspective:1000px; }
+.block { min-width:100vw; height:80vh; scroll-snap-align:start; display:flex; justify-content:center; align-items:center; position:relative; transition:transform 0.5s ease; }
+.block-content { text-align:center; max-width:600px; z-index:10; }
+.block h2 { font-size:40px; margin-bottom:20px; }
+.block p { opacity:0.7; transition:0.5s; }
+button { margin-top:30px; padding:12px 30px; background:transparent; border:1px solid #00f0ff; color:white; cursor:pointer; transition:0.4s; }
+button:hover { background:#00f0ff; color:black; }
+
+/* 🔹 фоновые частицы */
+canvas#bg { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+
+/* 🔹 градиентная анимация */
+body::before {
+  content:"";
+  position:fixed;
+  top:0; left:0; width:100%; height:100%; z-index:0;
+  background: linear-gradient(120deg, #000000, #0ff, #f0f);
+  background-size: 600% 600%;
+  animation: gradientMove 20s ease infinite;
+}
+@keyframes gradientMove {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<header>
+🌐 <a href="https://i-field.github.io">Website</a> ·
+📘 <a href="https://payhip.com/iField">Book</a> ·
+💎 <a href="https://getgems.io/iseeds">NFT</a> ·
+📡 <a href="https://t.me/okrug420">Telegram</a>
+</header>
+
+<section class="hero">
+  <h1>iField</h1>
+  <p>Energy through attention. Sci-Fi begins here.</p>
+</section>
+
+<div class="slider">
+
+  <div class="block">
+    <div class="block-content">
+      <h2>Biofield Visualization</h2>
+      <p>Dynamic energy mapping and futuristic interface layers.</p>
+      <button onclick="alert('Entering Biofield Mode')">Explore</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-content">
+      <h2>X-Field Device</h2>
+      <p>Portable environmental and bio-signal detection module.</p>
+      <button onclick="alert('Opening X-Field')">Activate</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-content">
+      <h2>iField Token</h2>
+      <p>Ethical digital exchange powered by awareness.</p>
+      <button onclick="alert('Connecting Wallet')">Connect</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-content">
+      <h2>AI Knowledge Network</h2>
+      <p>Self-learning global system for sustainable life.</p>
+      <button onclick="alert('Syncing AI')">Sync</button>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-content">
+      <h2>Future Identity</h2>
+      <p>Digital bio-identity integrated with human awareness.</p>
+      <button onclick="alert('Launching Identity Mode')">Launch</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+🌐 <a href="https://i-field.github.io">Website</a> ·
+📘 <a href="https://payhip.com/iField">Book</a> ·
+💎 <a href="https://getgems.io/iseeds">NFT</a> ·
+📡 <a href="https://t.me/okrug420">Telegram</a>
+</footer>
+
+<script>
+// 🔹 Canvas particles
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+for(let i=0;i<70;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    vx:Math.random()*1.2-0.6,
+    vy:Math.random()*1.2-0.6,
+    r: Math.random()*3+1
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let p of particles){
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle = "#00f0ff44";
+    ctx.fill();
+    p.x += p.vx;
+    p.y += p.vy;
+    if(p.x>canvas.width) p.x=0;
+    if(p.x<0) p.x=canvas.width;
+    if(p.y>canvas.height) p.y=0;
+    if(p.y<0) p.y=canvas.height;
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+// 🔹 Parallax блока при свайпе/скролле
+const blocks = document.querySelectorAll('.block');
+window.addEventListener('scroll', () => {
+  blocks.forEach(b => {
+    let rect = b.getBoundingClientRect();
+    let offset = rect.top / window.innerHeight;
+    b.style.transform = `translateY(${offset * -50}px)`;
+  });
+});
+
+// 🔹 Реакция фона на движение мыши/тач
+document.addEventListener('mousemove', e => {
+  let x = (e.clientX / window.innerWidth - 0.5) * 50;
+  let y = (e.clientY / window.innerHeight - 0.5) * 50;
+  canvas.style.transform = `translate(${x}px, ${y}px)`;
+});
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
