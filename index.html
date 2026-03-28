@@ -6,11 +6,11 @@
     
     <title>iField | Центральный каталог лендингов и AI-проектов</title>
     
-    <!-- ========== FAVICON ========== -->
+    <!-- FAVICON -->
     <link rel="icon" type="image/png" href="https://i-field.github.io/-iField-Landing-Catalog-/favicon.png">
     <link rel="shortcut icon" type="image/png" href="https://i-field.github.io/-iField-Landing-Catalog-/favicon.png">
     
-    <!-- ========== OPEN GRAPH (Telegram, WhatsApp, Facebook, Viber) ========== -->
+    <!-- OPEN GRAPH (Telegram, WhatsApp, Facebook) -->
     <meta property="og:title" content="iField | Центральный каталог лендингов и AI-проектов">
     <meta property="og:description" content="🚀 Все проекты iField в одном месте: AI Creator, генераторы лендингов, чат-боты, файловый менеджер. Создавай, управляй, эволюционируй!">
     <meta property="og:image" content="https://i-field.github.io/-iField-Landing-Catalog-/preview.png">
@@ -18,53 +18,24 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="iField Ecosystem">
     
-    <!-- ========== TWITTER CARDS ========== -->
+    <!-- TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="iField | Центральный каталог лендингов">
     <meta name="twitter:description" content="🚀 Все проекты iField в одном месте: AI Creator, генераторы, чат-боты и файловый менеджер.">
     <meta name="twitter:image" content="https://i-field.github.io/-iField-Landing-Catalog-/preview.png">
     
-    <!-- ========== ДОПОЛНИТЕЛЬНЫЕ МЕТА ========== -->
-    <meta name="description" content="Центральный каталог всех проектов iField: AI Creator, генераторы лендингов, чат-боты, файловый менеджер и многое другое.">
-    <meta name="keywords" content="iField, AI, лендинги, конструктор, каталог, генератор, чат-бот">
-    <meta name="author" content="iField Studio">
-    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             min-height: 100vh;
             padding: 2rem;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        h1 {
-            color: white;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .sub {
-            color: rgba(255,255,255,0.9);
-            font-size: 1.1rem;
-        }
-
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 2rem; }
+        h1 { color: white; font-size: 2.5rem; margin-bottom: 0.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .sub { color: rgba(255,255,255,0.9); font-size: 1.1rem; }
         .stats-bar {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
@@ -77,153 +48,26 @@
             gap: 1rem;
             margin-bottom: 2rem;
         }
-
-        .stats {
-            background: white;
-            color: #667eea;
-            padding: 0.5rem 1rem;
-            border-radius: 40px;
-            font-weight: 600;
-        }
-
-        .search-box {
-            flex: 1;
-            max-width: 300px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 0.6rem 1rem;
-            border: none;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .refresh-btn {
-            background: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .refresh-btn:hover {
-            transform: scale(0.98);
-            background: #f0f0f0;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 1rem;
-            color: white;
-        }
-
-        .card-header h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-            word-break: break-word;
-        }
-
-        .project-name {
-            font-size: 0.7rem;
-            opacity: 0.9;
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-        }
-
-        .card-body {
-            padding: 1rem;
-        }
-
-        .url {
-            background: #f8f9fa;
-            padding: 0.5rem;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-family: monospace;
-            word-break: break-all;
-            margin-bottom: 1rem;
-            color: #666;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 40px;
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            transition: all 0.2s;
-            border: none;
-            cursor: pointer;
-            flex: 1;
-            justify-content: center;
-        }
-
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #5a67d8;
-        }
-
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #667eea;
-        }
-
-        .btn-secondary:hover {
-            background: #e4e4e4;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            background: white;
-            border-radius: 20px;
-            color: #666;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 2rem;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.8rem;
-        }
-
+        .stats { background: white; color: #667eea; padding: 0.5rem 1rem; border-radius: 40px; font-weight: 600; }
+        .search-box { flex: 1; max-width: 300px; }
+        .search-box input { width: 100%; padding: 0.6rem 1rem; border: none; border-radius: 40px; font-size: 0.9rem; outline: none; }
+        .refresh-btn { background: white; border: none; padding: 0.6rem 1.2rem; border-radius: 40px; font-weight: 600; cursor: pointer; }
+        .refresh-btn:hover { transform: scale(0.98); background: #f0f0f0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; }
+        .card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1rem; color: white; }
+        .card-header h3 { font-size: 1.1rem; margin-bottom: 0.3rem; word-break: break-word; }
+        .project-name { font-size: 0.7rem; opacity: 0.9; background: rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 20px; display: inline-block; }
+        .card-body { padding: 1rem; }
+        .url { background: #f8f9fa; padding: 0.5rem; border-radius: 10px; font-size: 0.7rem; font-family: monospace; word-break: break-all; margin-bottom: 1rem; color: #666; }
+        .card-actions { display: flex; gap: 0.5rem; }
+        .btn { padding: 0.5rem 1rem; border-radius: 40px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem; cursor: pointer; flex: 1; justify-content: center; border: none; }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5a67d8; }
+        .btn-secondary { background: #f0f0f0; color: #667eea; }
+        .empty-state { text-align: center; padding: 3rem; background: white; border-radius: 20px; color: #666; }
+        footer { text-align: center; margin-top: 2rem; color: rgba(255,255,255,0.7); font-size: 0.8rem; }
         @media (max-width: 768px) {
             body { padding: 1rem; }
             .grid { grid-template-columns: 1fr; }
@@ -258,7 +102,6 @@
 </div>
 
 <script>
-    // ========== ВСЕ ТВОИ ЛЕНДИНГИ ==========
     const LANDINGS = [
         { name: "🏠 Главный каталог", project: "iField Landing Catalog", url: "https://i-field.github.io/-iField-Landing-Catalog-/" },
         { name: "🤖 iField AI Creator", project: "AI Игра", url: "https://i-field.github.io/-iField-Landing-Catalog-/ai-creator.html" },
@@ -273,7 +116,6 @@
     ];
 
     let allLandings = LANDINGS;
-
     const gridContainer = document.getElementById('landingsGrid');
     const searchInput = document.getElementById('searchInput');
     const statsSpan = document.getElementById('statsCounter');
@@ -282,43 +124,14 @@
     function renderLandings() {
         const searchTerm = searchInput.value.toLowerCase().trim();
         let filtered = allLandings;
-        
         if (searchTerm) {
-            filtered = allLandings.filter(land => 
-                land.name.toLowerCase().includes(searchTerm) || 
-                land.project.toLowerCase().includes(searchTerm) ||
-                land.url.toLowerCase().includes(searchTerm)
-            );
+            filtered = allLandings.filter(land => land.name.toLowerCase().includes(searchTerm) || land.project.toLowerCase().includes(searchTerm) || land.url.toLowerCase().includes(searchTerm));
         }
-        
         statsSpan.textContent = `${filtered.length} / ${allLandings.length}`;
-        
-        if (filtered.length === 0) {
-            gridContainer.innerHTML = '<div class="empty-state">🔍 Ничего не найдено</div>';
-            return;
-        }
-        
+        if (filtered.length === 0) { gridContainer.innerHTML = '<div class="empty-state">🔍 Ничего не найдено</div>'; return; }
         let html = '<div class="grid">';
         for (const land of filtered) {
-            html += `
-                <div class="card">
-                    <div class="card-header">
-                        <h3>${escapeHtml(land.name)}</h3>
-                        <div class="project-name">📁 ${escapeHtml(land.project)}</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="url">🔗 ${escapeHtml(land.url)}</div>
-                        <div class="card-actions">
-                            <a href="${escapeHtml(land.url)}" class="btn btn-primary" target="_blank">
-                                🚀 Открыть
-                            </a>
-                            <button class="btn btn-secondary" onclick="copyUrl('${escapeHtml(land.url)}', this)">
-                                📋 Копировать
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
+            html += `<div class="card"><div class="card-header"><h3>${escapeHtml(land.name)}</h3><div class="project-name">📁 ${escapeHtml(land.project)}</div></div><div class="card-body"><div class="url">🔗 ${escapeHtml(land.url)}</div><div class="card-actions"><a href="${escapeHtml(land.url)}" class="btn btn-primary" target="_blank">🚀 Открыть</a><button class="btn btn-secondary" onclick="copyUrl('${escapeHtml(land.url)}', this)">📋 Копировать</button></div></div></div>`;
         }
         html += '</div>';
         gridContainer.innerHTML = html;
@@ -328,9 +141,7 @@
         navigator.clipboard.writeText(url).then(() => {
             const original = btn.innerHTML;
             btn.innerHTML = '✅ Готово!';
-            setTimeout(() => {
-                btn.innerHTML = original;
-            }, 1500);
+            setTimeout(() => { btn.innerHTML = original; }, 1500);
         });
     }
 
@@ -346,7 +157,6 @@
 
     searchInput.addEventListener('input', renderLandings);
     refreshBtn.addEventListener('click', () => renderLandings());
-
     renderLandings();
     window.copyUrl = copyUrl;
 </script>
